@@ -2,59 +2,16 @@
 <html>
   <head>
     <script src="paho.javascript-1.0.2/mqttws31.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/mainPage.js"></script>
+    <script async defer src =
+      "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=mainPage.onLoad">
+     </script>
   </head>
 <body>
 
-<script>
-var client; 
-function myFunction() {
-  
-  var wsbroker = "li1109-31.members.linode.com"; 
-  clientId = "some_string";
-  var wsport = 9001 // port for above
-
-  //var wsbroker = "test.mosquitto.org";  //mqtt websocket enabled broker
-  //var wsport = 8080 // port for above
-  //var clientId = "some_string"
-  //"myclientid_" + parseInt(Math.random() * 100, 10)
-  client =  new Paho.MQTT.Client(wsbroker, wsport, clientId);
-  console.log('vlient: '  + client);
-  // client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
-
-  // set callback handlers
-  client.onConnectionLost = onConnectionLost;
-  client.onMessageArrived = onMessageArrived;
-
-  // connect the client
-  client.connect({onSuccess:onConnect});
-
-}
-
-// called when the client connects
-function onConnect() {
-  // Once a connection has been made, make a subscription and send a message.
-  console.log("onConnect");
-  client.subscribe("World");
-  message = new Paho.MQTT.Message("Hello");
-  message.destinationName = "World";
-  client.send(message);
-}
-
-// called when the client loses its connection
-function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:"+responseObject.errorMessage);
-  }
-}
-
-// called when a message arrives
-function onMessageArrived(message) {
-  console.log("onMessageArrived:"+message.payloadString);
-}
-
-</script>
-
 <h1>Hello Supermetrics</h1>
-<button type="button" onclick="myFunction()">Click Me!</button>
+<!--button type="button" onclick="myFunction()">Click Me!</button-->
+<button type="button" onclick="mainPage.testMqtt()">Test</button>
 </body>
 </html>
