@@ -1,9 +1,7 @@
 var mainPage = {
 
-  /**
-   * Main Entry Point.
-   */
-  onLoad : function() {
+
+  init : function() {
     var mapDiv = document.getElementById('map-div');
     mapDiv.style.height = '500px';
     mapDiv.style.width = '500px';  
@@ -13,7 +11,10 @@ var mainPage = {
         function() {
           supermarketTab.updateView();
         });
-    controller.testController();
+  },
+  
+  updateView : function() {
+    
   },
 
 }
