@@ -16,7 +16,7 @@ var controller = {
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'gps':
-        //this.treatGpsMsg(payload);
+        this.treatGpsMsg(payload);
         break;
       case 'ble':
         this.treatBleMsg(payload);
@@ -30,7 +30,7 @@ var controller = {
   treatGpsMsg : function(payload) {
     this.path.push(payload);
     console.log('gps: ' + JSON.stringify(payload));
-    mainPage.update();
+    mainPage.updateView();
   },
   
   treatBleMsg : function(payload) {

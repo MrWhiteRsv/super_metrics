@@ -1,22 +1,15 @@
 var supermarketTab = {
   
-    init : function() {
-    var mapCanvas = document.getElementById('map-div');
-    var mapOptions = {
-        center: new google.maps.LatLng(44.5403, -78.5463),
-        zoom: 5,
-        mapTypeControl : false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(mapCanvas, mapOptions);
-    setTimeout(function () {
-        google.maps.event.trigger(map, 'resize');
-        map.setCenter(mapOptions.center);
-    }, 500);
+  init : function() {
+    mapRenderer.init();
   },
   
   updateView : function() {
-    console.log('updateView');
+    console.log('length: ' + controller.path.length);
+    var currentPos = controller.path[controller.path.length - 1];
+    
+    console.log('last: ' + currentPos.lat + ', ' + currentPos.lon);
+    mapRenderer.addMarker(currentPos.lat, currentPos.lon);
   },
 
 }
