@@ -12,8 +12,8 @@ def pub(topic, payload):
 
    
 def publish_log(file_name):  
-  log_file = open('path_1_stragiht_line.dat', 'r')
-  #log_file = open(file_name)
+  #log_file = open('path_1_stragiht_line.dat', 'r')
+  log_file = open(file_name)
   record_start_time = None
   play_start_time = int(time.time())
   for line in log_file:
