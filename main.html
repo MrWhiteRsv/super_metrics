@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Android</title>
+    
     <script src="paho.javascript-1.0.2/mqttws31.js"></script>
     <script src="js/controller.js"></script>
+    <script src="js/supermarketTab.js"></script>
     <script src="js/mainPage.js"></script>
     <script async defer src =
       "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=mainPage.onLoad">
@@ -13,17 +17,58 @@
   </head>
 <body>
 
+
+<!-- Simple header with scrollable tabs. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">Super Metrics</span>
+    </div>
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#supermarket-tab" id="#supermarket-tab" class="mdl-layout__tab is-active">Supermarket</a>
+      <a href="#scroll-tab-2" class="mdl-layout__tab">Product</a>
+      <a href="#scroll-tab-3" class="mdl-layout__tab">Customer</a>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Super Metrics</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="">Path #1</a>
+      <a class="mdl-navigation__link" href="">Path #2</a>
+      <a class="mdl-navigation__link" href="">Path #3</a>
+      <a class="mdl-navigation__link" href="">Path #4</a>
+    </nav>
+  </div>
+  
+  <main class="mdl-layout__content">
+    <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
+      <div class="page-content"> 
+        <div id="map-div" height="42" width="42"></div>
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+      <div class="page-content"><!-- Your content goes here --></div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+      <div class="page-content"><!-- Your content goes here --></div>
+    </section>
+  </main>
+</div>
+
+
+<!--
 <h1>Hello Supermetrics</h1>
 
 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
   Button
 </button>
-<!-- Colored FAB button -->
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-  <i class="material-icons">add</i>
-</button>
+
+
 
 
 <button type="button" onclick="mainPage.testMqtt()">Test</button>
+-->
 </body>
 </html>
