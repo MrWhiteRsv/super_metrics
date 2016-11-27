@@ -53,11 +53,11 @@ def main(argv):
   try:
     opts, args = getopt.getopt(argv,"hi:",["infile="])
   except getopt.GetoptError:
-    print 'python cart_detector.py -i <log_file>'
+    print 'python player.py -i <log_file>'
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print 'python cart_detector.py -i <log_file>'
+      print 'python player.py -i <log_file>'
       sys.exit()
     elif opt in ("-i", "--infile"):
       log_file_name = arg
