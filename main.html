@@ -10,6 +10,7 @@
     <script src="js/supermarketTab.js"></script>
     <script src="js/mainPage.js"></script>
     <script src="js/mapRenderer.js"></script>
+    <script src="js/monitorTab.js"></script>
     <script src="js/mqttListener.js"></script>
     <script src="js/utils.js"></script>
     <script async defer src =
@@ -31,8 +32,9 @@
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
       <a href="#supermarket-tab" id="#supermarket-tab" class="mdl-layout__tab is-active">Supermarket</a>
-      <a href="#scroll-tab-2" class="mdl-layout__tab">Product</a>
-      <a href="#scroll-tab-3" class="mdl-layout__tab">Analytics</a>
+      <a href="#product-tab" class="mdl-layout__tab">Product</a>
+      <a href="#analytics-tab" class="mdl-layout__tab">Analytics</a>
+      <a href="#monitor-tab" class="mdl-layout__tab">Monitor</a>
     </div>
   </header>
   <div class="mdl-layout__drawer">
@@ -48,30 +50,25 @@
   <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
       <div class="page-content"> 
-        <div id="map-div" height="42" width="42"></div>
+        <img src="css/floorPlan.png" style="width:70%;">
       </div>
     </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-      <div class="page-content"><!-- Your content goes here --></div>
+    <section class="mdl-layout__tab-panel" id="product-tab">
+      <div class="page-content">
+      </div>
     </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
-      <div class="page-content"><!-- Your content goes here --></div>
+    <section class="mdl-layout__tab-panel" id="analytics-tab">
+      <div class="page-content">
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="monitor-tab">
+      <div class="page-content">
+        <div id="map-div" width="500px" height="500px"></div>
+      </div>
     </section>
   </main>
 </div>
 
 
-<!--
-<h1>Hello Supermetrics</h1>
-
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  Button
-</button>
-
-
-
-
-<button type="button" onclick="mainPage.testMqtt()">Test</button>
--->
 </body>
 </html>

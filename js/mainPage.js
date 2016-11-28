@@ -2,16 +2,16 @@ var mainPage = {
 
 
   init : function() {
-    supermarketTab.init();
+    monitorTab.init();
     document.getElementById("#supermarket-tab").addEventListener(
         "click",
         function() {
-          supermarketTab.updateView();
+          monitorTab.updateView();
         });
   },
   
   updateView : function() {
-    supermarketTab.updateView();
+    monitorTab.updateView();
   },
 
 }

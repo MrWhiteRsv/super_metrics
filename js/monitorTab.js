@@ -1,4 +1,4 @@
-/*var supermarketTab = {
+var monitorTab = {
   
   init : function() {
     mapRenderer.init();
@@ -11,4 +11,4 @@
     console.log('last: ' + currentPos.lat + ', ' + currentPos.lon);
     mapRenderer.addMarker(currentPos.lat, currentPos.lon);
   },
-}*/
+}
