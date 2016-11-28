@@ -1,14 +1,15 @@
 var controller = {
 
-   path : undefined,
+   // path : undefined,
    
   /**
    * Main Entry Point.
    * Called once map is loaded.
    */
   initController : function() {
-    this.path = [];
+    // this.path = [];
     mainPage.init();
+    gpsPath.init();
     mqtt_listener.init();
   },
   
@@ -16,10 +17,10 @@ var controller = {
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'gps':
-        this.treatGpsMsg(payload);
+        this.treatGpsMsg_(payload);
         break;
       case 'ble':
-        this.treatBleMsg(payload);
+        this.treatBleMsg_(payload);
         break;
     }
     if (type == 'gps') {
@@ -27,16 +28,25 @@ var controller = {
     }
   },
   
-  treatGpsMsg : function(payload) {
-    this.path.push(payload);
+  getLocationAtTime(time_sec) {
+    if (gpsPath.isEmpty()) {
+      return undefined;
+    }
+    return gpsPath.estimateLocation(time_sec);
+  },
+  
+  treatGpsMsg_ : function(payload) {
+    //this.path.push(payload);
+    gpsPath.pushPoint(payload);
     console.log('gps: ' + JSON.stringify(payload));
     mainPage.updateView();
   },
   
-  treatBleMsg : function(payload) {
-    this.path.push(payload);
+  treatBleMsg_ : function(payload) {
     console.log('ble: ' + JSON.stringify(payload));
   },
+  
+  
   
   
   

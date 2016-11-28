@@ -5,11 +5,10 @@ var supermarketTab = {
   },
   
   updateView : function() {
-    console.log('length: ' + controller.path.length);
-    var currentPos = controller.path[controller.path.length - 1];
-    
+    console.log('endTime:  ' + gpsPath.getEndTimeSec());
+    var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
+    utils.assert(currentPos);
     console.log('last: ' + currentPos.lat + ', ' + currentPos.lon);
     mapRenderer.addMarker(currentPos.lat, currentPos.lon);
   },
-
 }
