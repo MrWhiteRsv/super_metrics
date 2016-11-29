@@ -36,7 +36,6 @@ var controller = {
   },
   
   treatGpsMsg_ : function(payload) {
-    //this.path.push(payload);
     gpsPath.pushPoint(payload);
     console.log('gps: ' + JSON.stringify(payload));
     mainPage.updateView();

@@ -1,0 +1,14 @@
+#supermarketTabBackground {
+    position: absolute;
+    left: 300px;
+    top: 0px;
+    z-index: -1;
+}
+
+#supermarketTabCanvas {
+    position: absolute;
+    left: 300px;
+    top: 0px;
+
+    z-index: 0;
+}

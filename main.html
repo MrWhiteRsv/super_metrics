@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Android</title>
+    <title>SuperMetrics</title>
+    <link rel="stylesheet" type="text/css" href="css/superMetrics.css">
     <script src="paho.javascript-1.0.2/mqttws31.js"></script>    
     <script src="js/config.js"></script>
     <script src="js/controller.js"></script>
@@ -34,7 +35,7 @@
       <a href="#supermarket-tab" id="#supermarket-tab" class="mdl-layout__tab is-active">Supermarket</a>
       <a href="#product-tab" class="mdl-layout__tab">Product</a>
       <a href="#analytics-tab" class="mdl-layout__tab">Analytics</a>
-      <a href="#monitor-tab" class="mdl-layout__tab">Monitor</a>
+      <a href="#monitor-tab" id="#monitor-tab" class="mdl-layout__tab">Monitor</a>
     </div>
   </header>
   <div class="mdl-layout__drawer">
@@ -50,7 +51,8 @@
   <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
       <div class="page-content"> 
-        <img src="css/floorPlan.png" style="width:70%;">
+        <img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
+        <canvas id="supermarketTabCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
       </div>
     </section>
     <section class="mdl-layout__tab-panel" id="product-tab">
