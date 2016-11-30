@@ -129,38 +129,18 @@ var graph = {
     this.setEdgeTraficWithNoise('entrance00_registerA0', 200);
     this.setEdgeTraficWithNoise('toilet0_toilet1', 200);
 
-    /*
-    for (var a = 0; a < 7; a++) {
-      this.setEdgeTraficWithNoise('aisleA' + a + '_' + 'aisleA' + (a + 1), 150);
-    }
-    */
     for (var i = 1; i < 8; i++) {
       this.setEdgeTraficWithNoise('aisleB' + i + '_' + 'aisleC' + i, 250);
     }
-    /*
-    for (var i = 0; i < 8; i++) {
-      this.setEdgeTraficWithNoise('aisleA' + i + '_' + 'aisleB' + i, 100);
-      this.setEdgeTraficWithNoise('aisleA' + i + '_' + 'aisleB' + (i + 1), 100);
-      this.setEdgeTraficWithNoise('aisleD' + i + '_' + 'aisleC' + i, 100);
-      this.setEdgeTraficWithNoise('aisleD' + i + '_' + 'aisleC' + (i + 1), 100);
-    }
-    for (var a = 0; a < 7; a++) {
-      this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'aisleD' + (a + 1), 100);
-    }
-    */
    
     for (var a = 0; a < 8; a++) {
       for (var r = 0; r < 5; r++) {
-        this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'registerA' + r, 100);
         this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'registerA' + r, 100);
       }
     }
     
     for (var i = 0; i < 5; i++) {
       this.setEdgeTraficWithNoise('registerA' + i + '_' + 'registerB' + i, 300);
-     /* this.setEdgeTrafic(
-          'registerB' + i + '_' + 'exit0',
-          this.getEdgeTrafic('registerA' + i + '_' + 'registerB' + i));*/
     }
     
     for (var i = 0; i < 4; i++) {
@@ -170,10 +150,7 @@ var graph = {
     this.setEdgeTraficWithNoise('entrance10' + '_' + 'aisleD7', 400);
     this.setEdgeTraficWithNoise('entrance10' + '_' + 'registerA4', 150);
     
-    
-    
     this.setEdgeTrafic('toilet1_aisleA0', this.getEdgeTrafic('toilet0_toilet1'));
-
     for (var a = 0; a < 7; a++) {
       var val = this.getEdgeTrafic('aisleB' + a + '_' + 'aisleC' + a);
       val = val + this.getEdgeTrafic('aisleB' + (a + 1) + '_' + 'aisleC' + (a + 1));
@@ -187,8 +164,6 @@ var graph = {
    
    this.setEdgeTrafic('aisleB8_aisleC8', this.getEdgeTrafic('entrance10_aisleC8'));
    this.setEdgeTrafic('aisleA7_aisleB8', this.getEdgeTrafic('entrance10_aisleC8'));
-   
-    
     for (var i = 1; i < 7; i++) {
       var val = 0.5 * this.getEdgeTrafic('aisleB' + i + '_' + 'aisleC' + i);
       this.setEdgeTrafic('aisleA' + (i - 1) + '_' + 'aisleB' + i, val);
@@ -196,30 +171,25 @@ var graph = {
       this.setEdgeTrafic('aisleD' + (i - 1) + '_' + 'aisleC' + i,  val);
       this.setEdgeTrafic('aisleD' + i + '_' + 'aisleC' + i, val);
     }
-    /*
-    for (var a = 0; a < 7; a++) {
-      this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'aisleD' + (a + 1), 100);
-    }
-    for (var a = 0; a < 8; a++) {
-      for (var r = 0; r < 5; r++) {
-        this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'registerA' + r, 100);
-        this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'registerA' + r, 100);
-      }
-    }
-    */
     for (var i = 0; i < 5; i++) {
-      //this.setEdgeTraficWithNoise('registerA' + i + '_' + 'registerB' + i, 300);
       this.setEdgeTrafic(
           'registerB' + i + '_' + 'exit0',
           this.getEdgeTrafic('registerA' + i + '_' + 'registerB' + i));
     }
-    /*
-    for (var i = 0; i < 4; i++) {
-      this.setEdgeTraficWithNoise('registerA' + i + '_' + 'registerA' + (i + 1), 50);
-    } */
   },
   
   mockEdgeTraficSpeed : function() {
-    
+    var allEdges = this.getEdges();
+    for (var edgeId in allEdges) {
+      this.setEdgeResideTime(edgeId, 6 * Math.random());
+    }
+    for (var a = 0; a < 8; a++) {
+      for (var r = 0; r < 5; r++) {
+        this.setEdgeResideTime('aisleD' + a + '_' + 'registerA' + r, undefined);
+      }
+    }
+    for (var i = 0; i < 5; i++) {
+      this.setEdgeResideTime('registerB' + i + '_' + 'exit0', undefined);
+    }
   },
 }

@@ -10,6 +10,7 @@ var controller = {
     mqtt_listener.init();
     graph.build();
     graph.mockEdgeTraficVolume();
+    graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
   },
   

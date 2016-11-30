@@ -24,6 +24,8 @@
   </head>
 <body>
 
+<!-- https://code.getmdl.io/1.2.1/material.yellow-indigo.min.css -->
+
 <!-- Simple header with scrollable tabs. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <header class="mdl-layout__header">
@@ -52,8 +54,15 @@
   <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
       <div class="page-content"> 
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+          <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
+          <span class="mdl-radio__label">Traffic</span> </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+          <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
+          <span class="mdl-radio__label">Speed</span> </label>
         <img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
         <canvas id="supermarketTabCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
+         
       </div>
     </section>
     <section class="mdl-layout__tab-panel" id="product-tab">

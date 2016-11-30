@@ -26,17 +26,34 @@ var supermarketTab = {
     var allEdges = controller.getGraph().getEdges();
     utils.assert(allEdges);
     for (var edgeId in allEdges) {
-      this.drawEdge(ctx, width, height, allNodes, allEdges[edgeId], controller.getGraph().getEdgeTrafic(edgeId) / 50.);
+      
+      var resideTime = controller.getGraph().getEdgeResideTime(edgeId);
+      //#R D32F2F G #4CAF50 Y #FFEB3B, BL #4051B5  G #DEDEDE
+      if (!resideTime) {
+        strokeStyle = '#DEDEDE';
+      } else if (resideTime < 2) {
+        strokeStyle = '#FFEB3B';
+      } else if (resideTime < 4) {
+        strokeStyle = '#4CAF50';
+      } else {
+        strokeStyle = '#D32F2F';
+      }
+      
+      this.drawEdge(ctx, width, height, allNodes, allEdges[edgeId],
+          3,
+         //controller.getGraph().getEdgeTrafic(edgeId) / 50.,
+         strokeStyle
+        // '#4051B5'
+         );
     }
   },
   
-  drawEdge(ctx, width, height, allNodes, edge, lineWidth) {
+  drawEdge(ctx, width, height, allNodes, edge, lineWidth, strokeStyle) {
     
-    var strokeStyle = edge.strokeStyle;
-    if (lineWidth < 1) {
+    /*if (lineWidth < 1) {
       lineWidth = 1;
       strokeStyle = '#EEEEEE';
-    }
+    }*/
     var node0 = allNodes[edge.node0Id];
     var node1 = allNodes[edge.node1Id]; 
     var p0 = {x : node0.x * width, y : node0.y * height};
