@@ -1,6 +1,5 @@
 var mainPage = {
 
-
   init : function() {
     monitorTab.init();
     supermarketTab.init();
@@ -14,7 +13,7 @@ var mainPage = {
         function() {
           monitorTab.updateView();
         });
-    supermarketTab.updateView();
+    //supermarketTab.updateView();
   },
   
   updateView : function() {

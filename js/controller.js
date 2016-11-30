@@ -1,16 +1,16 @@
 var controller = {
 
-   // path : undefined,
-   
   /**
    * Main Entry Point.
    * Called once map is loaded.
    */
   initController : function() {
-    // this.path = [];
     mainPage.init();
     gpsPath.init();
     mqtt_listener.init();
+    graph.build();
+    graph.mockEdgeTraficVolume();
+    supermarketTab.updateView();
   },
   
   treatMsg : function(type, jsonPayload) {
@@ -24,7 +24,6 @@ var controller = {
         break;
     }
     if (type == 'gps') {
-      
     }
   },
   
@@ -45,18 +44,8 @@ var controller = {
     console.log('ble: ' + JSON.stringify(payload));
   },
   
-  
-  
-  
-  
-  
-  /*testController : function() {
-    this.testMqtt();
+  getGraph : function() {
+    return graph;
   },
-  
-  testMqtt : function() {
-    console.log('testing');
-    //this.initMqtt();
-  },*/
   
 }
