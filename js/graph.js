@@ -132,24 +132,20 @@ var graph = {
     for (var i = 1; i < 8; i++) {
       this.setEdgeTraficWithNoise('aisleB' + i + '_' + 'aisleC' + i, 250);
     }
-   
     for (var a = 0; a < 8; a++) {
       for (var r = 0; r < 5; r++) {
         this.setEdgeTraficWithNoise('aisleD' + a + '_' + 'registerA' + r, 100);
       }
     }
-    
     for (var i = 0; i < 5; i++) {
       this.setEdgeTraficWithNoise('registerA' + i + '_' + 'registerB' + i, 300);
     }
-    
     for (var i = 0; i < 4; i++) {
       this.setEdgeTraficWithNoise('registerA' + i + '_' + 'registerA' + (i + 1), 50);
     }
     this.setEdgeTraficWithNoise('entrance10' + '_' + 'aisleC8', 200);
     this.setEdgeTraficWithNoise('entrance10' + '_' + 'aisleD7', 400);
     this.setEdgeTraficWithNoise('entrance10' + '_' + 'registerA4', 150);
-    
     this.setEdgeTrafic('toilet1_aisleA0', this.getEdgeTrafic('toilet0_toilet1'));
     for (var a = 0; a < 7; a++) {
       var val = this.getEdgeTrafic('aisleB' + a + '_' + 'aisleC' + a);

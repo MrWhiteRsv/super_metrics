@@ -40,10 +40,10 @@ var supermarketTab = {
       }
       
       this.drawEdge(ctx, width, height, allNodes, allEdges[edgeId],
-          3,
-         //controller.getGraph().getEdgeTrafic(edgeId) / 50.,
-         strokeStyle
-        // '#4051B5'
+         // 3,
+         controller.getGraph().getEdgeTrafic(edgeId) / 50.,
+         //strokeStyle
+         '#4051B5'
          );
     }
   },
