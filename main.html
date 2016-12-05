@@ -15,6 +15,7 @@
     <script src="js/monitorTab.js"></script>
     <script src="js/mqttListener.js"></script>
     <script src="js/utils.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script async defer src =
       "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=controller.initController">
     </script>
@@ -54,19 +55,21 @@
   <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
       <div class="page-content"> 
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-          <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
-          <span class="mdl-radio__label">Traffic</span> </label>
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-          <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
+          <input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
+          <span class="mdl-radio__label">Traffic Volume</span> </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button"  id="speed-button-container">
+          <input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
           <span class="mdl-radio__label">Speed</span> </label>
         <img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
-        <canvas id="supermarketTabCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
+        <div id="supermarket-histogram"></div>
+        <div id="supermarket-line-time"></div>
+        <canvas id="supermarketTabCanvas">
       </div>
     </section>
     <section class="mdl-layout__tab-panel" id="aisle-tab">
       <div class="page-content">
-        <img id="supermarketTabBackground" src="css/plangoram_bw.jpg" style="width:70%;">
+        <img src="css/plangoram_bw.jpg" style="width:70%; visibility: hidden" id="pageContentTabBackground">
       </div>
     </section>
     <section class="mdl-layout__tab-panel" id="product-tab">
@@ -76,7 +79,7 @@
 
     <section class="mdl-layout__tab-panel" id="monitor-tab">
       <div class="page-content">
-        <div id="map-div" width="500px" height="500px"></div>
+        <div id="map-div" width="500px" height="500px" style="visibility: hidden"></div>
       </div>
     </section>
   </main>

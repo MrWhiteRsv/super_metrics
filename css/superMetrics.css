@@ -1,14 +1,48 @@
 #supermarketTabBackground {
-    position: absolute;
-    left: 300px;
-    top: 0px;
-    z-index: -1;
+  position: absolute;
+  left: 300px;
+  top: 0px;
+  z-index: -1;
 }
 
 #supermarketTabCanvas {
-    position: absolute;
-    left: 300px;
-    top: 0px;
-
-    z-index: 0;
+  position: absolute;
+  left: 300px;
+  top: 0px;
+  z-index: 0;
 }
+
+#traffic-button-container {
+  float: left;
+  width : 100%;
+  margin: 3% 0 0 5%;  
+}
+
+#speed-button-container {
+  float: left;
+  width : 100%;
+  margin: 3% 0 0 5%; 
+}
+
+#supermarket-histogram {
+  position: absolute;
+  top : 20% ;
+  left : 2%;
+  width : 20%;
+  height : 30%;
+  margin: 3% 0 0 0%; 
+}
+
+#supermarket-line-time {
+  position: absolute;
+  top : 50%;
+  left: 2%;
+  width : 20%;
+  height : 30%;
+  margin: 3% 0 0 0%; 
+}
+  
+
+
+
+

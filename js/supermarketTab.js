@@ -1,9 +1,95 @@
 var supermarketTab = {
   
+  DispalyType :
+    {
+      TRAFFIC : 1,
+      SPEED : 2
+    },
+    
+
+  diplayType : undefined,
+  
   init : function() {
+    this.diplayType = supermarketTab.DispalyType.TRAFFIC;
     this.updateDimensions();
+    var self = this;
+    document.getElementById("traffic-button").addEventListener(
+      "click",
+      function() {
+        self.diplayType = supermarketTab.DispalyType.TRAFFIC;
+        self.updateView();
+      });
+    document.getElementById("speed-button").addEventListener(
+      "click",
+      function() {
+        self.diplayType = supermarketTab.DispalyType.SPEED;
+        self.updateView();
+      });
+      
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(self.drawSupermarketStayHistogram);
+  },
+
+  drawSupermarketStayHistogram : function() {
+    var user_time = [['User', 'Stay']];
+    for (var i = 0; i < 250; i++) {
+      var rand = 0;
+      for (var j = 0; j < 6; j += 1) {
+        rand += Math.random();
+      }
+      user_time.push(['shopper' + i, rand * 35 / 6]);
+    }
+    var data = google.visualization.arrayToDataTable(user_time);
+    var options = {
+      title: 'Overall Shopping time, min.',
+      fontSize: 12,
+      histogram : {
+        maxNumBuckets: 8,
+      },
+      hAxis : {
+        textStyle : {
+          fontSize: 6,
+        } , 
+      },
+      vAxis : {
+        textStyle : {
+          fontSize: 6,
+        } , 
+      },
+
+      legend: { position: 'none' },
+    };
+    var chart = new google.visualization.Histogram(document.getElementById('supermarket-histogram'));
+    chart.draw(data, options);
+    
+          var data = google.visualization.arrayToDataTable([
+        ["Wait Time", "Customers%", { role: "style" } ],
+        ["<2", 10, "#ffeb3b"],
+        ["2-6", 75, "#4caf50"],
+        [">6", 15, "#d32f2f"],
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+      var options = {
+        title: "Register Wait Time, min.",
+        fontSize: 12,
+        legend: { position: "none" },
+      };
+      var chart1 = new google.visualization.ColumnChart(document.getElementById("supermarket-line-time"));
+      chart1.draw(view, options);
+      
   },
   
+
+
+  
+        
   updateDimensions : function() {
     var background = document.getElementById("supermarketTabBackground");
     var canvas = document.getElementById("supermarketTabCanvas");
@@ -26,25 +112,26 @@ var supermarketTab = {
     var allEdges = controller.getGraph().getEdges();
     utils.assert(allEdges);
     for (var edgeId in allEdges) {
-      
       var resideTime = controller.getGraph().getEdgeResideTime(edgeId);
-      //#R D32F2F G #4CAF50 Y #FFEB3B, BL #4051B5  G #DEDEDE
-      if (!resideTime) {
-        strokeStyle = '#DEDEDE';
-      } else if (resideTime < 2) {
-        strokeStyle = '#FFEB3B';
-      } else if (resideTime < 4) {
-        strokeStyle = '#4CAF50';
+      var strokeStyle = undefined;
+      var lineWidth = undefined;
+      if (this.diplayType == supermarketTab.DispalyType.TRAFFIC) {
+        strokeStyle == '#4051B5';
+        lineWidth = controller.getGraph().getEdgeTrafic(edgeId) / 50.;
       } else {
-        strokeStyle = '#D32F2F';
+        //#R D32F2F G #4CAF50 Y #FFEB3B, BL #4051B5  G #DEDEDE
+        if (!resideTime) {
+          strokeStyle = '#DEDEDE';
+        } else if (resideTime < 2) {
+          strokeStyle = '#FFEB3B';
+        } else if (resideTime < 4) {
+          strokeStyle = '#4CAF50';
+        } else {
+          lineWidth = 3;
+          strokeStyle = '#D32F2F';
+        }
       }
-      
-      this.drawEdge(ctx, width, height, allNodes, allEdges[edgeId],
-         // 3,
-         controller.getGraph().getEdgeTrafic(edgeId) / 50.,
-         //strokeStyle
-         '#4051B5'
-         );
+      this.drawEdge(ctx, width, height, allNodes, allEdges[edgeId], lineWidth, strokeStyle);
     }
   },
   
