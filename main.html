@@ -4,6 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>SuperMetrics</title>
     <link rel="stylesheet" type="text/css" href="css/superMetrics.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <script src="paho.javascript-1.0.2/mqttws31.js"></script>    
     <script src="js/config.js"></script>
     <script src="js/controller.js"></script>
@@ -58,13 +60,18 @@
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
           <input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
           <span class="mdl-radio__label">Traffic Volume</span> </label>
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button"  id="speed-button-container">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button" id="speed-button-container">
           <input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
           <span class="mdl-radio__label">Speed</span> </label>
         <img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
         <div id="supermarket-histogram"></div>
         <div id="supermarket-line-time"></div>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" id ='analytics-link'>
+          <i class="material-icons">link</i>
+        </button>
+
         <canvas id="supermarketTabCanvas">
+
       </div>
     </section>
     <section class="mdl-layout__tab-panel" id="aisle-tab">

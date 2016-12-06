@@ -26,6 +26,12 @@ var supermarketTab = {
         self.updateView();
       });
       
+    document.getElementById("analytics-link").addEventListener(
+      "click",
+      function() {
+        window.open("https://analytics.google.com/analytics/web/#report/app-trafficsources-overview/a82136126w130951643p134821943/%3F_u.date00%3D20161205%26_u.date01%3D20161205%26overview-graphOptions.selected%3Danalytics.nthHour/");
+      });
+      
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(self.drawSupermarketStayHistogram);
   },
