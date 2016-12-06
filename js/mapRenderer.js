@@ -41,13 +41,13 @@ var mapRenderer = {
   }, 
 
   setMarkerIcon : function(marker, highlight) {
-    var iconUrl = config.MAP_MARKER_IMAGE;
+    var iconUrl = config.PURPLE_MARKER;
     if (highlight) {
       iconUrl = config.MAP_MARKER_HIGHLIGHT_IMAGE;
     }
     marker.setIcon({
-      scaledSize : new google.maps.Size(20, 32),
-      anchor : new google.maps.Point(10, 32),
+      scaledSize : new google.maps.Size(16, 16),
+      anchor : new google.maps.Point(8, 16),
       url : iconUrl,
     });
   },

@@ -5,7 +5,7 @@ var monitorTab = {
   },
   
   updateView : function() {
-    //console.log('endTime:  ' + gpsPath.getEndTimeSec());
+
     
    document.getElementById('map-div').style.visibility = "visible";
    
