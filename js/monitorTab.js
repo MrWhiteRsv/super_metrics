@@ -12,6 +12,6 @@ var monitorTab = {
     var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
     utils.assert(currentPos);
     console.log('last: ' + currentPos.lat + ', ' + currentPos.lon);
-    mapRenderer.addMarker(currentPos.lat, currentPos.lon);
+    mapRenderer.addMarker(currentPos.lat, currentPos.lon, 'RED_MARKER');
   },
 }

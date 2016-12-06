@@ -22,13 +22,14 @@ var mapRenderer = {
    * Compute a marker for every entry in trip, and set map accordiangly.
    * Returns the computed itemMarkers.
    */
-  addMarker : function(latitude, longitude) {
+  addMarker : function(latitude, longitude, type) {
+    utils.assert(type);
     var latLng = new google.maps.LatLng(latitude, longitude);
     var marker = new google.maps.Marker({
       position : latLng,
       map : this.map,
     });
-    this.setMarkerIcon(marker, false);
+    this.setMarkerIcon(marker, type);
     this.itemMarkers.push(marker);
   },
   
@@ -40,11 +41,8 @@ var mapRenderer = {
     this.itemMarkers.length = 0;
   }, 
 
-  setMarkerIcon : function(marker, highlight) {
-    var iconUrl = config.PURPLE_MARKER;
-    if (highlight) {
-      iconUrl = config.MAP_MARKER_HIGHLIGHT_IMAGE;
-    }
+  setMarkerIcon : function(marker, type) {
+    var iconUrl = config[type];
     marker.setIcon({
       scaledSize : new google.maps.Size(16, 16),
       anchor : new google.maps.Point(8, 16),
@@ -59,12 +57,4 @@ var mapRenderer = {
     this.map.panTo(new google.maps.LatLng(latitude, longitude));
   },
 
- /* clearAllMarkers : function() {
-    var length = this.itemMarkers.length;
-    for (var i = 0; i < length; i++) {
-      this.setMarkerIcon_(this.itemMarkers[i], false);
-      this.itemMarkers[i].setZIndex(0);
-      this.itemMarkers[i].setVisible(true);
-    }
-  },*/
 }
