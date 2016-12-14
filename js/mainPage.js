@@ -16,8 +16,8 @@ var mainPage = {
     //supermarketTab.updateView();
   },
   
-  updateView : function() {
-    monitorTab.updateView();
+  updateView : function(incremental) {
+    monitorTab.updateView(incremental);
     //supermarketTab.updateView();
   },
   

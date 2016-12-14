@@ -6,12 +6,24 @@ var gpsPath = {
      this.path = [];
   },
   
+  compare : function(a, b) {
+    if (a.start_time < b.start_time)
+      return -1;
+    if (a.start_time > b.start_time)
+      return 1;
+    return 0;
+  },
+  
   /**
    * @param {Object} point with lat, lon, and start_time fields.
    */
   pushPoint : function(point) {
     utils.assert(this.path);
+    var old_end_time = this.getEndTimeSec();
     this.path.push(point);
+    if (old_end_time && old_end_time > this.getEndTimeSec()) {
+      this.path.sort(this.compare);
+    }
   },
   
   estimateLocation : function(time_sec) {
@@ -62,8 +74,7 @@ var gpsPath = {
   
   getEndTimeSec : function() {
     utils.assert(this.path);
-    utils.assert(!this.isEmpty());
-    return this.path[this.path.length - 1].start_time;
+    return this.isEmpty() ? undefined : this.path[this.path.length - 1].start_time;
   },
   
   isEmpty : function() {

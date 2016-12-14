@@ -6,6 +6,10 @@ var config = {
   BLUE_MARKER : './css/ic_blue_marker.png',
   YELLOW_MARKER : './css/ic_yellow_marker.png',
   PURPLE_MARKER : './css/ic_purple_marker.png',
-  MAP_MARKER_HIGHLIGHT_IMAGE : './css/markerHighlight.png',
-
+  
+  BLUE_DOT : './css/ic_blue_dot.png',
+  GRAY_DOT : './css/ic_gray_dot.png',
+  GREEN_DOT : './css/ic_green_dot.png',
+  PURPLE_DOT : './css/ic_puple_dot.png',
+        
 };

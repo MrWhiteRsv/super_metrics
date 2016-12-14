@@ -18,10 +18,6 @@ var mapRenderer = {
     this.map = new google.maps.Map(mapCanvas, mapOptions);
   },
   
-  /**
-   * Compute a marker for every entry in trip, and set map accordiangly.
-   * Returns the computed itemMarkers.
-   */
   addMarker : function(latitude, longitude, type) {
     utils.assert(type);
     var latLng = new google.maps.LatLng(latitude, longitude);
@@ -33,7 +29,7 @@ var mapRenderer = {
     this.itemMarkers.push(marker);
   },
   
-  removeAllMarkers_ : function() {
+  removeAllMarkers : function() {
     var length = this.itemMarkers.length;
     for (var i = 0; i < length; i++) {
       this.itemMarkers[i].setMap(null);
@@ -44,12 +40,30 @@ var mapRenderer = {
   setMarkerIcon : function(marker, type) {
     var iconUrl = config[type];
     marker.setIcon({
-      scaledSize : new google.maps.Size(16, 16),
-      anchor : new google.maps.Point(8, 16),
+      scaledSize : new google.maps.Size(24, 24),
+      anchor : new google.maps.Point(12, 24),
       url : iconUrl,
     });
   },
   
+  addDot : function(latitude, longitude, type) {
+    utils.assert(type);
+    var latLng = new google.maps.LatLng(latitude, longitude);
+    var marker = new google.maps.Marker({
+      position : latLng,
+      map : this.map,
+    });
+    this.setDotIcon(marker, type);
+  },
+  
+  setDotIcon : function(dot, type) {
+    var iconUrl = config[type];
+    dot.setIcon({
+      scaledSize : new google.maps.Size(8, 8),
+      anchor : new google.maps.Point(4, 4),
+      url : iconUrl,
+    });
+  },
   /**
    * Pan map to a given latitude,longitude pair.
    */
