@@ -3,6 +3,9 @@ var RevolutionPath = function() {
 }
 
 RevolutionPath.prototype = {
+  
+  segments : undefined, // [(starMac, endMac, startTs, endTs),...]
+  revolutionEvents : undefined, //[[(direction, ts),...], ...]
 
   // Add cart near beacon event.
   addProximityEvent : function(mac, timestamp) {
