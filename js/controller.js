@@ -1,5 +1,7 @@
 var controller = {
 
+  beaconsGraph : undefined,
+  
   beacons : {
     '34:b1:f7:d3:91:c8' : {markerType : 'RED_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:9c:cb' : {markerType : 'GREEN_MARKER', location : undefined, samples : 0},
@@ -20,6 +22,10 @@ var controller = {
     graph.mockEdgeTraficVolume();
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
+    this.beaconsGraph = new BeaconsGraph();
+    
+    this.beaconsGraph.test();
+    //console.log('graph: ' + this.beaconsGraph.toString());
   },
   
   getBeacons : function() {
@@ -65,16 +71,15 @@ var controller = {
     //console.log('ble: ' + JSON.stringify(payload));
     var mac = payload["mac"];
     var nearestTime = payload['nearest_time'];
-    //console.log('ble mac: ' + mac + ', nearest_time: ' + nearestTime);
-    var number_of_samples = this.beacons[mac].samples + 1;
-    this.beacons[mac].samples = number_of_samples;
-    if (number_of_samples == 1) {
+    var numberOfSamples = this.beacons[mac].samples + 1;
+    this.beacons[mac].samples = numberOfSamples;
+    if (numberOfSamples == 1) {
       this.beacons[mac].location = this.getLocationAtTime(nearestTime);
     } else {
-      this.beacons[mac].location.lat = (this.beacons[mac].location.lat * (number_of_samples - 1) +
-       this.getLocationAtTime(nearestTime).lat) * 1.0 / number_of_samples;
-      this.beacons[mac].location.lon = (this.beacons[mac].location.lon * (number_of_samples - 1) +
-       this.getLocationAtTime(nearestTime).lon) * 1.0 / number_of_samples;
+      this.beacons[mac].location.lat = (this.beacons[mac].location.lat * (numberOfSamples - 1) +
+       this.getLocationAtTime(nearestTime).lat) * 1.0 / numberOfSamples;
+      this.beacons[mac].location.lon = (this.beacons[mac].location.lon * (numberOfSamples - 1) +
+       this.getLocationAtTime(nearestTime).lon) * 1.0 / numberOfSamples;
     }
     mainPage.updateView(/*incremental*/ false);
     

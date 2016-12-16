@@ -7,7 +7,6 @@ var mqtt_listener = {
     clientId = "some_string";
     var wsport = 9001 // port for above
     client =  new Paho.MQTT.Client(wsbroker, wsport, clientId);
-    console.log('client: '  + client);
     // set callback handlers.
     client.onConnectionLost = this.onConnectionLost;
     client.onMessageArrived = this.onMessageArrived; 
@@ -32,9 +31,6 @@ var mqtt_listener = {
     var topic = message.destinationName;
     var payload = message.payloadString;
     var type = topic.substring(topic.lastIndexOf('/') + 1);
-    //console.log("topic:" + topic);
-    //console.log("type:" + type);    
-    //console.log("payload:" + payload);
     controller.treatMsg(type, payload);
   },
   
