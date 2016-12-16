@@ -45,10 +45,15 @@ BeaconsGraph.prototype = {
     this.init();
     this.addEdgeLength('b0', 'b1', 2);
     var length = this.getEdgeLength('b0', 'b1');
-    utils.assert(length == 2);
+    if (length != 2) {
+      return false;
+    }
     this.addEdgeLength('b0', 'b1', 4);
     length = this.getEdgeLength('b0', 'b1');
-    utils.assert(length == 3);
+    if (length != 3) {
+      return false;
+    }
+    return true;
   },
   
   // Implimantation functions.

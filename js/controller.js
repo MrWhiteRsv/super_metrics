@@ -23,9 +23,11 @@ var controller = {
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
     this.beaconsGraph = new BeaconsGraph();
-    
-    this.beaconsGraph.test();
-    //console.log('graph: ' + this.beaconsGraph.toString());
+    this.test();
+  },
+  
+  test : function() {
+    utils.assert(this.beaconsGraph.test());    
   },
   
   getBeacons : function() {
