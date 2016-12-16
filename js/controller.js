@@ -8,7 +8,9 @@ var controller = {
     '34:b1:f7:d3:91:e4' : {markerType : 'BLUE_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:9d:eb' : {markerType : 'YELLOW_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:90:8e' : {markerType : 'PURPLE_MARKER', location : undefined, samples : 0},
-  }, 
+  },
+  
+  revolutionPath : undefined,
   
   /**
    * Main Entry Point.
@@ -23,11 +25,13 @@ var controller = {
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
     this.beaconsGraph = new BeaconsGraph();
+    this.revolutionPath = new RevolutionPath();
     this.test();
   },
   
   test : function() {
-    utils.assert(this.beaconsGraph.test());    
+    // utils.assert(this.beaconsGraph.test()); 
+    utils.assert(this.revolutionPath.test());  
   },
   
   getBeacons : function() {
