@@ -25,13 +25,14 @@ var controller = {
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
     this.beaconsGraph = new BeaconsGraph();
-    this.revolutionPath = new RevolutionPath();
+    this.revolutionPath = new RevolutionPath(this.beacons);
     this.test();
   },
   
   test : function() {
     // utils.assert(this.beaconsGraph.test()); 
-    utils.assert(this.revolutionPath.test());  
+    //utils.assert(this.revolutionPath.test()); 
+    utils.assert(testRevolutionPath()); 
   },
   
   getBeacons : function() {
