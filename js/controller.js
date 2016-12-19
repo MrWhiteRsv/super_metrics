@@ -31,11 +31,11 @@ var controller = {
   
   test : function() {
     // utils.assert(this.beaconsGraph.test()); 
-    //utils.assert(this.revolutionPath.test()); 
-    utils.assert(testRevolutionPath()); 
+    utils.assert(testBeacons()); 
+    //utils.assert(testRevolutionPath()); 
   },
   
-  getBeacons : function() {
+  getAllBeaconsMac : function() {
     return Object.keys(this.beacons);
   },
   

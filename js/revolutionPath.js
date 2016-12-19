@@ -14,7 +14,6 @@ RevolutionPath.prototype = {
     utils.assert(mac);
     utils.assert(ts >= 0);
     utils.assert(mac in this.beacons);
-    console.log('addProximityEvent mac: ' + mac + ', ts: ' + ts);
     var numberOfExistingSegments = this.segments.length;
     if (numberOfExistingSegments > 0) {
       var lastSegment = this.segments[numberOfExistingSegments - 1];
@@ -36,7 +35,6 @@ RevolutionPath.prototype = {
     utils.assert(this.segments);
     utils.assert(this.revolutionEvents);
     utils.assert(this.revolutionEvents.length == this.revolutionEvents.length);
-    console.log('addRevolutionEvent forward: ' + forward + ', ts: ' + ts);
     var segmentIndex = this.getContainingSegmentIndex(ts);
     var maxTsInSegment = undefined;
     var revolutionsInSegment = this.revolutionEvents[segmentIndex].length;

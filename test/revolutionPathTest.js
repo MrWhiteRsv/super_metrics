@@ -22,8 +22,8 @@ function testRevolutionPath0() {
   if (revolutionPath.getCartLatLng(0.5).lon != 0.0) {
     return false;
   }
-  if (revolutionPath.getCartLatLng(2).lon != 10.0) {
-    return undefined;
+  if (revolutionPath.getCartLatLng(2) != undefined) {
+    return false;
   }
   return true;
 }
