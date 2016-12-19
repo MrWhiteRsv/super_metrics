@@ -54,14 +54,16 @@ RevolutionPath.prototype = {
     utils.assert(this.segments);
   },
 
-  // Return the cart's estimated location {lat:..., lng:...} in a given timesrtamp.
+  /**
+   * Compute cart's estimated location {lat:..., lng:...} at a given timesrtamp.
+   */
   getCartLatLng : function(ts) {
-    // if in last segment do not do anything (return undefined)
-    // find segment length
-    // find alpha
-    // compute latlong
     utils.assert(this.segments);
     var segmentIndex = this.getContainingSegmentIndex(ts);
+    if (segmentIndex == undefined) {
+      return undefined;
+    }
+    var startBeacon = this.beacons[this.segments[segmentIndex].startMac];
     var segmentLength = this.getSegmentLength(segmentIndex);
     var startBeacon = this.beacons[this.segments[segmentIndex].startMac];
     if (segmentLength == 0) {
@@ -79,9 +81,6 @@ RevolutionPath.prototype = {
         lon : (1 - alpha) * startBeacon.location.lon + alpha * endBeacon.location.lon,
       };
     }
-
-
-    // console.log('segmentIndex: ' + segmentIndex + ' ,revolutionsUpToTs: ' + revolutionsUpToTs + ' ,segmentLength: ' +  segmentLength);
   },
 
   toString : function() {
@@ -111,21 +110,21 @@ RevolutionPath.prototype = {
     this.segments.length - 1;
   },
 
+  countRevolutions : function(segmentIndex, maxTs) {
+    var result = 0;
+    var segmentRevolutions = this.revolutionEvents[segmentIndex];
+    for (var i = 0; i < segmentRevolutions.length && segmentRevolutions[i].ts <= maxTs; i++) {
+      result = result + (segmentRevolutions[i].forward ? 1 : -1);
+    }
+    return result;
+  }, 
   
- countRevolutions : function(segmentIndex, maxTs) {
-   var result = 0;
-   var segmentRevolutions = this.revolutionEvents[segmentIndex];
-   for (var i = 0; i < segmentRevolutions.length && segmentRevolutions[i].ts <= maxTs; i++) {
-     result = result + segmentRevolutions[i].forward ? 1 : -1;
-   }
-   return result;
- }, 
-  
- getSegmentLength : function(segmentIndex) {
+  getSegmentLength : function(segmentIndex) {
+    utils.assert(segmentIndex != undefined);
     var result = 0;
     var segmentRevolutions = this.revolutionEvents[segmentIndex];
     for (var i = 0; i < segmentRevolutions.length; i++) {
-      result = result + segmentRevolutions[i].forward ? 1 : -1;
+      result = result + (segmentRevolutions[i].forward ? 1 : -1);
     }
     return result;
   },
