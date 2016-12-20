@@ -13,7 +13,7 @@ RevolutionPath.prototype = {
     utils.assert(this.segments);
     utils.assert(mac);
     utils.assert(ts >= 0);
-    utils.assert(mac in this.beacons);
+    utils.assert(this.beacons.getAllBeaconsMac().indexOf(mac) >= 0);
     var numberOfExistingSegments = this.segments.length;
     if (numberOfExistingSegments > 0) {
       var lastSegment = this.segments[numberOfExistingSegments - 1];
@@ -63,20 +63,20 @@ RevolutionPath.prototype = {
     }
     var startBeacon = this.beacons[this.segments[segmentIndex].startMac];
     var segmentLength = this.getSegmentLength(segmentIndex);
-    var startBeacon = this.beacons[this.segments[segmentIndex].startMac];
+    var startBeaconLocation = this.beacons.getBeaconLocation(this.segments[segmentIndex].startMac);
     if (segmentLength == 0) {
       return {
-        lat : startBeacon.location.lat,
-        lon : startBeacon.location.lon,
+        lat : startBeaconLocation.lat,
+        lon : startBeaconLocation.lon,
       };
     } else {
       var revolutionsUpToTs = this.countRevolutions(segmentIndex, ts);
       var alpah = undefined;
-      var endBeacon = this.beacons[this.segments[segmentIndex].endMac];
+      var endBeaconLocation = this.beacons.getBeaconLocation(this.segments[segmentIndex].endMac);
       var alpha = revolutionsUpToTs * 1.0 / segmentLength;
       return {
-        lat : (1 - alpha) * startBeacon.location.lat + alpha * endBeacon.location.lat,
-        lon : (1 - alpha) * startBeacon.location.lon + alpha * endBeacon.location.lon,
+        lat : (1 - alpha) * startBeaconLocation.lat + alpha * endBeaconLocation.lat,
+        lon : (1 - alpha) * startBeaconLocation.lon + alpha * endBeaconLocation.lon,
       };
     }
   },

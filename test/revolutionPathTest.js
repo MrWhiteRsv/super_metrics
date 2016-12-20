@@ -8,11 +8,12 @@ function testRevolutionPath() {
  * Test getCartLatLng without any revolution events, and acceding temporal bounds.
  */
 function testRevolutionPath0() {
-  var beacons = {
+  var rawBeacons = {
     'a' : {location : {lat : 10, lon : 0}},
     'b' : {location : {lat : 10, lon : 10}},
   };
-  var revolutionPath = new RevolutionPath(beacons);
+  var beacons = new Beacons(rawBeacons);
+  var revolutionPath = new RevolutionPath(rawBeacons);
   revolutionPath.init(beacons);
   revolutionPath.addProximityEvent('a', 0);
   revolutionPath.addProximityEvent('b', 1);
@@ -32,10 +33,11 @@ function testRevolutionPath0() {
  * Tests getCartLatLng basic functionality.
  */
 function testRevolutionPath1() {
-  var beacons = {
+  var rawBeacons = {
     'a' : {location : {lat : 10, lon : 0}},
     'b' : {location : {lat : 10, lon : 10}},
   };
+  var beacons = new Beacons(rawBeacons);
   var revolutionPath = new RevolutionPath(beacons);
   revolutionPath.init(beacons);
   revolutionPath.addProximityEvent('a', 0);
@@ -54,11 +56,12 @@ function testRevolutionPath1() {
  * Tests getCartLatLng with 2 segments, multiple beacons and out of order revolution events.
  */
 function testRevolutionPath2() {
-  var beacons = {
+  var rawBeacons = {
     'a' : {location : {lat : 0, lon : 0}},
     'b' : {location : {lat : 10, lon : 0}},
     'c' : {location : {lat : 20, lon : 0}},
   };
+  var beacons = new Beacons(rawBeacons);
   var revolutionPath = new RevolutionPath(beacons);
   revolutionPath.init(beacons);
   revolutionPath.addProximityEvent('a', 0);

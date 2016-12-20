@@ -1,14 +1,16 @@
 var controller = {
 
-  beaconsGraph : undefined,
+  // beaconsGraph : undefined,
   
-  beacons : {
+  /*beacons : {
     '34:b1:f7:d3:91:c8' : {markerType : 'RED_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:9c:cb' : {markerType : 'GREEN_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:91:e4' : {markerType : 'BLUE_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:9d:eb' : {markerType : 'YELLOW_MARKER', location : undefined, samples : 0},
     '34:b1:f7:d3:90:8e' : {markerType : 'PURPLE_MARKER', location : undefined, samples : 0},
-  },
+  },*/
+  
+  newBeacons : undefined,
   
   revolutionPath : undefined,
   
@@ -24,27 +26,46 @@ var controller = {
     graph.mockEdgeTraficVolume();
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
-    this.beaconsGraph = new BeaconsGraph();
-    this.revolutionPath = new RevolutionPath(this.beacons);
+    //this.beaconsGraph = new BeaconsGraph();
+    this.newBeacons = new Beacons();
+    this.initBeacons();
+    this.revolutionPath = new RevolutionPath(this.newBeacons);
     this.test();
+  },
+  
+  initBeacons : function() {
+    this.newBeacons.addBeacon('34:b1:f7:d3:91:c8',
+      {markerType : 'RED_MARKER', location : undefined, samples : 0});
+    this.newBeacons.addBeacon('34:b1:f7:d3:9c:cb',
+      {markerType : 'GREEN_MARKER', location : undefined, samples : 0});
+    this.newBeacons.addBeacon('34:b1:f7:d3:91:e4',
+      {markerType : 'BLUE_MARKER', location : undefined, samples : 0});
+    this.newBeacons.addBeacon('34:b1:f7:d3:9d:eb',
+      {markerType : 'YELLOW_MARKER', location : undefined, samples : 0});
+    this.newBeacons.addBeacon('34:b1:f7:d3:90:8e',
+      {markerType : 'PURPLE_MARKER', location : undefined, samples : 0});
   },
   
   test : function() {
     // utils.assert(this.beaconsGraph.test()); 
     utils.assert(testBeacons()); 
-    //utils.assert(testRevolutionPath()); 
+    utils.assert(testRevolutionPath()); 
   },
   
+  /*getBeacons : function() {
+    return this.newBeacons;    
+  },*/
+
   getAllBeaconsMac : function() {
-    return Object.keys(this.beacons);
+    return this.newBeacons.getAllBeaconsMac();
   },
   
   getBeaconMarkerType : function(mac) {
-    return this.beacons[mac].markerType;
+    return this.newBeacons.getBeaconMarkerType(mac);
   },
   
   getBeaconLocation : function(mac) {
-    return this.beacons[mac].location;
+    return this.newBeacons.getBeaconLocation(mac);
   },
   
   treatMsg : function(type, jsonPayload) {
@@ -75,21 +96,11 @@ var controller = {
   },
   
   treatBleMsg_ : function(payload) {
-    //console.log('ble: ' + JSON.stringify(payload));
     var mac = payload["mac"];
     var nearestTime = payload['nearest_time'];
-    var numberOfSamples = this.beacons[mac].samples + 1;
-    this.beacons[mac].samples = numberOfSamples;
-    if (numberOfSamples == 1) {
-      this.beacons[mac].location = this.getLocationAtTime(nearestTime);
-    } else {
-      this.beacons[mac].location.lat = (this.beacons[mac].location.lat * (numberOfSamples - 1) +
-       this.getLocationAtTime(nearestTime).lat) * 1.0 / numberOfSamples;
-      this.beacons[mac].location.lon = (this.beacons[mac].location.lon * (numberOfSamples - 1) +
-       this.getLocationAtTime(nearestTime).lon) * 1.0 / numberOfSamples;
-    }
-    mainPage.updateView(/*incremental*/ false);
-    
+    var nearestLocation = this.getLocationAtTime(nearestTime);
+    this.newBeacons.addBeaconSample(mac, nearestTime, nearestLocation);   
+    mainPage.updateView(/*incremental*/ false); 
     //mapRenderer.addMarker(this.beacons[mac].location.lat, this.beacons[mac].location.lon, this.beacons[mac].markerType);
   },
   
