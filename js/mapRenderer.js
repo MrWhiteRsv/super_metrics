@@ -1,10 +1,12 @@
 var mapRenderer = {
 
-  itemMarkers : undefined,
+  dots : undefined,
+  markers : undefined,
   map : undefined,
   
   init : function() {
-    this.itemMarkers = [];
+    this.markers = [];
+    this.dots = [];
     var mapDiv = document.getElementById('map-div');
     mapDiv.style.height = '500px';
     mapDiv.style.width = '500px';
@@ -26,17 +28,17 @@ var mapRenderer = {
       map : this.map,
     });
     this.setMarkerIcon(marker, type);
-    this.itemMarkers.push(marker);
+    this.markers.push(marker);
   },
   
   removeAllMarkers : function() {
-    var length = this.itemMarkers.length;
+    var length = this.markers.length;
     for (var i = 0; i < length; i++) {
-      this.itemMarkers[i].setMap(null);
+      this.markers[i].setMap(null);
     }
-    this.itemMarkers.length = 0;
-  }, 
-
+    this.markers.length = 0;
+  },
+  
   setMarkerIcon : function(marker, type) {
     var iconUrl = config[type];
     marker.setIcon({
@@ -54,6 +56,7 @@ var mapRenderer = {
       map : this.map,
     });
     this.setDotIcon(marker, type);
+    this.dots.push(marker);
   },
   
   setDotIcon : function(dot, type) {
@@ -64,6 +67,15 @@ var mapRenderer = {
       url : iconUrl,
     });
   },
+  
+  removeAllDots : function() {
+    var length = this.dots.length;
+    for (var i = 0; i < length; i++) {
+      this.dots[i].setMap(null);
+    }
+    this.dots.length = 0;
+  }, 
+  
   /**
    * Pan map to a given latitude,longitude pair.
    */

@@ -1,17 +1,6 @@
 var controller = {
-
-  // beaconsGraph : undefined,
-  
-  /*beacons : {
-    '34:b1:f7:d3:91:c8' : {markerType : 'RED_MARKER', location : undefined, samples : 0},
-    '34:b1:f7:d3:9c:cb' : {markerType : 'GREEN_MARKER', location : undefined, samples : 0},
-    '34:b1:f7:d3:91:e4' : {markerType : 'BLUE_MARKER', location : undefined, samples : 0},
-    '34:b1:f7:d3:9d:eb' : {markerType : 'YELLOW_MARKER', location : undefined, samples : 0},
-    '34:b1:f7:d3:90:8e' : {markerType : 'PURPLE_MARKER', location : undefined, samples : 0},
-  },*/
   
   newBeacons : undefined,
-  
   revolutionPath : undefined,
   
   /**
@@ -51,10 +40,6 @@ var controller = {
     utils.assert(testBeacons()); 
     utils.assert(testRevolutionPath()); 
   },
-  
-  /*getBeacons : function() {
-    return this.newBeacons;    
-  },*/
 
   getAllBeaconsMac : function() {
     return this.newBeacons.getAllBeaconsMac();
@@ -69,43 +54,60 @@ var controller = {
   },
   
   treatMsg : function(type, jsonPayload) {
+    //console.log('type :' + type + ' ,jsonPayload: ' + jsonPayload);
     var payload = JSON.parse(jsonPayload);
     switch (type) {
+      case 'revolution':
+        this.treatRevolutionMsg(payload);
+        break;
       case 'gps':
-        this.treatGpsMsg_(payload);
+        this.treatGpsMsg(payload);
         break;
       case 'ble':
-        this.treatBleMsg_(payload);
+        this.treatBleMsg(payload);
         break;
     }
     if (type == 'gps') {
     }
   },
   
-  getLocationAtTime(time_sec) {
+  getLocationAtTime : function(time_sec) {
     if (gpsPath.isEmpty() || time_sec == undefined) {
       return undefined;
     }
     return gpsPath.estimateLocation(time_sec);
   },
   
-  treatGpsMsg_ : function(payload) {
-    gpsPath.pushPoint(payload);
-    //console.log('gps: ' + JSON.stringify(payload));
-    mainPage.updateView(/*incremental*/ true);
+  getRevolutionBasedLocationAtTime : function(ts) {
+    return (this.revolutionPath.getCartLatLng(ts));
   },
   
-  treatBleMsg_ : function(payload) {
+  treatGpsMsg : function(payload) {
+    gpsPath.pushPoint(payload);
+    mainPage.updateView(/*clearMonitorTab*/ false);
+  },
+  
+  treatRevolutionMsg : function(payload) {
+    this.revolutionPath.addRevolutionEvent(true, payload.start_time);
+    //mainPage.updateView(/*clearMonitorTab*/ false);
+  },
+  
+  treatBleMsg : function(payload) {
     var mac = payload["mac"];
     var nearestTime = payload['nearest_time'];
     var nearestLocation = this.getLocationAtTime(nearestTime);
     this.newBeacons.addBeaconSample(mac, nearestTime, nearestLocation);   
-    mainPage.updateView(/*incremental*/ false); 
+    mainPage.updateView(/*clearMonitorTab*/ true);
+    this.revolutionPath.addProximityEvent(mac, nearestTime);
     //mapRenderer.addMarker(this.beacons[mac].location.lat, this.beacons[mac].location.lon, this.beacons[mac].markerType);
   },
   
   getGraph : function() {
     return graph;
+  },
+  
+  dev : function() {
+    console.log('revolutionPath: ' + this.revolutionPath.toString());
   },
   
 }

@@ -13,12 +13,14 @@ var mainPage = {
         function() {
           monitorTab.updateView();
         });
-    //supermarketTab.updateView();
   },
   
-  updateView : function(incremental) {
-    monitorTab.updateView(incremental);
-    //supermarketTab.updateView();
+  updateView : function(clearMonitorTab) {
+    if (clearMonitorTab) {
+      monitorTab.clearAndUpdateView();
+    } else {
+      monitorTab.updateView();
+    }
   },
   
 }

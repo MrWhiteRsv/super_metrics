@@ -10,4 +10,8 @@ var utils = {
     }
   },
   
+  isNumeric : function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  },
+  
 }

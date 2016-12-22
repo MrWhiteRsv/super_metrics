@@ -1,6 +1,6 @@
 var gpsPath = {
   
-  path : undefined,
+  path : undefined,  // [{lat: 37.318, start_time: 1480993696.3, lon: -122.011},...]
   
   init : function() {
      this.path = [];

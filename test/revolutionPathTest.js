@@ -1,7 +1,9 @@
 function testRevolutionPath() {
-  return testRevolutionPath0() &&
+  utils.assert(testRevolutionPath5());
+  /*return testRevolutionPath0() &&
       testRevolutionPath1() &&
-      testRevolutionPath2();
+      testRevolutionPath2() &&*/
+   return testRevolutionPath5();
 }
 
 /**
@@ -17,13 +19,13 @@ function testRevolutionPath0() {
   revolutionPath.init(beacons);
   revolutionPath.addProximityEvent('a', 0);
   revolutionPath.addProximityEvent('b', 1);
-  if (revolutionPath.getCartLatLng(- 1) != undefined) {
+  if (revolutionPath.getCartLatLng(- 1).lon != 0) {
     return false;
   }
   if (revolutionPath.getCartLatLng(0.5).lon != 0.0) {
     return false;
   }
-  if (revolutionPath.getCartLatLng(2) != undefined) {
+  if (revolutionPath.getCartLatLng(2).lon != 10) {
     return false;
   }
   return true;
@@ -43,9 +45,10 @@ function testRevolutionPath1() {
   revolutionPath.addProximityEvent('a', 0);
   revolutionPath.addProximityEvent('b', 1);
   revolutionPath.addRevolutionEvent(true, 0.5);
-  if (revolutionPath.getCartLatLng(0.25).lon != 0.0) {
+  console.log(revolutionPath.toString());
+  /*if (revolutionPath.getCartLatLng(0.25).lon != 0.0) {
     return false;
-  }
+  }*/
   if (revolutionPath.getCartLatLng(0.75).lon != 10.0) {
     return false;
   }
@@ -86,5 +89,66 @@ function testRevolutionPath2() {
   if (revolutionPath.getCartLatLng(1.9).lat != 20.0) {
     return false;
   }
+  return true;
+}
+
+/**
+ * Add revolutions without proximitity events.
+ */
+function testRevolutionPath3() {
+  var rawBeacons = {};
+  var beacons = new Beacons();
+  var revolutionPath = new RevolutionPath(rawBeacons);
+  revolutionPath.init(beacons);
+  revolutionPath.addRevolutionEvent(true, 1);
+  if (revolutionPath.getCartLatLng(2) != undefined) {
+    return false;
+  }
+  return true;
+}
+
+function testRevolutionPath4() {
+  var rawBeacons = {};
+  var beacons = new Beacons(rawBeacons);
+  var revolutionPath = new RevolutionPath(beacons);
+  revolutionPath.init(beacons);
+  rawBeacons['a'] = {location : {lat : 10, lon : 0}};
+  rawBeacons['b'] = {location : {lat : 10, lon : 10}};
+  revolutionPath.addProximityEvent('a', 0);
+  revolutionPath.addProximityEvent('b', 1);
+  revolutionPath.addRevolutionEvent(true, 0.5);
+  revolutionPath.addProximityEvent('a', 0);
+  revolutionPath.addProximityEvent('b', 1);
+  if (revolutionPath.getCartLatLng(0.25).lon != 0.0) {
+    utils.assert(false);
+    return false;
+  }
+  if (revolutionPath.getCartLatLng(0.75).lon != 10.0) {
+    utils.assert(false);
+    return false;
+  }
+  return true;
+}
+
+function testRevolutionPath5() {
+  var rawBeacons = {
+    'a' : {location : {lat : 10, lon : 0}},
+    'b' : {location : {lat : 10, lon : 10}},
+  };
+  var beacons = new Beacons(rawBeacons);
+  var revolutionPath = new RevolutionPath(beacons);
+  revolutionPath.init(beacons);
+  revolutionPath.addRevolutionEvent(true, 0.5);
+  revolutionPath.addProximityEvent('a', 0);
+  revolutionPath.addProximityEvent('b', 1);
+  if (revolutionPath.getCartLatLng(0.25).lon != 0.0) {
+    utils.assert(false);
+    return false;
+  }
+  if (revolutionPath.getCartLatLng(0.75).lon != 10.0) {
+    utils.assert(false);
+    return false;
+  }
+ 
   return true;
 }
