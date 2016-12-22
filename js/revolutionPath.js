@@ -41,7 +41,7 @@ RevolutionPath.prototype = {
     
     var endBeaconIndex = this.findFirstProximityEventIndexAfterTs(ts);
     var startBeaconIndex = this.findLastProximityEventIndexBeforeTs(ts);
-    if (startBeaconIndex == undefined && endBeaconIndex == undefined) {
+    if (startBeaconIndex == undefined || endBeaconIndex == undefined) {
       return undefined;
     }
     var startBeaconMac = (startBeaconIndex == undefined) ? undefined :
@@ -52,18 +52,6 @@ RevolutionPath.prototype = {
           this.beacons.getBeaconLocation(startBeaconMac);
     var endBeaconLocation = (endBeaconIndex == undefined) ? undefined : 
         this.beacons.getBeaconLocation(endBeaconMac);      
-    if (startBeaconIndex == undefined) {
-      return {
-        lat : endBeaconLocation.lat,
-        lon : endBeaconLocation.lon,
-      };
-    }
-    if (endBeaconIndex == undefined) {
-      return {
-        lat : startBeaconLocation.lat,
-        lon : startBeaconLocation.lon,
-      };
-    }
     var segmentRevolutions = this.countRevolutionsBetweenIndices(startBeaconIndex,
         endBeaconIndex);
     if (segmentRevolutions == 0) {

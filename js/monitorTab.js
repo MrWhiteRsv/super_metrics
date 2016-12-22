@@ -28,19 +28,23 @@ var monitorTab = {
       } 
     }
     // Redraw GPS path
-    var startTime = gpsPath.getStartTimeSec();
-    var stopTime = gpsPath.getEndTimeSec();
-    for (var ts = startTime; ts < stopTime; ts = ts + 1) {
-      var location = gpsPath.estimateLocation(ts);
-      mapRenderer.addDot(location.lat, location.lon, 'PURPLE_DOT');
-      var revLocation = controller.getRevolutionBasedLocationAtTime(ts);
-      if (revLocation) {
-        //console.log('JJJ ts:' + ts + ', lat:' + revLocation.lat +', lon:' + revLocation.lon);
-        //controller.getRevolutionBasedLocationAtTime(ts);
-        mapRenderer.addDot(revLocation.lat, revLocation.lon, 'BLUE_DOT');
-        mapRenderer.drawSegment(location, revLocation);
+    var distSum = 0; 
+    var n = 0;
+    if (!gpsPath.isEmpty()) {
+      var startTime = gpsPath.getStartTimeSec();
+      var stopTime = gpsPath.getEndTimeSec();
+      for (var ts = startTime; ts < stopTime; ts = ts + 1) {
+        var location = gpsPath.estimateLocation(ts);
+        mapRenderer.addDot(location.lat, location.lon, 'PURPLE_DOT');
+        var revLocation = controller.getRevolutionBasedLocationAtTime(ts);
+        if (revLocation) {
+          n = n + 1;
+          distSum = distSum + utils.getDistanceFromLatLonInMeter(revLocation.lat, revLocation.lon, location.lat, location.lon);
+          mapRenderer.addDot(revLocation.lat, revLocation.lon, 'BLUE_DOT');
+          mapRenderer.drawSegment(location, revLocation);
+        }
       }
     }
-    // Redraw BLE path  
+    console.log('distSum: ' + distSum + ', n:' + n);
   },
 }
