@@ -3,10 +3,12 @@ var mapRenderer = {
   dots : undefined,
   markers : undefined,
   map : undefined,
+  segments : undefined,
   
   init : function() {
-    this.markers = [];
     this.dots = [];
+    this.markers = [];
+    this.segments = [];
     var mapDiv = document.getElementById('map-div');
     mapDiv.style.height = '500px';
     mapDiv.style.width = '500px';
@@ -76,6 +78,14 @@ var mapRenderer = {
     this.dots.length = 0;
   }, 
   
+  removeAllSegments : function() {
+    var length = this.segments.length;
+    for (var i = 0; i < length; i++) {
+      this.segments[i].setMap(null);
+    }
+    this.segments.length = 0;
+  }, 
+  
   /**
    * Pan map to a given latitude,longitude pair.
    */
@@ -83,4 +93,20 @@ var mapRenderer = {
     this.map.panTo(new google.maps.LatLng(latitude, longitude));
   },
 
+  drawSegment : function(p0, p1) {
+    var coordinates = [
+      {lat: p0.lat, lng: p0.lon},
+      {lat: p1.lat, lng: p1.lon}
+    ];
+    var singleSegment = new google.maps.Polyline(
+        {
+          path: coordinates,
+          geodesic: true,
+          strokeColor: '#3030303',
+          strokeOpacity: 1.0,
+          strokeWeight: 1
+        });
+   singleSegment.setMap(this.map);
+   this.segments.push(singleSegment);
+  },
 }

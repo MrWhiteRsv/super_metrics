@@ -16,6 +16,7 @@ var monitorTab = {
     document.getElementById('map-div').style.visibility = "visible";
     mapRenderer.removeAllMarkers();
     mapRenderer.removeAllDots();
+    mapRenderer.removeAllSegments();
     // Redraw all ble markers.
     var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {
@@ -37,6 +38,7 @@ var monitorTab = {
         //console.log('JJJ ts:' + ts + ', lat:' + revLocation.lat +', lon:' + revLocation.lon);
         //controller.getRevolutionBasedLocationAtTime(ts);
         mapRenderer.addDot(revLocation.lat, revLocation.lon, 'BLUE_DOT');
+        mapRenderer.drawSegment(location, revLocation);
       }
     }
     // Redraw BLE path  

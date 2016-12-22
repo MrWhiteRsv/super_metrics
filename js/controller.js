@@ -96,9 +96,9 @@ var controller = {
     var mac = payload["mac"];
     var nearestTime = payload['nearest_time'];
     var nearestLocation = this.getLocationAtTime(nearestTime);
-    this.newBeacons.addBeaconSample(mac, nearestTime, nearestLocation);   
-    mainPage.updateView(/*clearMonitorTab*/ true);
+    this.newBeacons.addBeaconSample(mac, nearestTime, nearestLocation); 
     this.revolutionPath.addProximityEvent(mac, nearestTime);
+    mainPage.updateView(/*clearMonitorTab*/ true);
     //mapRenderer.addMarker(this.beacons[mac].location.lat, this.beacons[mac].location.lon, this.beacons[mac].markerType);
   },
   
