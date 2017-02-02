@@ -3,15 +3,30 @@ var mqtt_listener = {
   client : undefined,
 
   init() {
-    var wsbroker = "li1109-31.members.linode.com"; 
+    //var wsbroker = "li1109-31.members.linode.com"; 
+    //clientId = "some_string";
+    //var wsport = 9001;
+    
+    var wsbroker = "m13.cloudmqtt.com"; 
     clientId = "some_string";
-    var wsport = 9001 // port for above
+    var wsport = 31714;
+    
     client =  new Paho.MQTT.Client(wsbroker, wsport, clientId);
     // set callback handlers.
     client.onConnectionLost = this.onConnectionLost;
     client.onMessageArrived = this.onMessageArrived; 
     // connect the client.
-    client.connect({onSuccess:this.onConnect});
+    client.connect({
+        onSuccess : this.onConnect,
+        onFailure: this.onFailureCallback,
+        useSSL: true,
+        userName: 'oujibpyy',
+        password: '-mKBDKwYQ1CC'});
+  },
+  
+  // called when the client connects.
+  onFailureCallback : function(response) {
+    console.log("onFailureCallback: " + JSON.stringify(response));
   },
   
   // called when the client connects.

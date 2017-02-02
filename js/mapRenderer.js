@@ -10,8 +10,8 @@ var mapRenderer = {
     this.markers = [];
     this.segments = [];
     var mapDiv = document.getElementById('map-div');
-    mapDiv.style.height = '500px';
-    mapDiv.style.width = '500px';
+    mapDiv.style.height = '700px';
+    mapDiv.style.width = '1000px';
     var mapCanvas = document.getElementById('map-div');
     var mapOptions = {
         center: new google.maps.LatLng(37.318215925, -122.011804918),
