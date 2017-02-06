@@ -5,7 +5,6 @@ var supermarketTab = {
       TRAFFIC : 1,
       SPEED : 2
     },
-    
 
   diplayType : undefined,
   
@@ -90,13 +89,9 @@ var supermarketTab = {
       };
       var chart1 = new google.visualization.ColumnChart(document.getElementById("supermarket-line-time"));
       chart1.draw(view, options);
-      
+
   },
   
-
-
-  
-        
   updateDimensions : function() {
     var background = document.getElementById("supermarketTabBackground");
     var canvas = document.getElementById("supermarketTabCanvas");
@@ -143,11 +138,6 @@ var supermarketTab = {
   },
   
   drawEdge(ctx, width, height, allNodes, edge, lineWidth, strokeStyle) {
-    
-    /*if (lineWidth < 1) {
-      lineWidth = 1;
-      strokeStyle = '#EEEEEE';
-    }*/
     var node0 = allNodes[edge.node0Id];
     var node1 = allNodes[edge.node1Id]; 
     var p0 = {x : node0.x * width, y : node0.y * height};

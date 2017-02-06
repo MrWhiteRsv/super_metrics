@@ -2,6 +2,7 @@ var controller = {
   
   newBeacons : undefined,
   revolutionPath : undefined,
+  outdoor : false,
   
   /**
    * Main Entry Point.
@@ -35,10 +36,19 @@ var controller = {
       {markerType : 'PURPLE_MARKER', location : undefined, samples : 0});
   },
   
+  
   test : function() {
     // utils.assert(this.beaconsGraph.test()); 
     utils.assert(testBeacons()); 
     utils.assert(testRevolutionPath()); 
+  },
+  
+  setIndoor: function(value) {
+  	this.indoor = value;
+  },
+  
+  getIndoor : function() {
+  	return this.indoor;
   },
 
   getAllBeaconsMac : function() {

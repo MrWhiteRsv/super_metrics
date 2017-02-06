@@ -49,8 +49,36 @@
     z-index: 1;
 }
 
+#indoor-button-container {
+  float: left;
+  width : 100%;
+  margin: 3% 0 0 5%; 
+}
+
+#outdoor-button-container {
+  float: left;
+  width : 100%;
+  margin: 3% 0 0 5%; 
+}
+
+#monitor-clear {
+  float: left;
+  margin: 3% 0 0 5%; 
+}
+
+#map-div {
+  float: left;
+  width : 50vw;
+  height : 50vh;
+  margin: 3% 0 0 5%;
   
 
+}
 
-
+#monitor-bg {
+  float: left;
+  width : 50vw;
+  height : 50vh;
+  margin: 3% 0 0 5%; 
+}
 

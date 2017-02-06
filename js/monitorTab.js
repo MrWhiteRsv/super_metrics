@@ -2,14 +2,34 @@ var monitorTab = {
   
   init : function() {
     mapRenderer.init();
+    
+    var self = this;
+    document.getElementById("indoor-button").addEventListener(
+      "click",
+      function() {
+      	controller.setIndoor(true);
+        self.updateView();
+      });
+    document.getElementById("outdoor-button").addEventListener(
+      "click",
+      function() {
+      	controller.setIndoor(false);
+        self.updateView();
+      });
   },
   
   updateView : function() {
-    document.getElementById('map-div').style.visibility = "visible";   
-    var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
-    if (currentPos) {
-      mapRenderer.addDot(currentPos.lat, currentPos.lon, 'PURPLE_DOT');
-    }    
+  	if (controller.getIndoor()) {
+  		document.getElementById('map-div').style.display = "none";
+  		document.getElementById('monitor-bg').style.display = "initial";
+  	} else { // Outdoor
+  		document.getElementById('monitor-bg').style.display = "none";
+  		document.getElementById('map-div').style.display = "initial";
+  		var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
+      if (currentPos) {
+      	mapRenderer.addDot(currentPos.lat, currentPos.lon, 'PURPLE_DOT');
+    	}
+  	}
   },
   
   clearAndUpdateView : function() {
