@@ -100,7 +100,6 @@ var supermarketTab = {
   },
   
   updateView : function() {
-    //this.updateDimensions();
     var canvas = document.getElementById("supermarketTabCanvas");
     var width = canvas.width;
     var height =  canvas.height;

@@ -71,8 +71,28 @@
   width : 50vw;
   height : 50vh;
   margin: 3% 0 0 5%;
-  
+}
 
+#monitor-plan-container {
+  float: left;
+  width : 50vw;
+  height : 50vh;
+  margin: 3% 0 0 5%; 
+  position: relative;
+}
+
+#monitor-bg,
+#monitor-plan,
+#map-div {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#monitor-bg {
+  z-index: 10;
 }
 
 #monitor-bg {

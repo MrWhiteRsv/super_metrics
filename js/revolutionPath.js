@@ -24,7 +24,6 @@ RevolutionPath.prototype = {
     });
   },
 
-
   // Return the cart's estimated pixel (x:..., y:...) in a given timesrtamp.
   getCartPixel : function(ts) {
   },

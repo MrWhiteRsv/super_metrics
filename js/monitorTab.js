@@ -21,8 +21,11 @@ var monitorTab = {
   updateView : function() {
   	if (controller.getIndoor()) {
   		document.getElementById('map-div').style.display = "none";
-  		document.getElementById('monitor-bg').style.display = "initial";
+  		document.getElementById('monitor-plan').style.display = "initial";
+   		document.getElementById('monitor-bg').style.display = "initial";
+  		this.drawPlanBackground();
   	} else { // Outdoor
+  		document.getElementById('monitor-plan').style.display = "none";
   		document.getElementById('monitor-bg').style.display = "none";
   		document.getElementById('map-div').style.display = "initial";
   		var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
@@ -32,7 +35,58 @@ var monitorTab = {
   	}
   },
   
+  /**
+   * Draw plan, including beacons and backkground.
+   * @param {Beacons} beacons. The beacons to be displayed on plan.
+   */
+   drawPlanBackground : function () {
+  	var canvas = document.getElementById('monitor-bg');
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    var allBeaconsMac = controller.getAllBeaconsMac();
+    for (var i in allBeaconsMac) {
+      var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
+      var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
+      this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
+    } 
+    //this.drawBeacon(ctx, width, height, 0.105, 0.73, '#700000');
+    //this.drawBeacon(ctx, width, height, 0.14, 0.73, '#007000');
+    //this.drawBeacon(ctx, width, height, 0.105, 0.07, '#700070');
+    //this.drawBeacon(ctx, width, height, 0.14, 0.07, '#000070');
+  },
+  
+  /**
+   * Draw marker on background canvas.
+   * @param {Integer} beacons. The beacons to be displayed on plan.
+   */
+  drawBeacon : function(ctx, width, height, x, y, color) {
+    ctx.beginPath();
+    ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  },
+  
   clearAndUpdateView : function() {
+  	if (controller.getIndoor()) {
+  		clearAndUpdateViewIndoor();
+  	} else {
+  		clearAndUpdateViewOutdoor();
+  	}
+  },
+  
+  // Implementation.
+
+  drawBeaconsOnPlan : function() {
+    var allBeaconsMac = controller.getAllBeaconsMac();
+      	
+  },
+
+  clearAndUpdateViewIndoor : function() {
+  },
+    
+  clearAndUpdateViewOutdoor : function() {
     document.getElementById('map-div').style.visibility = "visible";
     mapRenderer.removeAllMarkers();
     mapRenderer.removeAllDots();

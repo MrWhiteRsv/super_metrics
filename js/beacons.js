@@ -18,6 +18,14 @@ Beacons.prototype = {
     return this.mapMacToBeaconData[mac].location;
   },
   
+   getBeaconColor : function(mac) {
+  	return this.mapMacToBeaconData[mac].color;
+  },
+
+  getBeaconPixLocation : function(mac) {
+    return {px : this.mapMacToBeaconData[mac].px, py : this.mapMacToBeaconData[mac].py};
+  },
+    
   addBeacon(mac, beaconData) {
     this.mapMacToBeaconData[mac] = beaconData;
   },

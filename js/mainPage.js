@@ -22,5 +22,4 @@ var mainPage = {
       monitorTab.updateView();
     }
   },
-  
 }
