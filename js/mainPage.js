@@ -13,6 +13,11 @@ var mainPage = {
         function() {
           monitorTab.updateView();
         });
+    document.getElementById("warning-button").addEventListener(
+        "click",
+        function() {
+        	document.getElementById("warning-card").style.display = "none";
+        });    
   },
   
   updateView : function(clearMonitorTab) {

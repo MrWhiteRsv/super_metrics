@@ -12,7 +12,6 @@ BeaconsGraph.prototype = {
     
   addEdgeLength  : function(beaconId0, beaconId1, edgeLength) {
     var edgeId = this.edgeId(beaconId0, beaconId1);
-    console.log('addEdgeLength edgeId: ' + edgeId + ', edgeLength: ' + edgeLength);
     if (edgeId in this.allEdges) {
       var numOfValues = this.allEdges[edgeId].allValues.length;
       utils.assert (numOfValues > 0);
@@ -56,7 +55,7 @@ BeaconsGraph.prototype = {
     return true;
   },
   
-  // Implimantation functions.
+  // Implimantation.
   
   edgeId : function(beaconId0, beaconId1) {
     return beaconId0 + ',' + beaconId1;
@@ -64,6 +63,4 @@ BeaconsGraph.prototype = {
   
   updateGraph : function() {
   },
-  
-
 }

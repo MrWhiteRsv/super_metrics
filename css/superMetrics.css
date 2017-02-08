@@ -46,7 +46,7 @@
   position: absolute;
   top : 90%;
   left: 95%;
-    z-index: 1;
+  z-index: 1;
 }
 
 #indoor-button-container {
@@ -100,5 +100,24 @@
   width : 50vw;
   height : 50vh;
   margin: 3% 0 0 5%; 
+}
+
+.warning-card-square.mdl-card {
+  width: 20vw;
+  height: 20vw;
+  display: none;
+  position: absolute;
+  top : 20%;
+  left: 45%;
+}
+.warning-card-square > .mdl-card__title {
+  color: #fff;
+  
+  background:
+    url('warning.png') bottom right 25% no-repeat #46B6AC;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 }
 

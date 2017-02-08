@@ -31,6 +31,7 @@ Beacons.prototype = {
   },
   
   addBeaconSample : function(mac, nearestTime, nearestLocation) {
+  	console.log('mac: ' + mac)
     var numberOfSamples = this.mapMacToBeaconData[mac].samples + 1;
     this.mapMacToBeaconData[mac].samples = numberOfSamples;
     if (numberOfSamples == 1) {

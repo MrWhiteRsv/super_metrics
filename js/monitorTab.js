@@ -50,10 +50,6 @@ var monitorTab = {
       var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
       this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
     } 
-    //this.drawBeacon(ctx, width, height, 0.105, 0.73, '#700000');
-    //this.drawBeacon(ctx, width, height, 0.14, 0.73, '#007000');
-    //this.drawBeacon(ctx, width, height, 0.105, 0.07, '#700070');
-    //this.drawBeacon(ctx, width, height, 0.14, 0.07, '#000070');
   },
   
   /**
@@ -119,6 +115,5 @@ var monitorTab = {
         }
       }
     }
-    console.log('distSum: ' + distSum + ', n:' + n);
   },
 }
