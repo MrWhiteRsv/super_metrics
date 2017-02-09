@@ -16,8 +16,8 @@ var mainPage = {
     document.getElementById("warning-button").addEventListener(
         "click",
         function() {
-        	document.getElementById("warning-card").style.display = "none";
-        });    
+        	document.getElementById("warning-card").style.visibility = "hidden";
+        });
   },
   
   updateView : function(clearMonitorTab) {
@@ -26,5 +26,9 @@ var mainPage = {
     } else {
       monitorTab.updateView();
     }
+  },
+  
+  displayBeaconDoesNotExistWarning : function () {
+  	document.getElementById("warning-card").style.visibility = "visible";
   },
 }

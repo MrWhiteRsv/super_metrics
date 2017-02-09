@@ -5,6 +5,7 @@ var controller = {
   beaconsGraph : undefined,
   hardCodedBeaconDistance : true,
   outdoor : false,
+  firstInvalidBeaconWarningIssued : false,
   
   /**
    * Main Entry Point.
@@ -24,9 +25,9 @@ var controller = {
     this.revolutionPath = new RevolutionPath(this.beacons);
     this.test();
   },
-    //34:b1:f7:d3:9d:a3
+  
   initBeacons : function() {
-    this.beacons.addBeacon('34:b1:f7:d3:91:f8',
+    this.beacons.addBeacon('34:b1:f7:d3:91:c8',
       {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.105, py : 0.73});
     this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
       {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.14, py : 0.73});
@@ -119,12 +120,15 @@ var controller = {
   
   treatBleMsg : function(payload) {
     var mac = payload["mac"];
+    if (!this.isValidBeacon(mac)) {
+    	this.issueBeaconDoesNotExistWarning();
+      return;    	
+    }
     var nearestTime = payload['nearest_time'];
     var nearestLocation = this.getLocationAtTime(nearestTime);
     this.beacons.addBeaconSample(mac, nearestTime, nearestLocation); 
     this.revolutionPath.addProximityEvent(mac, nearestTime);
     mainPage.updateView(/*clearMonitorTab*/ true);
-    //mapRenderer.addMarker(this.beacons[mac].location.lat, this.beacons[mac].location.lon, this.beacons[mac].markerType);
   },
   
   getGraph : function() {
@@ -133,6 +137,22 @@ var controller = {
   
   dev : function() {
     console.log('revolutionPath: ' + this.revolutionPath.toString());
+  },
+  
+  // Implementation
+  
+  
+  // Returns true if beacon is one of pre configured beacons.
+  isValidBeacon : function(mac) {
+  	return this.beacons.getAllBeaconsMac().indexOf(mac) != -1;
+  },
+  
+  // Issued only once.
+  issueBeaconDoesNotExistWarning : function() {
+  	if (!this.firstInvalidBeaconWarningIssued) {
+  	  this.firstInvalidBeaconWarningIssued = true;
+  	  mainPage.displayBeaconDoesNotExistWarning();
+  	}
   },
   
 }

@@ -105,7 +105,7 @@
 .warning-card-square.mdl-card {
   width: 20vw;
   height: 20vw;
-  display: none;
+  visibility: hidden;
   position: absolute;
   top : 20%;
   left: 45%;
