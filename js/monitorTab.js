@@ -24,6 +24,8 @@ var monitorTab = {
   		document.getElementById('monitor-plan').style.display = "initial";
    		document.getElementById('monitor-bg').style.display = "initial";
   		this.drawPlanBackground();
+  		var latestPixel = controller.getLatestCartPixel();
+  		this.drawCart(latestPixel['px'], latestPixel['py']);
   	} else { // Outdoor
   		document.getElementById('monitor-plan').style.display = "none";
   		document.getElementById('monitor-bg').style.display = "none";
@@ -52,18 +54,6 @@ var monitorTab = {
     } 
   },
   
-  /**
-   * Draw marker on background canvas.
-   * @param {Integer} beacons. The beacons to be displayed on plan.
-   */
-  drawBeacon : function(ctx, width, height, x, y, color) {
-    ctx.beginPath();
-    ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  },
-  
   clearAndUpdateView : function() {
   	if (controller.getIndoor()) {
   		clearAndUpdateViewIndoor();
@@ -74,12 +64,12 @@ var monitorTab = {
   
   // Implementation.
 
-  drawBeaconsOnPlan : function() {
+  /*drawBeaconsOnPlan : function() {
     var allBeaconsMac = controller.getAllBeaconsMac();
-      	
-  },
+  },*/
 
   clearAndUpdateViewIndoor : function() {
+  	
   },
     
   clearAndUpdateViewOutdoor : function() {
@@ -115,5 +105,37 @@ var monitorTab = {
         }
       }
     }
+  },
+  
+   /**
+   * Draw marker on background canvas.
+   * @param {Integer} beacons. The beacons to be displayed on plan.
+   */
+  drawBeacon : function(ctx, width, height, x, y, color) {
+    ctx.beginPath();
+    ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  },
+  
+  /**
+   * Draw cart on background canvas.
+   * both x and y are given in the [0.0, 1.0] range.
+   */
+  drawCart : function(x, y) {
+  	var canvas = document.getElementById('monitor-bg');
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+  	color = '#B71C1C';
+    ctx.beginPath();
+    ctx.arc(x * width, y * height, 3, 0, 2 * Math.PI);
+    //ctx.arc(75.5, 75.5, 3, 0, 2 * Math.PI);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 1;
+    ctx.fill();
+    ctx.stroke();
   },
 }

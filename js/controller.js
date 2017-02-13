@@ -4,7 +4,7 @@ var controller = {
   revolutionPath : undefined,
   beaconsGraph : undefined,
   hardCodedBeaconDistance : true,
-  outdoor : false,
+  indoor : true,
   firstInvalidBeaconWarningIssued : false,
   
   /**
@@ -28,13 +28,13 @@ var controller = {
   
   initBeacons : function() {
     this.beacons.addBeacon('34:b1:f7:d3:91:c8',
-      {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.105, py : 0.73});
+      {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
-      {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.14, py : 0.73});
+      {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:91:e4',
-      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.105, py : 0.07});
+      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:9d:eb',
-      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.14, py : 0.07});
+      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:90:8e',
       {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0, py : 0});
     if (this.hardCodedBeaconDistance) {
@@ -102,6 +102,10 @@ var controller = {
       return undefined;
     }
     return gpsPath.estimateLocation(time_sec);
+  },
+  
+  getLatestCartPixel : function() {
+  	return (this.revolutionPath.getLatestCartPixel());
   },
   
   getRevolutionBasedLocationAtTime : function(ts) {

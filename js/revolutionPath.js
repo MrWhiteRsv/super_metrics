@@ -24,8 +24,14 @@ RevolutionPath.prototype = {
     });
   },
 
-  // Return the cart's estimated pixel (x:..., y:...) in a given timesrtamp.
-  getCartPixel : function(ts) {
+  // Return the cart's estimated pixel {px :..., py :...} getLatestCartPixel.
+  // Both coordinates are in the [0.0, 1.0] range.
+  getLatestCartPixel : function() {
+  	// Find the latest beacon.
+  	// Find the next beacon.
+  	// Find the distance between these.
+  	// Find the pixel of both beacons.
+  	return {px : 0.8 ,py : 0.4 }
   },
 
   // Compute cart's estimated location {lat:..., lng:...} at a given timesrtamp.
@@ -67,7 +73,6 @@ RevolutionPath.prototype = {
         lon : (1 - alpha) * startBeaconLocation.lon + alpha * endBeaconLocation.lon,
       };
     }
-    
   },
   
   countRevolutionsBetweenIndices : function(indx0, indx1) {
@@ -153,191 +158,3 @@ RevolutionPath.prototype = {
   },
 }
 
-
-
-/*var RevolutionPath = function(beacons) {
-  this.init(beacons);
-}
-
-RevolutionPath.prototype = {
-  
-  beacons : undefined,
-  segments : undefined, // [(startMac, endMac, startTs, endTs),...]
-  revolutionEvents : undefined, //[[(forward, ts),...], ...]
-
-  // Add cart near beacon event.
-  addProximityEvent : function(mac, ts) {
-    // if last segment does not have a ble beacon and split 
-    utils.assert(this.segments);
-    utils.assert(mac);
-    utils.assert(ts >= 0);
-    utils.assert(this.beacons.getAllBeaconsMac().indexOf(mac) >= 0);
-    var numberOfExistingSegments = this.segments.length;
-    if (numberOfExistingSegments > 0) {
-      var lastSegment = this.segments[numberOfExistingSegments - 1];
-      if (lastSegment.ble == undefined && )
-      lastSegment.endMac = mac;
-      lastSegment.endTs = ts;
-    }
-    this.pushNewSegment(mac, ts);
-  },
-  
-  pushNewSegment : function(mac, ts) {
-    var newSegment = {
-        startMac : mac,
-        endMac : undefined,
-        startTs : ts,
-        endTs : undefined
-      };
-    this.segments.push(newSegment);
-    this.revolutionEvents.push([]);
-  },
-  
-  // Add cart revolution event.
-  addRevolutionEvent : function(forward, ts) {
-    utils.assert(utils.isNumeric(ts));
-    utils.assert(this.segments);
-    utils.assert(this.revolutionEvents);
-    utils.assert(this.revolutionEvents.length == this.revolutionEvents.length);    
-    // if there is no first segment create first segment and restart addRevolutionEvent.
-    // if exceeds last segment and last seggment does have an endMac create last segment and restart
-    //     addRevolutionEvent.
-    // find segmentIndex and add at end of segment.
-    // if needed sort last segment.
-    
-    if (this.segments.length == 0) {
-      this.pushNewSegment(undefined, ts);
-      this.addRevolutionEvent(forward, ts);
-      return;
-    }
-    utils.assert(this.segments.length > 0);
-    var lastSegment = this.segments[this.segments.length - 1];
-    if (lastSegment.endMac != undefined && ts > lastSegment.endTs) {
-      this.pushNewSegment(undefined, ts);
-      this.addRevolutionEvent(forward, ts);
-      return;
-    } 
-    
-
-    var segmentIndex = this.getContainingSegmentIndex(ts);
-    if (segmentIndex == undefined) {
-      return;
-    }
-    var maxTsInSegment = undefined;
-    console.log('segmentIndex: ' + segmentIndex);
-    var revolutionsInSegment = this.revolutionEvents[segmentIndex].length;
-    if (revolutionsInSegment > 0) {
-      maxTsInSegment = this.revolutionEvents[segmentIndex][revolutionsInSegment - 1].ts;
-    }
-    this.revolutionEvents[segmentIndex].push({forward : forward, ts : ts});
-    if (maxTsInSegment && maxTsInSegment > ts) {
-      this.revolutionEvents[segmentIndex].sort(this.compareRevolutionEvents);
-    }
-  },
-
-  // Return the cart's estimated pixel (x:..., y:...) in a given timesrtamp.
-  getCartPixel : function(ts) {
-    utils.assert(this.segments);
-  },
-
-  // Compute cart's estimated location {lat:..., lng:...} at a given timesrtamp.
-
-  getCartLatLng : function(ts) {
-    utils.assert(this.segments);
-    var segmentIndex = this.getContainingSegmentIndex(ts);
-    if (segmentIndex == undefined) {
-      return undefined;
-    }
-    var startBeacon = this.beacons[this.segments[segmentIndex].startMac];
-    var segmentLength = this.getSegmentLength(segmentIndex);
-    var startBeaconLocation = this.beacons.getBeaconLocation(this.segments[segmentIndex].startMac);
-    if (segmentLength == 0) {
-      return {
-        lat : startBeaconLocation.lat,
-        lon : startBeaconLocation.lon,
-      };
-    } else {
-      var revolutionsUpToTs = this.countRevolutions(segmentIndex, ts);
-      var alpah = undefined;
-      var endBeaconLocation = this.beacons.getBeaconLocation(this.segments[segmentIndex].endMac);
-      var alpha = revolutionsUpToTs * 1.0 / segmentLength;
-      return {
-        lat : (1 - alpha) * startBeaconLocation.lat + alpha * endBeaconLocation.lat,
-        lon : (1 - alpha) * startBeaconLocation.lon + alpha * endBeaconLocation.lon,
-      };
-    }
-  },
-
-  toString : function() {
-    return JSON.stringify(this.beacons) + '\n\n' +  
-       JSON.stringify(this.segments) + '\n' +
-       JSON.stringify(this.revolutionEvents);
-  },
-    
-  // Internals.
-  
-  init : function(beacons) {
-    utils.assert(beacons);
-    this.beacons = beacons;
-    this.segments = [];
-    this.revolutionEvents = [];
-  },
-  
-  getContainingSegmentIndex : function(ts) {
-    if (this.segments.length == 0) {
-      return undefined;
-    }
-    if (ts < this.segments[0].startTs) {
-      return undefined;
-    }
-    for (var i = 0; i < this.segments.length; i++) {
-      if (this.segments[i].startTs <= ts && this.segments[i].endTs >= ts) {
-        return i;
-      }
-    }
-    this.segments.length - 1;
-  },
-
-  countRevolutions : function(segmentIndex, maxTs) {
-    var result = 0;
-    var segmentRevolutions = this.revolutionEvents[segmentIndex];
-    for (var i = 0; i < segmentRevolutions.length && segmentRevolutions[i].ts <= maxTs; i++) {
-      result = result + (segmentRevolutions[i].forward ? 1 : -1);
-    }
-    return result;
-  }, 
-  
-  getSegmentLength : function(segmentIndex) {
-    utils.assert(segmentIndex != undefined);
-    var result = 0;
-    var segmentRevolutions = this.revolutionEvents[segmentIndex];
-    for (var i = 0; i < segmentRevolutions.length; i++) {
-      result = result + (segmentRevolutions[i].forward ? 1 : -1);
-    }
-    return result;
-  },
-  
-  compareRevolutionEvents : function(a, b) {
-    if (a.ts < b.ts)
-      return -1;
-    if (a.ts > b.ts)
-      return 1;
-    return 0;
-  },
-  
-  getStartTimeSec : function() {
-    utils.assert(this.segments);
-    if (this.segments.length == 0) {
-      return undefined;
-    } 
-    return this.segments[0].startTs;
-  },
-  
-  getEndTimeSec : function() {
-    utils.assert(this.segments);
-    if (this.segments.length == 0) {
-      return undefined;
-    } 
-    return this.segments[this.segments.length - 1].endTs;
-  },
-}*/
