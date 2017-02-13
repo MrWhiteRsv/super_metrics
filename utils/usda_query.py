@@ -34,6 +34,8 @@ def make_queries(infile_name, outfile_name):
   outfile = open(outfile_name, 'w+')
   
   for line in infile:
+    if line.startswith('#'):
+      continue
     entry = {}
     if (len(line) == 1):
       continue
