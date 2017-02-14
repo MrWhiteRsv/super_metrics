@@ -24,7 +24,7 @@ var monitorTab = {
   		document.getElementById('monitor-plan').style.display = "initial";
    		document.getElementById('monitor-bg').style.display = "initial";
   		this.drawPlanBackground();
-  		var latestPixel = controller.getLatestCartPixel();
+  		var latestPixel = controller.getCartPixel();
   		this.drawCart(latestPixel['px'], latestPixel['py']);
   	} else { // Outdoor
   		document.getElementById('monitor-plan').style.display = "none";
@@ -56,20 +56,15 @@ var monitorTab = {
   
   clearAndUpdateView : function() {
   	if (controller.getIndoor()) {
-  		clearAndUpdateViewIndoor();
+  		this.clearAndUpdateViewIndoor();
   	} else {
-  		clearAndUpdateViewOutdoor();
+  		this.clearAndUpdateViewOutdoor();
   	}
   },
   
   // Implementation.
 
-  /*drawBeaconsOnPlan : function() {
-    var allBeaconsMac = controller.getAllBeaconsMac();
-  },*/
-
   clearAndUpdateViewIndoor : function() {
-  	
   },
     
   clearAndUpdateViewOutdoor : function() {

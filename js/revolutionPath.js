@@ -24,26 +24,34 @@ RevolutionPath.prototype = {
     });
   },
 
-  // Return the cart's estimated pixel {px :..., py :...} getLatestCartPixel.
+  // Return the cart's estimated pixel {px :..., py :...} getCartPixel.
   // Both coordinates are in the [0.0, 1.0] range.
-  getLatestCartPixel : function() {
-  	// Find the latest beacon.
-  	// Find the next beacon.
-  	// Find the distance between these.
-  	// Find the pixel of both beacons.
-  	return {px : 0.8 ,py : 0.4 }
+  getCartPixel : function(beaconsGraph, nextBeacon) {
+  	var currentBeacon =  this.findLatestNearbyBeacon();
+  	if (!currentBeacon) {
+  		return undefined;
+  	}
+  	var currentBeaconPix = this.beacons.getBeaconPixLocation(currentBeacon);
+  	if (!nextBeacon) {
+  		return currentBeaconPix;
+  	}
+  	var dist = beaconsGraph.getEdgeLength(currentBeacon, nextBeacon);
+  	var nextBeaconPix = this.beacons.getBeaconPixLocation(nextBeacon);
+  	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
+  	var alpha = revSinceLastBeacon/ dist * 1.0;
+    if (alpha < 0.0) {
+  		return currentBeaconPix;
+  	}
+    if (alpha > 1.0) {
+  		return nextBeaconPix;
+  	}
+  	var res = {px : (1 - alpha) * currentBeaconPix.px + alpha * nextBeaconPix.px,
+  	    py : (1 - alpha) * currentBeaconPix.py + alpha * nextBeaconPix.py}
+  	return res
   },
 
   // Compute cart's estimated location {lat:..., lng:...} at a given timesrtamp.
   getCartLatLng : function(ts) {
-    // find startBeaconIndex
-    // find endBeaconIndex
-    // if both undefined return undefined
-    // if only one is defined return the one
-    // find the revolutions between the beacons
-    // find the revolutions between first beacon and desired ts
-    // calculate the result
-    
     var endBeaconIndex = this.findFirstProximityEventIndexAfterTs(ts);
     var startBeaconIndex = this.findLastProximityEventIndexBeforeTs(ts);
     if (startBeaconIndex == undefined || endBeaconIndex == undefined) {
@@ -75,6 +83,31 @@ RevolutionPath.prototype = {
     }
   },
   
+  findLatestNearbyBeacon : function() {
+    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
+    	if (this.sortedEvents[i].type == 'proximity') {
+    		return this.sortedEvents[i].mac;
+    	}
+    }
+    return undefined;
+  },
+  
+  // Internals.
+  
+  countRevolutionsSinceLatestProximityEvent : function() {
+    var result = 0;
+    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
+      if (this.sortedEvents[i].type == 'revolution') {
+        result += this.sortedEvents[i].forward ? 1 : -1;
+      }
+			if (this.sortedEvents[i].type == 'proximity') {
+    		break;
+    	}
+    }
+    return result;
+  },
+  
+    
   countRevolutionsBetweenIndices : function(indx0, indx1) {
     var result = 0;
     for (var i = indx0 + 1; i < indx1; i++) {
@@ -127,8 +160,6 @@ RevolutionPath.prototype = {
     return JSON.stringify(this.beacons) + '\n\n' +  
        JSON.stringify(this.sortedEvents) + '\n';
   },
-    
-  // Internals.
   
   init : function(beacons) {
     this.sortedEvents = [];

@@ -25,7 +25,6 @@ BeaconsGraph.prototype = {
   
   getEdgeLength : function(beaconId0, beaconId1) {
     var edgeId = this.edgeId(beaconId0, beaconId1);
-    console.log('getEdgeLength edgeId: ' + edgeId);
     if (edgeId in this.allEdges) {
       var result = this.allEdges[edgeId].edgeLength;
       utils.assert(result);
@@ -58,7 +57,8 @@ BeaconsGraph.prototype = {
   // Implimantation.
   
   edgeId : function(beaconId0, beaconId1) {
-    return beaconId0 + ',' + beaconId1;
+  	return beaconId0 > beaconId1 ? beaconId0 + ',' + beaconId1 :
+  	    beaconId0 + ',' + beaconId1;
   },
   
   updateGraph : function() {

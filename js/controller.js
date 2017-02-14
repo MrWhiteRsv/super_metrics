@@ -32,16 +32,16 @@ var controller = {
     this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
       {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:91:e4',
-      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
+      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:9d:eb',
-      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.12});
+      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:90:8e',
-      {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0, py : 0});
+      {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.094, py : 0.3});
     if (this.hardCodedBeaconDistance) {
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:c8', '34:b1:f7:d3:9c:cb', 20);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', 200);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb', 20);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:c8', 200);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:c8', '34:b1:f7:d3:9c:cb', 10);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', 80);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb', 10);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:c8', 80);
     }
   },
   
@@ -80,7 +80,6 @@ var controller = {
   },
   
   treatMsg : function(type, jsonPayload) {
-    //console.log('type :' + type + ' ,jsonPayload: ' + jsonPayload);
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'revolution':
@@ -104,8 +103,10 @@ var controller = {
     return gpsPath.estimateLocation(time_sec);
   },
   
-  getLatestCartPixel : function() {
-  	return (this.revolutionPath.getLatestCartPixel());
+  getCartPixel : function() {
+    var expectedNextBeacon = this.guessNextBeacon(
+    	  this.revolutionPath.findLatestNearbyBeacon());
+  	return (this.revolutionPath.getCartPixel(this.beaconsGraph, expectedNextBeacon));
   },
   
   getRevolutionBasedLocationAtTime : function(ts) {
@@ -119,7 +120,7 @@ var controller = {
   
   treatRevolutionMsg : function(payload) {
     this.revolutionPath.addRevolutionEvent(true, payload.start_time);
-    //mainPage.updateView(/*clearMonitorTab*/ false);
+    mainPage.updateView(/*clearMonitorTab*/ false);
   },
   
   treatBleMsg : function(payload) {
@@ -130,7 +131,9 @@ var controller = {
     }
     var nearestTime = payload['nearest_time'];
     var nearestLocation = this.getLocationAtTime(nearestTime);
-    this.beacons.addBeaconSample(mac, nearestTime, nearestLocation); 
+    if (nearestLocation) {
+      this.beacons.addBeaconSample(mac, nearestTime, nearestLocation);
+    }
     this.revolutionPath.addProximityEvent(mac, nearestTime);
     mainPage.updateView(/*clearMonitorTab*/ true);
   },
@@ -145,6 +148,14 @@ var controller = {
   
   // Implementation
   
+  guessNextBeacon : function(currentMac) {
+  	var expectedPath = ['34:b1:f7:d3:91:c8', '34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb'];
+  	var index = expectedPath.indexOf(currentMac);
+  	if (!index && index != 0) {
+  		return undefined;
+  	}
+  	return expectedPath[(index + 1) % expectedPath.length];
+  },
   
   // Returns true if beacon is one of pre configured beacons.
   isValidBeacon : function(mac) {
