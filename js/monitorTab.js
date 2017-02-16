@@ -1,8 +1,31 @@
 var monitorTab = {
+
+	cartImage : undefined,
   
   init : function() {
+
+    this.cartImage = new Image();
+    this.cartImage.src = 'css/cart.png';
+    if (false) {
+    	this.cartImage.onload = function () {
+	  	  var canvas = document.getElementById('monitor-bg');
+	      var ctx = canvas.getContext("2d");
+	      ctx.drawImage(this, 30, 15);
+	      ctx.drawImage(this, 88, 110);
+	      ctx.drawImage(this, 150, 200);
+	      ctx.drawImage(this, 150, 220);
+	      ctx.drawImage(this, 318, 57);
+	      ctx.drawImage(this, 525, 210);
+	      ctx.drawImage(this, 480, 40);
+	      ctx.drawImage(this, 535, 60);
+	      ctx.drawImage(this, 555, 70);
+	    }
+		}
     mapRenderer.init();
-    
+    var plan = document.getElementById("monitor-plan");
+    var canvas = document.getElementById("monitor-bg");
+    canvas.style.height = plan.offsetHeight + 'px';
+    canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
     document.getElementById("indoor-button").addEventListener(
       "click",
@@ -20,12 +43,15 @@ var monitorTab = {
   
   updateView : function() {
   	if (controller.getIndoor()) {
+  		
   		document.getElementById('map-div').style.display = "none";
   		document.getElementById('monitor-plan').style.display = "initial";
    		document.getElementById('monitor-bg').style.display = "initial";
   		this.drawPlanBackground();
   		var latestPixel = controller.getCartPixel();
-  		this.drawCart(latestPixel['px'], latestPixel['py']);
+  		if (latestPixel) {
+  		  this.drawCart(latestPixel['px'], latestPixel['py']);
+  		}
   	} else { // Outdoor
   		document.getElementById('monitor-plan').style.display = "none";
   		document.getElementById('monitor-bg').style.display = "none";
@@ -46,12 +72,20 @@ var monitorTab = {
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
+    /*
+    this.drawBeacon(ctx, width, height, 0.575, 0.3, '#B71C1C');
+    this.drawBeacon(ctx, width, height, 0.595, 0.6, '#B71C1C');
+    this.drawBeacon(ctx, width, height, 0.61, 0.4, '#B71C1C');
+    this.drawBeacon(ctx, width, height, 0.63, 0.7, '#B71C1C');
+    this.drawBeacon(ctx, width, height, 0.790, 0.4, '#B71C1C');
+    */
+    ctx.clearRect(0, 0, width, height);
     var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {
       var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
       var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
       this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
-    } 
+    }
   },
   
   clearAndUpdateView : function() {
@@ -123,14 +157,17 @@ var monitorTab = {
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
+    
+    ctx.drawImage(this.cartImage, x * width - 10, y * height - 17);
+    
   	color = '#B71C1C';
     ctx.beginPath();
-    ctx.arc(x * width, y * height, 3, 0, 2 * Math.PI);
+    ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
     //ctx.arc(75.5, 75.5, 3, 0, 2 * Math.PI);
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = 1;
-    ctx.fill();
+    // ctx.fill();
     ctx.stroke();
   },
 }

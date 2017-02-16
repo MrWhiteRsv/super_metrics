@@ -106,7 +106,7 @@ var controller = {
   getCartPixel : function() {
     var expectedNextBeacon = this.guessNextBeacon(
     	  this.revolutionPath.findLatestNearbyBeacon());
-  	return (this.revolutionPath.getCartPixel(this.beaconsGraph, expectedNextBeacon));
+  	return this.revolutionPath.getCartPixel(this.beaconsGraph, expectedNextBeacon);
   },
   
   getRevolutionBasedLocationAtTime : function(ts) {

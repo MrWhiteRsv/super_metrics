@@ -73,18 +73,21 @@
   position: relative;
 }
 
-#monitor-bg,
+
 #monitor-plan,
 #map-div {
   position: absolute;
   top: 0vh;
   left: 10vw;
-  width: 60vw;
+  width: 70vw;
   height: 60vh;
-  position: absolute;
 }
 
+
 #monitor-bg {
+  top: 0vh;
+  left: 10vw;
+	position: absolute;
   z-index: 10;
 }
 
