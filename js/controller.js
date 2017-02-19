@@ -83,6 +83,7 @@ var controller = {
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'revolution':
+        console.log(jsonPayload)
         this.treatRevolutionMsg(payload);
         break;
       case 'gps':
@@ -91,8 +92,6 @@ var controller = {
       case 'ble':
         this.treatBleMsg(payload);
         break;
-    }
-    if (type == 'gps') {
     }
   },
   
@@ -119,7 +118,8 @@ var controller = {
   },
   
   treatRevolutionMsg : function(payload) {
-    this.revolutionPath.addRevolutionEvent(true, payload.start_time);
+// {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
+    this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
     mainPage.updateView(/*clearMonitorTab*/ false);
   },
   
