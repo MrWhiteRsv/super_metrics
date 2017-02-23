@@ -43,12 +43,10 @@ var monitorTab = {
   
   updateView : function() {
   	if (controller.getIndoor()) {
-
   		document.getElementById('map-div').style.display = "none";
   		document.getElementById('monitor-plan').style.display = "initial";
    		document.getElementById('monitor-bg').style.display = "initial";
   		this.drawPlanBackground();
-  		  		  	return;
   		var latestPixel = controller.getCartPixel();
   		if (latestPixel) {
   		  this.drawCart(latestPixel['px'], latestPixel['py']);
@@ -90,22 +88,22 @@ var monitorTab = {
     /*this.drawBeacon(ctx, width, height, 0.682, 0.3, '#B71C1C'); // 19 L 
     this.drawBeacon(ctx, width, height, 0.755, 0.3, '#B71C1C'); // 21 L*/
 
-    this.drawBeacon(ctx, width, height, 0.107, 0.16, '#B71C1C'); // 3 L 
+    /*this.drawBeacon(ctx, width, height, 0.107, 0.16, '#B71C1C'); // 3 L 
     this.drawBeacon(ctx, width, height, 0.128, 0.3, '#B71C1C'); // 3 R
     this.drawBeacon(ctx, width, height, 0.141, 0.3, '#B71C1C'); // 4 L 
     this.drawBeacon(ctx, width, height, 0.160, 0.3, '#B71C1C'); // 4 R
     this.drawBeacon(ctx, width, height, 0.181, 0.3, '#B71C1C'); // 5 L 
     this.drawBeacon(ctx, width, height, 0.201, 0.3, '#B71C1C'); // 5 R
     this.drawBeacon(ctx, width, height, 0.215, 0.3, '#B71C1C'); // 6 L
-    this.drawBeacon(ctx, width, height, 0.235, 0.75, '#B71C1C'); // 6 R
+    this.drawBeacon(ctx, width, height, 0.235, 0.75, '#B71C1C'); // 6 R*/
   
          
-   /* var allBeaconsMac = controller.getAllBeaconsMac();
+   var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {
       var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
       var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
       this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
-    } */
+    }
   },
   
   clearAndUpdateView : function() {
@@ -119,6 +117,7 @@ var monitorTab = {
   // Implementation.
 
   clearAndUpdateViewIndoor : function() {
+  	this.updateView();
   },
     
   clearAndUpdateViewOutdoor : function() {

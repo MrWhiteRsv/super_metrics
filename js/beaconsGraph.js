@@ -7,9 +7,13 @@ BeaconsGraph.prototype = {
   allEdges : undefined,
   
   init : function() {
-    this.allEdges = {}; 
+    this.allEdges = {};
   },
-    
+  
+  toString : function() {
+    return JSON.stringify(this);	
+  },
+  
   addEdgeLength  : function(beaconId0, beaconId1, edgeLength) {
     var edgeId = this.edgeId(beaconId0, beaconId1);
     if (edgeId in this.allEdges) {
@@ -34,11 +38,7 @@ BeaconsGraph.prototype = {
       return undefined;
     }
   },
-  
-  toString : function() {
-    return JSON.stringify(this);
-  },
-  
+
   test : function() {
     this.init();
     this.addEdgeLength('b0', 'b1', 2);

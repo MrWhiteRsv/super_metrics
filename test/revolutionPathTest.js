@@ -149,6 +149,5 @@ function testRevolutionPath5() {
     utils.assert(false);
     return false;
   }
- 
   return true;
 }

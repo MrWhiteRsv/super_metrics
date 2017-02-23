@@ -1,33 +1,48 @@
 var controller = {
-  
   beacons : undefined,
   revolutionPath : undefined,
   beaconsGraph : undefined,
   hardCodedBeaconDistance : true,
   indoor : true,
   firstInvalidBeaconWarningIssued : false,
+  learnBeaconDistance : false,
   
   /**
    * Main Entry Point.
    * Called once map is loaded.
    */
-  initController : function() {
-    mainPage.init();
-    gpsPath.init();
-    mqtt_listener.init();
-    graph.build();
+  start : function() {
+  	this.init();
+  	this.clear();
+  	testAll();
+  	this.clear();
+    this.initBeacons();
     graph.mockEdgeTraficVolume();
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
-    this.beaconsGraph = new BeaconsGraph();
+  },
+  
+  /* One time only */
+  init : function() {
+    mqtt_listener.init();
+    this.clear();
+  },
+  
+  clear : function() {
+    mainPage.init();
+    gpsPath.init();
+  	this.beaconsGraph = new BeaconsGraph();
     this.beacons = new Beacons();
-    this.initBeacons();
     this.revolutionPath = new RevolutionPath(this.beacons);
-    this.test();
+    graph.build();
+    this.hardCodedBeaconDistance = true;
+    this.indoor = true;
+    this.firstInvalidBeaconWarningIssued = false;
+    this.learnBeaconDistance = false;
   },
   
   initBeacons : function() {
-    this.beacons.addBeacon('34:b1:f7:d3:91:c8',
+    this.beacons.addBeacon('34:b1:f7:d3:91:f8',
       {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
       {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.78});
@@ -38,17 +53,11 @@ var controller = {
     this.beacons.addBeacon('34:b1:f7:d3:90:8e',
       {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.094, py : 0.3});
     if (this.hardCodedBeaconDistance) {
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:c8', '34:b1:f7:d3:9c:cb', 10);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:f8', '34:b1:f7:d3:9c:cb', 10);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', 80);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb', 10);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:c8', 80);
+    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:f8', 80);
     }
-  },
-  
-  test : function() {
-    // utils.assert(this.beaconsGraph.test()); 
-    utils.assert(testBeacons()); 
-    utils.assert(testRevolutionPath()); 
   },
   
   setIndoor: function(value) {
@@ -79,11 +88,14 @@ var controller = {
     return this.beacons.getBeaconLocation(mac);
   },
   
+  getBeaconsGraph : function() {
+  	return this.beaconsGraph;
+  },
+  
   treatMsg : function(type, jsonPayload) {
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'revolution':
-        console.log(jsonPayload)
         this.treatRevolutionMsg(payload);
         break;
       case 'gps':
@@ -117,27 +129,6 @@ var controller = {
     mainPage.updateView(/*clearMonitorTab*/ false);
   },
   
-  treatRevolutionMsg : function(payload) {
-// {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
-    this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
-    mainPage.updateView(/*clearMonitorTab*/ false);
-  },
-  
-  treatBleMsg : function(payload) {
-    var mac = payload["mac"];
-    if (!this.isValidBeacon(mac)) {
-    	this.issueBeaconDoesNotExistWarning();
-      return;    	
-    }
-    var nearestTime = payload['nearest_time'];
-    var nearestLocation = this.getLocationAtTime(nearestTime);
-    if (nearestLocation) {
-      this.beacons.addBeaconSample(mac, nearestTime, nearestLocation);
-    }
-    this.revolutionPath.addProximityEvent(mac, nearestTime);
-    mainPage.updateView(/*clearMonitorTab*/ true);
-  },
-  
   getGraph : function() {
     return graph;
   },
@@ -149,7 +140,7 @@ var controller = {
   // Implementation
   
   guessNextBeacon : function(currentMac) {
-  	var expectedPath = ['34:b1:f7:d3:91:c8', '34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb'];
+  	var expectedPath = ['34:b1:f7:d3:91:f8', '34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb'];
   	var index = expectedPath.indexOf(currentMac);
   	if (!index && index != 0) {
   		return undefined;
@@ -168,6 +159,29 @@ var controller = {
   	  this.firstInvalidBeaconWarningIssued = true;
   	  mainPage.displayBeaconDoesNotExistWarning();
   	}
+  },
+  
+  treatRevolutionMsg : function(payload) {
+    // {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
+    this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
+    mainPage.updateView(/*clearMonitorTab*/ false);
+  },
+  
+  treatBleMsg : function(payload) {
+  	// console.log('payload:', payload);
+    var mac = payload["mac"];
+    if (!this.isValidBeacon(mac)) {
+    	this.issueBeaconDoesNotExistWarning();
+      return;    	
+    }
+    var nearestTime = payload['nearest_time'];
+    var nearestLocation = this.getLocationAtTime(nearestTime);
+    if (nearestLocation) {
+      this.beacons.addBeaconSample(mac, nearestTime, nearestLocation);
+    }
+    this.revolutionPath.addProximityEvent(mac, nearestTime);
+    console.log('JJJ1 mac: ' + mac);
+    mainPage.updateView(/*clearMonitorTab*/ true);
   },
   
 }

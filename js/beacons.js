@@ -23,6 +23,7 @@ Beacons.prototype = {
   },
 
   getBeaconPixLocation : function(mac) {
+  	utils.assert(mac, 'undefined mac: ' + mac);
     return {px : this.mapMacToBeaconData[mac].px, py : this.mapMacToBeaconData[mac].py};
   },
     
