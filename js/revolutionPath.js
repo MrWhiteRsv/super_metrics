@@ -92,8 +92,6 @@ RevolutionPath.prototype = {
     return undefined;
   },
   
-  // Internals.
-  
   countRevolutionsSinceLatestProximityEvent : function() {
     var result = 0;
     for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
@@ -107,6 +105,7 @@ RevolutionPath.prototype = {
     return result;
   },
   
+  // Internals.
     
   countRevolutionsBetweenIndices : function(indx0, indx1) {
     var result = 0;

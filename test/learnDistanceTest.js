@@ -1,23 +1,31 @@
 function testLearnDistance() {
 	controller.clear();
 	
-	controller.firstInvalidBeaconWarningIssued = true;
-  controller.learnBeaconDistance = true;
-    
-  mac = '34:b1:f7:d3:91:f8';
-  fakeBleProximityEvent(mac);
-  for (forwardCounter = 0; forwardCounter < 30; forwardCounter++) {
+  controller.initBeacons();
+  controller.setLearnBeaconDistance(true);
+  var beaconsGraph = controller.getBeaconsGraph();
+  var redMac = '34:b1:f7:d3:91:f8';
+  var greenMac = '34:b1:f7:d3:9c:cb';
+  if (beaconsGraph.getEdgeLength(redMac, greenMac) != undefined) {
+    return false;
+  }
+  fakeBleProximityEvent(redMac);
+  for (var forwardCounter = 0; forwardCounter < 30; forwardCounter++) {
     fakeRevolutionEvent(/*forwardCounter*/ forwardCounter,
         /*backwardCounter*/0, true);
   }
-	mac = '34:b1:f7:d3:9c:cb';
-	fakeBleProximityEvent(mac);
+	fakeBleProximityEvent(greenMac);
+  if (beaconsGraph.getEdgeLength(redMac, greenMac) != 30) {
+    return false;
+  }
   for (forwardCounter = 0; forwardCounter < 40; forwardCounter++) {
     fakeRevolutionEvent(/*forwardCounter*/ forwardCounter,
         /*backwardCounter*/0, true);
   }
-  var graph = controller.getBeaconsGraph();
-  console.log('graph:\n_____\n' + graph.toString());
+  fakeBleProximityEvent(redMac);
+  if (beaconsGraph.getEdgeLength(redMac, greenMac) != 35) {
+    return false;
+  }
   return true;
 }
 

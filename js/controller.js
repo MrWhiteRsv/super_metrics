@@ -5,7 +5,7 @@ var controller = {
   hardCodedBeaconDistance : true,
   indoor : true,
   firstInvalidBeaconWarningIssued : false,
-  learnBeaconDistance : false,
+  learnBeaconDistance : undefined,
   
   /**
    * Main Entry Point.
@@ -17,6 +17,7 @@ var controller = {
   	testAll();
   	this.clear();
     this.initBeacons();
+    this.initBeaconsGraph();
     graph.mockEdgeTraficVolume();
     graph.mockEdgeTraficSpeed();
     supermarketTab.updateView();
@@ -38,7 +39,7 @@ var controller = {
     this.hardCodedBeaconDistance = true;
     this.indoor = true;
     this.firstInvalidBeaconWarningIssued = false;
-    this.learnBeaconDistance = false;
+    this.setLearnBeaconDistance(false);
   },
   
   initBeacons : function() {
@@ -52,16 +53,24 @@ var controller = {
       {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:90:8e',
       {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.094, py : 0.3});
+  },
+  
+  initBeaconsGraph : function() {
     if (this.hardCodedBeaconDistance) {
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:f8', '34:b1:f7:d3:9c:cb', 10);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:91:e4', 80);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:e4', '34:b1:f7:d3:9d:eb', 10);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:f8', 80);
-    }
+    }  	
   },
+
   
   setIndoor: function(value) {
   	this.indoor = value;
+  },
+  
+  setLearnBeaconDistance:function(value) {
+  	this.learnBeaconDistance = value;
   },
   
   getIndoor : function() {
@@ -168,7 +177,6 @@ var controller = {
   },
   
   treatBleMsg : function(payload) {
-  	// console.log('payload:', payload);
     var mac = payload["mac"];
     if (!this.isValidBeacon(mac)) {
     	this.issueBeaconDoesNotExistWarning();
@@ -179,8 +187,14 @@ var controller = {
     if (nearestLocation) {
       this.beacons.addBeaconSample(mac, nearestTime, nearestLocation);
     }
+    if (this.learnBeaconDistance) {
+    	var prevMac = this.revolutionPath.findLatestNearbyBeacon();
+    	if (prevMac) {
+	    	var dist = this.revolutionPath.countRevolutionsSinceLatestProximityEvent();
+	    	this.beaconsGraph.addEdgeLength(prevMac, mac, dist);
+	    }
+    }
     this.revolutionPath.addProximityEvent(mac, nearestTime);
-    console.log('JJJ1 mac: ' + mac);
     mainPage.updateView(/*clearMonitorTab*/ true);
   },
   
