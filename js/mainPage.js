@@ -18,6 +18,8 @@ var mainPage = {
         function() {
         	document.getElementById("warning-card").style.visibility = "hidden";
         });
+    google.charts.setOnLoadCallback(controller.setGoogleChartsLoadedTrue);
+    google.charts.load('current', {packages: ['table']}); //"corechart"
   },
   
   updateView : function(clearMonitorTab) {

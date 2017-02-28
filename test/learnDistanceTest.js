@@ -1,11 +1,10 @@
 function testLearnDistance() {
-	controller.clear();
-	
-  controller.initBeacons();
-  controller.setLearnBeaconDistance(true);
+	controller.setHardCodedBeaconDistance(false);
+	controller.init();
   var beaconsGraph = controller.getBeaconsGraph();
   var redMac = '34:b1:f7:d3:91:f8';
   var greenMac = '34:b1:f7:d3:9c:cb';
+  console.log('beaconsGraph: ' + beaconsGraph);
   if (beaconsGraph.getEdgeLength(redMac, greenMac) != undefined) {
     return false;
   }
@@ -13,11 +12,13 @@ function testLearnDistance() {
   for (var forwardCounter = 0; forwardCounter < 30; forwardCounter++) {
     fakeRevolutionEvent(/*forwardCounter*/ forwardCounter,
         /*backwardCounter*/0, true);
-  }
+  } 
+     return true;
 	fakeBleProximityEvent(greenMac);
   if (beaconsGraph.getEdgeLength(redMac, greenMac) != 30) {
     return false;
   }
+
   for (forwardCounter = 0; forwardCounter < 40; forwardCounter++) {
     fakeRevolutionEvent(/*forwardCounter*/ forwardCounter,
         /*backwardCounter*/0, true);

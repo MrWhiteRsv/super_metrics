@@ -32,13 +32,19 @@ RevolutionPath.prototype = {
   		return undefined;
   	}
   	var currentBeaconPix = this.beacons.getBeaconPixLocation(currentBeacon);
-  	if (!nextBeacon) {
+  	var dist = beaconsGraph.getEdgeLength(currentBeacon, nextBeacon);
+    if (!dist) {
   		return currentBeaconPix;
   	}
-  	var dist = beaconsGraph.getEdgeLength(currentBeacon, nextBeacon);
+  	if (alpha < 0.0) {
+  		return currentBeaconPix;
+  	}
   	var nextBeaconPix = this.beacons.getBeaconPixLocation(nextBeacon);
   	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
   	var alpha = revSinceLastBeacon/ dist * 1.0;
+  	console.log('revSinceLastBeacon: ' + revSinceLastBeacon);
+
+  	console.log('dist: ' + dist);
     if (alpha < 0.0) {
   		return currentBeaconPix;
   	}
@@ -102,7 +108,7 @@ RevolutionPath.prototype = {
     		break;
     	}
     }
-    return result;
+    return -result;
   },
   
   // Internals.

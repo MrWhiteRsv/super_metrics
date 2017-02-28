@@ -42,6 +42,9 @@ var monitorTab = {
   },
   
   updateView : function() {
+  	if (controller.getGoogleChartsLoaded()) {
+      this.drawTable();
+  	}
   	if (controller.getIndoor()) {
   		document.getElementById('map-div').style.display = "none";
   		document.getElementById('monitor-plan').style.display = "initial";
@@ -176,9 +179,7 @@ var monitorTab = {
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
-    
     ctx.drawImage(this.cartImage, x * width - 10, y * height - 17);
-    
   	color = '#B71C1C';
     ctx.beginPath();
     ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
@@ -189,4 +190,25 @@ var monitorTab = {
     // ctx.fill();
     ctx.stroke();
   },
+  
+  drawTable : function() {
+  	var beacons = controller.getBeacons().getAllBeaconsMac();
+  	var beaconsGreaph = controller.getBeaconsGraph();
+    var data = new google.visualization.DataTable();
+    for (var c = 0; c < beacons.length; c++) {
+    	data.addColumn('number', '' + (c + 1));
+    }
+    var allBeacons = controller.getAllBeaconsMac();
+    for (var r = 0; r < beacons.length; r++) {
+    	var row = [];
+    	for (var c = 0; c < beacons.length; c++) {
+    		var val = beaconsGreaph.getEdgeLength(allBeacons[r], allBeacons[c]);
+    		val = (val == undefined) ? -1 : val;
+    	  row.push(val);
+    	}
+    	data.addRows([row]);
+    }
+    var table = new google.visualization.Table(document.getElementById('beacons-table'));
+    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+	}
 }

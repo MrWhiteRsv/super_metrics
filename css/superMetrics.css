@@ -50,45 +50,58 @@
 }
 
 #indoor-button-container {
-  float: left;
-  width : 100%;
-  margin: 3% 0 0 5%; 
+  position: absolute;
+  top: 20vh;
+  left: 80vw;
+  width: 10vw;
+  height: 10vh;
 }
 
 #outdoor-button-container {
-  float: left;
-  width : 100%;
-  margin: 3% 0 0 5%; 
+  position: absolute;
+  top: 30vh;
+  left: 80vw;
+  width: 10vw;
+  height: 10vh;
 }
 
 #monitor-clear {
-  float: left;
-  margin: 3% 0 0 5%; 
-}
+  position: absolute;
+  top: 40vh;
+  left: 80vw;
+ }
 
 #monitor-plan-container {
-  float: left;
+  position: absolute;
+  top: 10vh;
+  left: 5vw;
   width : 50vw;
   height : 50vh;
   position: relative;
 }
 
-
 #monitor-plan,
 #map-div {
   position: absolute;
   top: 0vh;
-  left: 10vw;
-  width: 70vw;
-  height: 60vh;
+  left: 0vw;
+  width: 50vw;
+  height: 40vh;
 }
-
 
 #monitor-bg {
   top: 0vh;
-  left: 10vw;
+  left: 0vw;
 	position: absolute;
   z-index: 10;
+}
+
+#beacons-table {
+  position: absolute;
+  top : 20% ;
+  left : 57%;
+  width : 20%;
+  height : 30%;
 }
 
 .warning-card-square.mdl-card {

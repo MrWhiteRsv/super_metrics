@@ -31,12 +31,15 @@ BeaconsGraph.prototype = {
     var edgeId = this.edgeId(beaconId0, beaconId1);
     if (edgeId in this.allEdges) {
       var result = this.allEdges[edgeId].edgeLength;
-      utils.assert(result);
-      utils.assert(result > 0);
+      utils.assert(result >= 0);
       return result;
     } else {
       return undefined;
     }
+  },
+  
+  toString : function() {
+  	return JSON.stringify(this);
   },
 
   // Implimantation.

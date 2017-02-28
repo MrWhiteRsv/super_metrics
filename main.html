@@ -27,7 +27,7 @@
     <script src="test/learnDistanceTest.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script async defer src =
-      "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=controller.start">
+      "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=controller.onMapLoaded">
     </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
@@ -101,9 +101,8 @@
 
     <section class="mdl-layout__tab-panel" id="monitor-tab">
       <div class="page-content">
-      	
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="outdoor-button" id="outdoor-button-container">
-          <input type="radio" class="mdl-radio__button" name="options" value="1" checked id="outdoor-button">
+          <input type="radio" class="mdl-radio__button" name="options" value="1" checked id="outdoor-button" >
           <span class="mdl-radio__label">Outdoor</span> </label>
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="indoor-button" id="indoor-button-container">
           <input type="radio" class="mdl-radio__button" name="options" value="2" id="indoor-button">
@@ -111,9 +110,11 @@
         <button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
           Clear
         </button>
+        
+        <div id="beacons-table"></div>
         <div id='monitor-plan-container'>
           <img id="monitor-plan" src="css/storePlan.png">
-          <canvas id="monitor-bg" width="640" height="260"></canvas>
+          <canvas id="monitor-bg" width="340" height="260"></canvas>
           <div id="map-div"></div>        	
         </div>
       </div>
