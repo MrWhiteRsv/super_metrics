@@ -39,6 +39,13 @@ var monitorTab = {
       	controller.setIndoor(false);
         self.updateView();
       });
+    document.getElementById("monitor-clear").addEventListener(
+      "click",
+      function() {
+      	controller.init();
+        self.updateView();
+      });      
+      
   },
   
   updateView : function() {

@@ -45,8 +45,8 @@ var controller = {
       {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.152, py : 0.12});
     this.beacons.addBeacon('34:b1:f7:d3:9d:eb',
       {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
-    this.beacons.addBeacon('34:b1:f7:d3:90:8e',
-      {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.094, py : 0.3});
+    /* this.beacons.addBeacon('34:b1:f7:d3:90:8e',
+      {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.094, py : 0.3}); */
   },
   
   initBeaconsGraph : function() {
@@ -56,7 +56,11 @@ var controller = {
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:9e:2b', 80);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9d:eb', 10);
     	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:f8', 80);
-    }  	
+    }
+    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:f8', '34:b1:f7:d3:91:f8', 0);
+    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:9c:cb', 0);
+    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9e:2b', 0);
+    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:9d:eb', 0);
   },
 
   setHardCodedBeaconDistance: function(value) {
