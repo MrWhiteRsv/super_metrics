@@ -49,28 +49,21 @@
   z-index: 1;
 }
 
-#monitor-clear {
-  position: absolute;
-  top: 40vh;
-  left: 80vw;
- }
-
 #monitor-plan-container {
   position: absolute;
   top: 10vh;
   left: 5vw;
-  width : 50vw;
+  width : 65vw;
   height : 50vh;
   position: relative;
 }
 
-#monitor-plan,
-#map-div {
+#monitor-plan {
   position: absolute;
   top: 0vh;
   left: 0vw;
-  width: 50vw;
-  height: 40vh;
+  width: 65vw;
+  height: 50vh;
 }
 
 #monitor-bg {
@@ -80,11 +73,19 @@
   z-index: 10;
 }
 
+#monitor-clear {
+  position: absolute;
+  top: 10vh;
+  left: 91vw;
+  width: 8vw;
+  height :8vh;
+ }
+
 #beacons-table {
   position: absolute;
-  top : 20% ;
-  left : 57%;
-  width : 20%;
+  top : 25% ;
+  left : 81%;
+  width : 18%;
   height : 30%;
 }
 

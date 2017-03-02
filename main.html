@@ -15,7 +15,6 @@
     <script src="js/graph.js"></script>
     <script src="js/supermarketTab.js"></script>
     <script src="js/mainPage.js"></script>
-    <script src="js/mapRenderer.js"></script>
     <script src="js/monitorTab.js"></script>
     <script src="js/mqttListener.js"></script>
     <script src="js/revolutionPath.js"></script>
@@ -26,14 +25,14 @@
     <script src="test/revolutionPathTest.js"></script>
     <script src="test/learnDistanceTest.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script async defer src =
+    <!--script async defer src =
       "https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyASYMDhgXo5u2rhfG05alS3s6nqRZFfHxs&callback=controller.onMapLoaded">
-    </script>
+    </script-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
   </head>
-<body>
+<body onload="controller.onMapLoaded()">
 
 <!-- https://code.getmdl.io/1.2.1/material.yellow-indigo.min.css -->
 
@@ -98,7 +97,6 @@
       <div class="page-content">
       </div>
     </section>
-
     <section class="mdl-layout__tab-panel" id="monitor-tab">
       <div class="page-content">
         <button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">

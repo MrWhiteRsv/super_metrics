@@ -21,7 +21,6 @@ var monitorTab = {
 	      ctx.drawImage(this, 555, 70);
 	    }
 		}
-    mapRenderer.init();
     var plan = document.getElementById("monitor-plan");
     var canvas = document.getElementById("monitor-bg");
     canvas.style.height = plan.offsetHeight + 'px';
