@@ -108,7 +108,7 @@ RevolutionPath.prototype = {
     		break;
     	}
     }
-    return -result;
+    return result;
   },
   
   // Internals.

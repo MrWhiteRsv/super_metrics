@@ -49,22 +49,6 @@
   z-index: 1;
 }
 
-#indoor-button-container {
-  position: absolute;
-  top: 20vh;
-  left: 80vw;
-  width: 10vw;
-  height: 10vh;
-}
-
-#outdoor-button-container {
-  position: absolute;
-  top: 30vh;
-  left: 80vw;
-  width: 10vw;
-  height: 10vh;
-}
-
 #monitor-clear {
   position: absolute;
   top: 40vh;

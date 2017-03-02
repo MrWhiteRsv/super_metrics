@@ -3,7 +3,6 @@ var controller = {
   revolutionPath : undefined,
   beaconsGraph : undefined,
   hardCodedBeaconDistance : true,
-  indoor : true,
   firstInvalidBeaconWarningIssued : false,
   googleChartsLoaded : false,
   
@@ -30,7 +29,6 @@ var controller = {
     this.beacons = new Beacons();
     this.revolutionPath = new RevolutionPath(this.beacons);
 
-    this.indoor = true;
     this.firstInvalidBeaconWarningIssued = false;
     this.initBeacons();
     this.initBeaconsGraph();
@@ -71,16 +69,8 @@ var controller = {
   	controller.googleChartsLoaded = true;
   },
   
-  setIndoor: function(value) {
-  	this.indoor = value;
-  },
-  
   getGoogleChartsLoaded : function() {
   	return this.googleChartsLoaded;
-  },
-    
-  getIndoor : function() {
-  	return this.indoor;
   },
 
   getAllBeaconsMac : function() {

@@ -27,18 +27,6 @@ var monitorTab = {
     canvas.style.height = plan.offsetHeight + 'px';
     canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
-    document.getElementById("indoor-button").addEventListener(
-      "click",
-      function() {
-      	controller.setIndoor(true);
-        self.updateView();
-      });
-    document.getElementById("outdoor-button").addEventListener(
-      "click",
-      function() {
-      	controller.setIndoor(false);
-        self.updateView();
-      });
     document.getElementById("monitor-clear").addEventListener(
       "click",
       function() {
@@ -52,24 +40,14 @@ var monitorTab = {
   	if (controller.getGoogleChartsLoaded()) {
       this.drawTable();
   	}
-  	if (controller.getIndoor()) {
-  		document.getElementById('map-div').style.display = "none";
-  		document.getElementById('monitor-plan').style.display = "initial";
-   		document.getElementById('monitor-bg').style.display = "initial";
-  		this.drawPlanBackground();
-  		var latestPixel = controller.getCartPixel();
-  		if (latestPixel) {
-  		  this.drawCart(latestPixel['px'], latestPixel['py']);
-  		}
-  	} else { // Outdoor
-  		document.getElementById('monitor-plan').style.display = "none";
-  		document.getElementById('monitor-bg').style.display = "none";
-  		document.getElementById('map-div').style.display = "initial";
-  		var currentPos = controller.getLocationAtTime(gpsPath.getEndTimeSec());
-      if (currentPos) {
-      	mapRenderer.addDot(currentPos.lat, currentPos.lon, 'PURPLE_DOT');
-    	}
-  	}
+		document.getElementById('map-div').style.display = "none";
+		document.getElementById('monitor-plan').style.display = "initial";
+ 		document.getElementById('monitor-bg').style.display = "initial";
+		this.drawPlanBackground();
+		var latestPixel = controller.getCartPixel();
+		if (latestPixel) {
+		  this.drawCart(latestPixel['px'], latestPixel['py']);
+		}
   },
   
   /**
@@ -117,11 +95,7 @@ var monitorTab = {
   },
   
   clearAndUpdateView : function() {
-  	if (controller.getIndoor()) {
-  		this.clearAndUpdateViewIndoor();
-  	} else {
-  		this.clearAndUpdateViewOutdoor();
-  	}
+		this.clearAndUpdateViewIndoor();
   },
   
   // Implementation.
@@ -130,7 +104,7 @@ var monitorTab = {
   	this.updateView();
   },
     
-  clearAndUpdateViewOutdoor : function() {
+  /* clearAndUpdateViewOutdoor : function() {
     document.getElementById('map-div').style.visibility = "visible";
     mapRenderer.removeAllMarkers();
     mapRenderer.removeAllDots();
@@ -163,7 +137,7 @@ var monitorTab = {
         }
       }
     }
-  },
+  },*/
   
    /**
    * Draw marker on background canvas.
