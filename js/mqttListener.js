@@ -32,6 +32,7 @@ var mqtt_listener = {
   // called when the client connects.
   onConnect : function() {
     client.subscribe("cart/cartId/#");
+    controller.onMqttConnect();
   },
 
   // called when the client loses its connection.
@@ -49,10 +50,10 @@ var mqtt_listener = {
     controller.treatMsg(type, payload);
   },
   
- /* sendMessage : function() {
-    message = new Paho.MQTT.Message("Hello");
-    message.destinationName = "cart/cartId/hall_reading";
-    client.send(message);
-  }, */
+ sendMessage : function(topic, payload) {
+   var message = new Paho.MQTT.Message(payload); 
+   message.destinationName = topic;
+   client.send(message);
+ },
 
 }

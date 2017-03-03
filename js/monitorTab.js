@@ -31,6 +31,7 @@ var monitorTab = {
       function() {
       	controller.init();
         self.updateView();
+        //mqtt_listener.sendMessage();
       });      
       
   },

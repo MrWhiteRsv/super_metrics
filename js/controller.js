@@ -5,6 +5,7 @@ var controller = {
   hardCodedBeaconDistance : true,
   firstInvalidBeaconWarningIssued : false,
   googleChartsLoaded : false,
+  mqttConnected : false,
   
   /**
    * Main Entry Point.
@@ -28,12 +29,25 @@ var controller = {
   	this.beaconsGraph = new BeaconsGraph();
     this.beacons = new Beacons();
     this.revolutionPath = new RevolutionPath(this.beacons);
-
     this.firstInvalidBeaconWarningIssued = false;
     this.initBeacons();
     this.initBeaconsGraph();
+    if (this.mqttConnected) {
+      this.resetCartDetector();
+    }
   },
   
+  onMqttConnect : function() {
+  	this.mqttConnected = true;
+  	this.resetCartDetector();
+  },
+  
+  resetCartDetector : function() {
+  	topic = "cart/cartId/monitor";
+    var payload = JSON.stringify({reset: true});
+    mqtt_listener.sendMessage(topic, payload);
+ 	},
+ 	 
   initBeacons : function() {
     this.beacons.addBeacon('34:b1:f7:d3:91:f8',
       {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.78});
