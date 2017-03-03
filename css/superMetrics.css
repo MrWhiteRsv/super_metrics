@@ -73,13 +73,27 @@
   z-index: 10;
 }
 
-#monitor-clear {
+#monitor-clear,
+#monitor-ad,
+#monitor-take-photo {
   position: absolute;
   top: 10vh;
-  left: 91vw;
   width: 8vw;
   height :8vh;
- }
+  font-size: 12px;
+}
+
+#monitor-clear {
+  left: 71vw;
+}
+
+#monitor-ad {
+  left: 81vw;
+}
+
+#monitor-take-photo {
+  left: 91vw;
+}
 
 #beacons-table {
   position: absolute;

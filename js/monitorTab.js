@@ -31,9 +31,17 @@ var monitorTab = {
       function() {
       	controller.init();
         self.updateView();
-        //mqtt_listener.sendMessage();
-      });      
-      
+      });
+    document.getElementById("monitor-ad").addEventListener(
+      "click",
+      function() {
+      	controller.publishAd();
+      });
+     document.getElementById("monitor-take-photo").addEventListener(
+      "click",
+      function() {
+      	controller.takePhotoOnCart();
+      }); 
   },
   
   updateView : function() {
