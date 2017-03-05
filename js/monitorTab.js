@@ -43,13 +43,18 @@ var monitorTab = {
           });
      document.getElementById("monitor_single_sensor_switch").addEventListener(
          "change", function() {
-         	 var val = document.getElementById("monitor_single_sensor_switch").checked;
-      	   controller.setSingleSensorMode(val);
+      	   controller.setSingleSensorMode(document.getElementById(
+      	       "monitor_single_sensor_switch").checked);
          });
      document.getElementById("monitor_hyper_sensetive_beacon_switch").addEventListener(
          "change", function() {
-         	 var val = document.getElementById("monitor_hyper_sensetive_beacon_switch").checked;
-      	   controller.setHyperSentistiveBeacons(val);
+      	   controller.setHyperSentistiveBeacons(document.getElementById(
+      	       "monitor_hyper_sensetive_beacon_switch").checked);
+         });
+     document.getElementById("monitor_publish_location_switch").addEventListener(
+         "change", function() {
+      	   controller.setPublishLocation(document.getElementById(
+      	       "monitor_publish_location_switch").checked);
          });
   },
   
@@ -62,6 +67,12 @@ var monitorTab = {
 		if (latestPixel) {
 		  this.drawCart(latestPixel['px'], latestPixel['py']);
 		}
+		document.getElementById("monitor_single_sensor_switch").checked =
+		    controller.getSingleSensorMode();
+	  document.getElementById("monitor_hyper_sensetive_beacon_switch").checked =
+		    controller.getHyperSentistiveBeacons();
+			  document.getElementById("monitor_publish_location_switch").checked =
+		    controller.getPublishLocation();
   },
   
   /**

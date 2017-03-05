@@ -51,8 +51,8 @@
 
 #monitor-plan-container {
   position: absolute;
-  top: 10vh;
-  left: 2vw;
+  top: 15vh;
+  left: 5vw;
   width : 65vw;
   height : 50vh;
   position: relative;
@@ -75,44 +75,58 @@
 
 #monitor-clear,
 #monitor-ad,
+#monitor-training,
 #monitor-take-photo {
   position: absolute;
-  top: 10vh;
+  top: 6vh;
   width: 8vw;
-  height :6vh;
+  height :4vh;
   font-size: 12px;
 }
 
 #monitor-clear {
-  left: 71vw;
+  left: 5vw;
 }
 
 #monitor-ad {
-  left: 81vw;
+  left: 15vw;
+}
+
+#monitor-training {
+  left: 25vw;
 }
 
 #monitor-take-photo {
-  left: 91vw;
+  left: 35vw;
+}
+
+
+
+#monitor_single_sensor_switch_container,
+#monitor_hyper_sensetive_beacon_switch_container,
+#monitor_publish_location_switch_container
+ {
+	position: absolute;
+  left: 75vw;
+  width: 18vw;
 }
 
 #monitor_single_sensor_switch_container {
-	position: absolute;
-  top: 22vh;
-  left: 71vw;
-  width: 18vw;
+  top: 6vh;
 }
 
 #monitor_hyper_sensetive_beacon_switch_container {
-	position: absolute;
-  top: 28vh;
-  left: 71vw;
-  width: 18vw;
+  top: 12vh;
+}
+
+#monitor_publish_location_switch_container {
+  top : 18vh;
 }
 
 #beacons-distance-table {
   position: absolute;
-  top : 38vh;
-  left : 71vw;
+  top : 25vh;
+  left : 75vw;
   width : 18vw;
   height : 30vh;
 }

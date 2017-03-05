@@ -8,6 +8,66 @@ var controller = {
   mqttConnected : false,
   singleSensorMode : true,
   hyperSentistiveBeacons : false,
+  publishLocation : true,
+  
+  setHardCodedBeaconDistance: function(value) {
+  	controller.hardCodedBeaconDistance = value;
+  },
+  
+  setGoogleChartsLoadedTrue: function() {
+  	controller.googleChartsLoaded = true;
+  },
+  
+  setSingleSensorMode: function(value) {
+  	this.singleSensorMode = value;
+  },
+
+  setHyperSentistiveBeacons: function(value) {
+  	this.hyperSentistiveBeacons = value;
+  },
+  
+  setPublishLocation: function(value) {
+  	this.publishLocation = value;
+  },
+  
+  getPublishLocation : function() {
+  	return this.publishLocation;
+  },
+  
+  getHyperSentistiveBeacons : function() {
+  	return this.hyperSentistiveBeacons;
+  },
+
+  getSingleSensorMode : function() {
+  	return this.singleSensorMode;
+  },
+  getGoogleChartsLoaded : function() {
+  	return this.googleChartsLoaded;
+  },
+
+  getAllBeaconsMac : function() {
+    return this.beacons.getAllBeaconsMac();
+  },
+
+  getBeacons : function() {
+  	return this.beacons;
+  },
+  
+  getBeaconPixLocation : function(mac) {
+    return this.beacons.getBeaconPixLocation(mac);
+  },
+    
+  getBeaconMarkerType : function(mac) {
+    return this.beacons.getBeaconMarkerType(mac);
+  },
+  
+  getBeaconLocation : function(mac) {
+    return this.beacons.getBeaconLocation(mac);
+  },
+  
+  getBeaconsGraph : function() {
+  	return this.beaconsGraph;
+  },
   
   /**
    * Main Entry Point.
@@ -45,19 +105,30 @@ var controller = {
   },
   
   resetCartDetector : function() {
-  	topic = "cart/cartId/monitor";
+  	topic = "monitor/cartId/command";
     var payload = JSON.stringify({reset: true});
     mqtt_listener.sendMessage(topic, payload);
  	},
- 	 
+
+  publishCurrentLocation : function() {
+  	if (this.getPublishLocation()) {
+	  	topic = "monitor/cartId/location";
+	  	var latestPixel = controller.getCartPixel();
+			if (latestPixel) {
+	      var payload = JSON.stringify({px: latestPixel['px'], py : latestPixel['py']});
+	      mqtt_listener.sendMessage(topic, payload);
+	    }
+	  }
+ 	},
+ 	
   publishAd : function() {
-  	topic = "cart/cartId/monitor";
+  	topic = "monitor/cartId/command";
     var payload = JSON.stringify({publishAd: true});
     mqtt_listener.sendMessage(topic, payload);
  	},
  	
   takePhotoOnCart : function() {
-  	topic = "cart/cartId/monitor";
+  	topic = "monitor/cartId/command";
     var payload = JSON.stringify({takePhotoOnCart: true});
     mqtt_listener.sendMessage(topic, payload);
  	}, 	 
@@ -89,57 +160,7 @@ var controller = {
     this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:9d:eb', 0);
   },
 
-  setHardCodedBeaconDistance: function(value) {
-  	controller.hardCodedBeaconDistance = value;
-  },
-  
-  setGoogleChartsLoadedTrue: function() {
-  	controller.googleChartsLoaded = true;
-  },
-  
-  setSingleSensorMode: function(value) {
-  	this.singleSensorMode = value;
-  },
 
-  setHyperSentistiveBeacons: function(value) {
-  	this.hyperSentistiveBeacons = value;
-  },
-  
-  getHyperSentistiveBeacons : function() {
-  	console.log('setSingleSensorMode: ' + this.hyperSentistiveBeacons);
-  	return this.hyperSentistiveBeacons;
-  },
-
-  getSingleSensorMode : function() {
-  	return this.singleSensorMode;
-  },
-  getGoogleChartsLoaded : function() {
-  	return this.googleChartsLoaded;
-  },
-
-  getAllBeaconsMac : function() {
-    return this.beacons.getAllBeaconsMac();
-  },
-
-  getBeacons : function() {
-  	return this.beacons;
-  },
-  
-  getBeaconPixLocation : function(mac) {
-    return this.beacons.getBeaconPixLocation(mac);
-  },
-    
-  getBeaconMarkerType : function(mac) {
-    return this.beacons.getBeaconMarkerType(mac);
-  },
-  
-  getBeaconLocation : function(mac) {
-    return this.beacons.getBeaconLocation(mac);
-  },
-  
-  getBeaconsGraph : function() {
-  	return this.beaconsGraph;
-  },
   
   treatMsg : function(type, jsonPayload) {
 //  	console.log('treatMsg: ' + type);
@@ -154,7 +175,6 @@ var controller = {
       case 'gps':
         //this.treatGpsMsg(payload);
         break;
-
     }
   },
   
@@ -211,6 +231,7 @@ var controller = {
   treatRevolutionMsg : function(payload) {
     // {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
     this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
+    this.publishCurrentLocation();
     mainPage.updateView(/*clearMonitorTab*/ false);
   },
   
@@ -238,6 +259,7 @@ var controller = {
 	    }
     }
     this.revolutionPath.addProximityEvent(mac, nearestTime);
+    this.publishCurrentLocation();
     mainPage.updateView(/*clearMonitorTab*/ true);
   },
   
