@@ -52,7 +52,7 @@
 #monitor-plan-container {
   position: absolute;
   top: 10vh;
-  left: 5vw;
+  left: 2vw;
   width : 65vw;
   height : 50vh;
   position: relative;
@@ -79,7 +79,7 @@
   position: absolute;
   top: 10vh;
   width: 8vw;
-  height :8vh;
+  height :6vh;
   font-size: 12px;
 }
 
@@ -95,12 +95,26 @@
   left: 91vw;
 }
 
-#beacons-table {
+#monitor_single_sensor_switch_container {
+	position: absolute;
+  top: 22vh;
+  left: 71vw;
+  width: 18vw;
+}
+
+#monitor_hyper_sensetive_beacon_switch_container {
+	position: absolute;
+  top: 28vh;
+  left: 71vw;
+  width: 18vw;
+}
+
+#beacons-distance-table {
   position: absolute;
-  top : 25% ;
-  left : 81%;
-  width : 18%;
-  height : 30%;
+  top : 38vh;
+  left : 71vw;
+  width : 18vw;
+  height : 30vh;
 }
 
 .warning-card-square.mdl-card {
@@ -120,5 +134,14 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+canvas {
+  image-rendering: optimizeSpeed;             /* Older versions of FF          */
+  image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+  image-rendering: -webkit-optimize-contrast; /* Safari                        */
+  image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;                 /* Awesome future-browsers       */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
 

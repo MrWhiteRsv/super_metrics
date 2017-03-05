@@ -6,6 +6,8 @@ var controller = {
   firstInvalidBeaconWarningIssued : false,
   googleChartsLoaded : false,
   mqttConnected : false,
+  singleSensorMode : true,
+  hyperSentistiveBeacons : false,
   
   /**
    * Main Entry Point.
@@ -95,6 +97,22 @@ var controller = {
   	controller.googleChartsLoaded = true;
   },
   
+  setSingleSensorMode: function(value) {
+  	this.singleSensorMode = value;
+  },
+
+  setHyperSentistiveBeacons: function(value) {
+  	this.hyperSentistiveBeacons = value;
+  },
+  
+  getHyperSentistiveBeacons : function() {
+  	console.log('setSingleSensorMode: ' + this.hyperSentistiveBeacons);
+  	return this.hyperSentistiveBeacons;
+  },
+
+  getSingleSensorMode : function() {
+  	return this.singleSensorMode;
+  },
   getGoogleChartsLoaded : function() {
   	return this.googleChartsLoaded;
   },

@@ -30,7 +30,7 @@ var monitorTab = {
       "click",
       function() {
       	controller.init();
-        self.updateView();
+        //self.updateView();
       });
     document.getElementById("monitor-ad").addEventListener(
       "click",
@@ -38,19 +38,25 @@ var monitorTab = {
       	controller.publishAd();
       });
      document.getElementById("monitor-take-photo").addEventListener(
-      "click",
-      function() {
-      	controller.takePhotoOnCart();
-      }); 
+          "click", function() {
+      	    controller.takePhotoOnCart();
+          });
+     document.getElementById("monitor_single_sensor_switch").addEventListener(
+         "change", function() {
+         	 var val = document.getElementById("monitor_single_sensor_switch").checked;
+      	   controller.setSingleSensorMode(val);
+         });
+     document.getElementById("monitor_hyper_sensetive_beacon_switch").addEventListener(
+         "change", function() {
+         	 var val = document.getElementById("monitor_hyper_sensetive_beacon_switch").checked;
+      	   controller.setHyperSentistiveBeacons(val);
+         });
   },
   
   updateView : function() {
   	if (controller.getGoogleChartsLoaded()) {
       this.drawTable();
   	}
-		document.getElementById('map-div').style.display = "none";
-		document.getElementById('monitor-plan').style.display = "initial";
- 		document.getElementById('monitor-bg').style.display = "initial";
 		this.drawPlanBackground();
 		var latestPixel = controller.getCartPixel();
 		if (latestPixel) {
@@ -80,10 +86,8 @@ var monitorTab = {
     this.drawBeacon(ctx, width, height, 0.454, 0.6, '#B71C1C');
     this.drawBeacon(ctx, width, height, 0.5, 0.5, '#B71C1C');
     this.drawBeacon(ctx, width, height, 0.525, 0.55, '#B71C1C'); */
-
     /*this.drawBeacon(ctx, width, height, 0.682, 0.3, '#B71C1C'); // 19 L 
     this.drawBeacon(ctx, width, height, 0.755, 0.3, '#B71C1C'); // 21 L*/
-
     /*this.drawBeacon(ctx, width, height, 0.107, 0.16, '#B71C1C'); // 3 L 
     this.drawBeacon(ctx, width, height, 0.128, 0.3, '#B71C1C'); // 3 R
     this.drawBeacon(ctx, width, height, 0.141, 0.3, '#B71C1C'); // 4 L 
@@ -92,13 +96,29 @@ var monitorTab = {
     this.drawBeacon(ctx, width, height, 0.201, 0.3, '#B71C1C'); // 5 R
     this.drawBeacon(ctx, width, height, 0.215, 0.3, '#B71C1C'); // 6 L
     this.drawBeacon(ctx, width, height, 0.235, 0.75, '#B71C1C'); // 6 R*/
-  
          
-   var allBeaconsMac = controller.getAllBeaconsMac();
+    var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {
       var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
       var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
+      color = "#303030";
       this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
+    }
+    if (allBeaconsMac.length > 1) {
+      ctx.lineWidth = 1.0;
+      ctx.strokeStyle = "#303030";
+      ctx.beginPath();
+      var width = canvas.width;
+      var height = canvas.height;
+      var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[0]);
+      ctx.moveTo(width * beaconPix['px'], height * beaconPix['py']);
+      for (var i in allBeaconsMac) {
+        beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
+        ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
+      }
+      beaconPix = controller.getBeaconPixLocation(allBeaconsMac[0]);
+      ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
+      ctx.stroke();
     }
   },
   
@@ -111,49 +131,14 @@ var monitorTab = {
   clearAndUpdateViewIndoor : function() {
   	this.updateView();
   },
-    
-  /* clearAndUpdateViewOutdoor : function() {
-    document.getElementById('map-div').style.visibility = "visible";
-    mapRenderer.removeAllMarkers();
-    mapRenderer.removeAllDots();
-    mapRenderer.removeAllSegments();
-    // Redraw all ble markers.
-    var allBeaconsMac = controller.getAllBeaconsMac();
-    for (var i in allBeaconsMac) {
-      var location = controller.getBeaconLocation(allBeaconsMac[i]);
-      var marker_type = controller.getBeaconMarkerType(allBeaconsMac[i]);
-      // Redraw all gps markers.
-      if (location && marker_type) {
-        mapRenderer.addMarker(location.lat, location.lon, marker_type);
-      } 
-    }
-    // Redraw GPS path
-    var distSum = 0; 
-    var n = 0;
-    if (!gpsPath.isEmpty()) {
-      var startTime = gpsPath.getStartTimeSec();
-      var stopTime = gpsPath.getEndTimeSec();
-      for (var ts = startTime; ts < stopTime; ts = ts + 1) {
-        var location = gpsPath.estimateLocation(ts);
-        mapRenderer.addDot(location.lat, location.lon, 'PURPLE_DOT');
-        var revLocation = controller.getRevolutionBasedLocationAtTime(ts);
-        if (revLocation) {
-          n = n + 1;
-          distSum = distSum + utils.getDistanceFromLatLonInMeter(revLocation.lat, revLocation.lon, location.lat, location.lon);
-          mapRenderer.addDot(revLocation.lat, revLocation.lon, 'BLUE_DOT');
-          mapRenderer.drawSegment(location, revLocation);
-        }
-      }
-    }
-  },*/
-  
-   /**
+   
+  /**
    * Draw marker on background canvas.
    * @param {Integer} beacons. The beacons to be displayed on plan.
    */
   drawBeacon : function(ctx, width, height, x, y, color) {
     ctx.beginPath();
-    ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
+    ctx.arc(x * width, y * height, 1, 0, 2 * Math.PI);
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.stroke();
@@ -172,11 +157,9 @@ var monitorTab = {
   	color = '#B71C1C';
     ctx.beginPath();
     ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
-    //ctx.arc(75.5, 75.5, 3, 0, 2 * Math.PI);
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = 1;
-    // ctx.fill();
     ctx.stroke();
   },
   
@@ -197,7 +180,7 @@ var monitorTab = {
     	}
     	data.addRows([row]);
     }
-    var table = new google.visualization.Table(document.getElementById('beacons-table'));
+    var table = new google.visualization.Table(document.getElementById('beacons-distance-table'));
     table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
 	}
 }
