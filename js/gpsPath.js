@@ -1,4 +1,4 @@
-var gpsPath = {
+/*var gpsPath = {
   
   path : undefined,  // [{lat: 37.318, start_time: 1480993696.3, lon: -122.011},...]
   
@@ -16,7 +16,7 @@ var gpsPath = {
   
   /**
    * @param {Object} point with lat, lon, and start_time fields.
-   */
+   * /
   pushPoint : function(point) {
     utils.assert(this.path);
     var old_end_time = this.getEndTimeSec();
@@ -82,4 +82,4 @@ var gpsPath = {
     return this.path.length == 0; 
   },
   
-}
+} */

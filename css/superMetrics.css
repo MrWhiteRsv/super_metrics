@@ -49,27 +49,51 @@
   z-index: 1;
 }
 
-#monitor-plan-container {
+/*** Ad Management ***/
+#ad-management-plan,
+#ad-management-bg {
   position: absolute;
   top: 15vh;
   left: 5vw;
+}
+
+#ad-management-plan {
   width : 65vw;
   height : 50vh;
-  position: relative;
+}
+
+#ad-management-add,
+#ad-management-clear {
+  position: absolute;
+  top: 6vh;
+  width: 8vw;
+  height :4vh;
+  font-size: 12px;
+}
+
+#ad-management-add {
+  left: 5vw;
+}
+
+#ad-management-clear {
+  left: 15vw;
+}
+
+/*** Monitor ***/
+
+#monitor-plan,
+#monitor-bg {
+  position: absolute;
+  top: 15vh;
+  left: 5vw;
 }
 
 #monitor-plan {
-  position: absolute;
-  top: 0vh;
-  left: 0vw;
-  width: 65vw;
-  height: 50vh;
+  width : 65vw;
+  height : 50vh;
 }
 
 #monitor-bg {
-  top: 0vh;
-  left: 0vw;
-	position: absolute;
   z-index: 10;
 }
 
@@ -99,8 +123,6 @@
 #monitor-take-photo {
   left: 35vw;
 }
-
-
 
 #monitor_single_sensor_switch_container,
 #monitor_hyper_sensetive_beacon_switch_container,

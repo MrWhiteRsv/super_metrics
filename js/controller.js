@@ -87,7 +87,6 @@ var controller = {
   
   init : function() {
     mainPage.init();
-    gpsPath.init();
   	this.beaconsGraph = new BeaconsGraph();
     this.beacons = new Beacons();
     this.revolutionPath = new RevolutionPath(this.beacons);
@@ -159,8 +158,6 @@ var controller = {
     this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9e:2b', 0);
     this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:9d:eb', 0);
   },
-
-
   
   treatMsg : function(type, jsonPayload) {
 //  	console.log('treatMsg: ' + type);
@@ -172,17 +169,7 @@ var controller = {
       case 'ble':
         this.treatBleMsg(payload);
         break;
-      case 'gps':
-        //this.treatGpsMsg(payload);
-        break;
     }
-  },
-  
-  getLocationAtTime : function(time_sec) {
-    if (gpsPath.isEmpty() || time_sec == undefined) {
-      return undefined;
-    }
-    return gpsPath.estimateLocation(time_sec);
   },
   
   getCartPixel : function() {
@@ -244,10 +231,6 @@ var controller = {
     console.log('Ble Proximity');
     var prevMac = this.revolutionPath.findLatestNearbyBeacon();
     var nearestTime = payload['nearest_time'];
-    var nearestLocation = this.getLocationAtTime(nearestTime);
-    if (nearestLocation) {
-      this.beacons.addBeaconSample(mac, nearestTime, nearestLocation);
-    }
     if (!this.hardCodedBeaconDistance) {  // Learn beacons distance.
     	if (prevMac) {
 	    	var dist = prevMac === mac ? 0 : this.revolutionPath.countRevolutionsSinceLatestProximityEvent();

@@ -3,6 +3,7 @@ var mainPage = {
   init : function() {
     monitorTab.init();
     supermarketTab.init();
+    adManagementTab.init();
     document.getElementById("#supermarket-tab").addEventListener(
         "click",
         function() {
@@ -13,6 +14,13 @@ var mainPage = {
         function() {
           monitorTab.updateView();
         });
+        
+    document.getElementById("#monitor-tab").addEventListener(
+        "click",
+        function() {
+          monitorTab.updateView();
+        });
+        
     document.getElementById("warning-button").addEventListener(
         "click",
         function() {

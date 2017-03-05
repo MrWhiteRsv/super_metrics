@@ -42,9 +42,6 @@ RevolutionPath.prototype = {
   	var nextBeaconPix = this.beacons.getBeaconPixLocation(nextBeacon);
   	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
   	var alpha = revSinceLastBeacon/ dist * 1.0;
-  	console.log('revSinceLastBeacon: ' + revSinceLastBeacon);
-
-  	console.log('dist: ' + dist);
     if (alpha < 0.0) {
   		return currentBeaconPix;
   	}

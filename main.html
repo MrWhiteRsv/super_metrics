@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <script src="paho.javascript-1.0.2/mqttws31.js"></script>
+    <script src="js/ad_management/adManagementTab.js"></script>
     <script src="js/beacons.js"></script>
     <script src="js/beaconsGraph.js"></script>
     <script src="js/config.js"></script>
@@ -41,7 +42,7 @@
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
       <a href="#supermarket-tab" id="#supermarket-tab" class="mdl-layout__tab is-active">Queue Metrics</a>
-      <a href="#product-tab" class="mdl-layout__tab">Ad Management</a>
+      <a href="#ad-management-tab" class="mdl-layout__tab">Ad Management</a>
       <a href="#monitor-tab" id="#monitor-tab" class="mdl-layout__tab">Dev</a>
     </div>
   </header>
@@ -88,10 +89,18 @@
 		  </div>
 		</div>
 				
-    <section class="mdl-layout__tab-panel" id="product-tab">
+    <section class="mdl-layout__tab-panel" id="ad-management-tab">
       <div class="page-content">
+      	<button id="ad-management-add" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Add </button>
+        <button id="ad-management-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Clear </button>
+          
+      	<img id="ad-management-plan" src="css/storePlan.png">
+        <canvas id="ad-management-bg" width="800" height="300"></canvas>
       </div>
     </section>
+    
     <section class="mdl-layout__tab-panel" id="monitor-tab">
       <div class="page-content">
 				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container">
@@ -117,11 +126,10 @@
         <button id="monitor-take-photo" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
           Take Photo </button>
         <div id="beacons-distance-table"></div>
-        <div id='monitor-plan-container'>
-          <img id="monitor-plan" src="css/storePlan.png">
-          <canvas id="monitor-bg" width="800" height="300"></canvas>
-          <div id="map-div"></div>        	
-        </div>
+        
+        <img id="monitor-plan" src="css/storePlan.png">
+        <canvas id="monitor-bg" width="800" height="300"></canvas>
+        
       </div>
     </section>
   </main>
