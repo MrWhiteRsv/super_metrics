@@ -191,6 +191,52 @@ var controller = {
     return graph;
   },
   
+  // Temp
+  
+  getAllProducts : function() {
+  	res = [
+  	{"category": "discount", "location_str": "aisle 2", "all_photo_urls": ["836093010028.png"],
+  	 "uuid": "836093010028", "ndbno": "45243227", "nutrients":
+  	 [{"unit": "kcal", "name": "Energy", "value": "3"}, {"unit": "g", "name": "Protein", "value": "0.00"},
+  	 {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"},
+  	 {"unit": "g", "name": "Carbohydrate, by difference", "value": "0.56"},
+  	 {"unit": "g", "name": "Sugars, total", "value": "0.56"},
+  	 {"unit": "mg", "name": "Sodium, Na", "value": "3"}],
+  	 "price": "$7.99", "location_px": {"px": 0.094, "py": 0.3},
+  	 "ingridiants": "CARBONATED WATER, ORGANIC CANE SUGAR, CERTIFIED ORGANIC NATURAL FLAVORS, CITRIC ACID",
+  	 "description": "IZZE, SPARKLING WATER BEVERAGE, RASPBERRY WATERMELON, UPC: 836093010028",
+  	 "discount_percent": 20, "name": "IZZE"},
+  	 
+    {"category": "gourmet", "location_str": "aisle 16", "all_photo_urls": ["merlot.png"], "uuid": "14602", "ndbno": 14602,
+     "nutrients": [{"unit": "g", "name": "Water", "value": "86.59"},
+     {"unit": "kcal", "name": "Energy", "value": "83"},
+     {"unit": "g", "name": "Protein", "value": "0.07"},
+     {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"},
+     {"unit": "g", "name": "Carbohydrate, by difference", "value": "2.51"},
+     {"unit": "g", "name": "Fiber, total dietary", "value": "0.0"},
+     {"unit": "g", "name": "Sugars, total", "value": "0.62"},
+     {"unit": "mg", "name": "Calcium, Ca", "value": "8"},
+     {"unit": "mg", "name": "Iron, Fe", "value": "0.46"},
+     {"unit": "mg", "name": "Magnesium, Mg", "value": "12"},
+     {"unit": "mg", "name": "Phosphorus, P", "value": "23"},
+     {"unit": "mg", "name": "Potassium, K", "value": "127"},
+     {"unit": "mg", "name": "Sodium, Na", "value": "4"},
+     {"unit": "mg", "name": "Zinc, Zn", "value": "0.14"},
+     {"unit": "mg", "name": "Vitamin C, total ascorbic acid", "value": "0.0"},
+     {"unit": "mg", "name": "Thiamin", "value": "0.005"},
+     {"unit": "mg", "name": "Riboflavin", "value": "0.031"},
+     {"unit": "mg", "name": "Niacin", "value": "0.224"},
+     {"unit": "mg", "name": "Vitamin B-6", "value": "0.057"},
+     {"unit": "\u00b5g", "name": "Vitamin B-12", "value": "0.00"},
+     {"unit": "g", "name": "Fatty acids, total trans", "value": "0.000"}],
+     "price": "$43.99", "location_px": {"px": 0.575, "py": 0.3},
+     "description": "Alcoholic Beverage, wine, table, red, Merlot",
+     "discount_percent": 20,
+     "name": "Miolo Reserva Merlot 2009"}
+     ];
+     return res;
+  },
+  
   // Implementation
   
   guessNextBeacon : function(currentMac) {

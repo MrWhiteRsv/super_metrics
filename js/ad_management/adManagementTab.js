@@ -1,12 +1,13 @@
 var adManagementTab = {
 
-	adImage : undefined,
+	adMarker : undefined,
   
   init : function() {
-    this.adImage = new Image();
-    this.adImage.src = 'css/ic_blue_dot.png';
+    this.adMarker = new Image();
+    //this.adMarker.src = 'css/ic_blue_dot.png';
+    this.adMarker.src = 'css/marker.png';
     if (false) {
-    	this.adImage.onload = function () {
+    	this.adMarker.onload = function () {
 	  	  var canvas = document.getElementById('ad-management-bg');
 	      var ctx = canvas.getContext("2d");
 	      ctx.drawImage(this, 30, 15);
@@ -41,8 +42,11 @@ var adManagementTab = {
   },
   
   updateView : function() {
-  	console.log('updateView');
-  	this.drawAdMarker(0.1, 0.3);
+  	var allProducts = controller.getAllProducts();
+  	console.log('location_str: ' + allProducts[0].location_str);
+  	for (var i = 0; i < allProducts.length; i++) {
+  		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
+  	}
   },
   
   /**
@@ -54,8 +58,7 @@ var adManagementTab = {
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
-//    ctx.drawImage(this.adImage, 30, 15);
-    ctx.drawImage(this.adImage, x * width, y * height);
+    ctx.drawImage(this.adMarker, x * width - 10, y * height - 30, 20, 30);
   },
   
   
