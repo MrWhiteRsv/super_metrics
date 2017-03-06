@@ -149,13 +149,13 @@ var monitorTab = {
     var width = canvas.width;
     var height = canvas.height;
     ctx.drawImage(this.cartImage, x * width - 10, y * height - 17);
-  	color = '#B71C1C';
+  	/*color = '#B71C1C';
     ctx.beginPath();
     ctx.arc(x * width, y * height, 2, 0, 2 * Math.PI);
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.stroke();*/
   },
   
   drawTable : function() {

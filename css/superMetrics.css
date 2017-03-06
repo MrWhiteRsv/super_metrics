@@ -57,11 +57,6 @@
   left: 5vw;
 }
 
-#ad-management-plan {
-  width : 65vw;
-  height : 50vh;
-}
-
 #ad-management-add,
 #ad-management-clear {
   position: absolute;
@@ -86,11 +81,6 @@
   position: absolute;
   top: 15vh;
   left: 5vw;
-}
-
-#monitor-plan {
-  width : 65vw;
-  height : 50vh;
 }
 
 #monitor-bg {

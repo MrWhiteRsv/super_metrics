@@ -4,18 +4,18 @@ var mainPage = {
     monitorTab.init();
     supermarketTab.init();
     adManagementTab.init();
-    document.getElementById("#supermarket-tab").addEventListener(
+    document.getElementById("supermarket-tab").addEventListener(
         "click",
         function() {
           supermarketTab.updateView();
         });
-    document.getElementById("#monitor-tab").addEventListener(
+    document.getElementById("ad-management-tab").addEventListener(
         "click",
         function() {
-          monitorTab.updateView();
+          adManagementTab.updateView();
         });
         
-    document.getElementById("#monitor-tab").addEventListener(
+    document.getElementById("monitor-tab").addEventListener(
         "click",
         function() {
           monitorTab.updateView();
