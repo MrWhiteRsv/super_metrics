@@ -1,139 +1,145 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>SuperMetrics</title>
-    <link rel="stylesheet" type="text/css" href="css/superMetrics.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <script src="paho.javascript-1.0.2/mqttws31.js"></script>
-    <script src="js/ad_management/adManagementTab.js"></script>
-    <script src="js/beacons.js"></script>
-    <script src="js/beaconsGraph.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/controller.js"></script>
-    <script src="js/graph.js"></script>
-    <script src="js/supermarketTab.js"></script>
-    <script src="js/mainPage.js"></script>
-    <script src="js/monitorTab.js"></script>
-    <script src="js/mqttListener.js"></script>
-    <script src="js/revolutionPath.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="test/test.js"></script>
-    <script src="test/beaconsTest.js"></script>
-    <script src="test/beaconsGraphTest.js"></script>
-    <script src="test/revolutionPathTest.js"></script>
-    <script src="test/learnDistanceTest.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-  </head>
-<body onload="controller.onMapLoaded()">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<title>SuperMetrics</title>
+		<link rel="stylesheet" type="text/css" href="css/superMetrics.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+		rel="stylesheet">
+		<script src="paho.javascript-1.0.2/mqttws31.js"></script>
+		<script src="js/ad_management/adManagementTab.js"></script>
+		<script src="js/beacons.js"></script>
+		<script src="js/beaconsGraph.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/controller.js"></script>
+		<script src="js/graph.js"></script>
+		<script src="js/supermarketTab.js"></script>
+		<script src="js/mainPage.js"></script>
+		<script src="js/monitorTab.js"></script>
+		<script src="js/mqttListener.js"></script>
+		<script src="js/revolutionPath.js"></script>
+		<script src="js/utils.js"></script>
+		<script src="test/test.js"></script>
+		<script src="test/beaconsTest.js"></script>
+		<script src="test/beaconsGraphTest.js"></script>
+		<script src="test/revolutionPathTest.js"></script>
+		<script src="test/learnDistanceTest.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
+		<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	</head>
+	<body onload="controller.onMapLoaded()">
 
-<!-- Simple header with scrollable tabs. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <span class="mdl-layout-title">Super Metrics</span>
-    </div>
-    <!-- Tabs -->
-    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <a href="#supermarket-tab" id="supermarket-tab" class="mdl-layout__tab is-active">Queue Metrics</a>
-      <a href="#ad-management-tab" id="ad-management-tab" class="mdl-layout__tab">Ad Management</a>
-      <a href="#monitor-tab" id="monitor-tab" class="mdl-layout__tab">Dev</a>
-    </div>
-  </header>
-  <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Super Metrics</span>
-    <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">Path #1</a>
-      <a class="mdl-navigation__link" href="">Path #2</a>
-      <a class="mdl-navigation__link" href="">Path #3</a>
-      <a class="mdl-navigation__link" href="">Path #4</a>
-    </nav>
-  </div>
-  
-  <main class="mdl-layout__content">
-    <section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
-      <div class="page-content">
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
-          <input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
-          <span class="mdl-radio__label">Traffic Volume</span> </label>
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button" id="speed-button-container">
-          <input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
-          <span class="mdl-radio__label">Visibility</span> </label>
-        <img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
-        <div id="supermarket-histogram"></div>
-        <div id="supermarket-line-time"></div>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" id ='analytics-link'>
-          <i class="material-icons">link</i>
-        </button>
-        <canvas id="supermarketTabCanvas">
-      </div>
-    </section>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<!-- Title -->
+					<span class="mdl-layout-title">Super Metrics</span>
+				</div>
+				<!-- Tabs -->
+				<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+					<a href="#supermarket-tab" id="supermarket-tab" class="mdl-layout__tab is-active">Queue Metrics</a>
+					<a href="#ad-management-tab" id="ad-management-tab" class="mdl-layout__tab">Ad Management</a>
+					<a href="#monitor-tab" id="monitor-tab" class="mdl-layout__tab">Dev</a>
+				</div>
+			</header>
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Super Metrics</span>
+				<nav class="mdl-navigation">
+					<a class="mdl-navigation__link" href="">Path #1</a>
+					<a class="mdl-navigation__link" href="">Path #2</a>
+					<a class="mdl-navigation__link" href="">Path #3</a>
+					<a class="mdl-navigation__link" href="">Path #4</a>
+				</nav>
+			</div>
 
-   	<div class="warning-card-square mdl-card mdl-shadow--2dp"  id="warning-card">
-		  <div class="mdl-card__title mdl-card--expand">
-		    <h2 class="mdl-card__title-text">Warning!</h2>
-		  </div>
-		  <div class="mdl-card__supporting-text">
-		    Unrecognized beacons!
-		  </div>
-		  <div class="mdl-card__actions mdl-card--border">
-		    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="warning-button">
-		      Done
-		    </a>
-		  </div>
+			<main class="mdl-layout__content">
+				<section class="mdl-layout__tab-panel is-active" id="supermarket-tab">
+					<div class="page-content">
+						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
+							<input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
+							<span class="mdl-radio__label">Traffic Volume</span> </label>
+						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button" id="speed-button-container">
+							<input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
+							<span class="mdl-radio__label">Visibility</span> </label>
+						<img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
+						<div id="supermarket-histogram"></div>
+						<div id="supermarket-line-time"></div>
+						<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" id ='analytics-link'>
+							<i class="material-icons">link</i>
+						</button>
+						<canvas id="supermarketTabCanvas">
+					</div>
+				</section>
+
+				<section class="mdl-layout__tab-panel" id="ad-management-tab">
+					<div class="page-content">
+						<button id="ad-management-add" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Add
+						</button>
+						<button id="ad-management-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Clear
+						</button>
+						
+						<div class="product-card-square mdl-card mdl-shadow--4dp"  id="product-card">
+							<div class="mdl-card__title mdl-card--expand mdl-card--border mdl-shadow--2dp">
+							</div>
+							<div class="mdl-card__supporting-text" id="product-card-details">
+							</div>
+							<div class="mdl-card__actions mdl-card--border"></div>
+						</div>
+						<img id="ad-management-plan" src="css/storePlan.png" width="1000" height="400" >
+						<canvas id="ad-management-bg" width="1000" height="400"></canvas>
+					</div>
+				</section>
+
+				<section class="mdl-layout__tab-panel" id="monitor-tab">
+					<div class="page-content">
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> <span class="mdl-switch__label">Single sensor mode</span>
+							<input type="checkbox" id="monitor_single_sensor_switch" class="mdl-switch__input" checked>
+						</label>
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_hyper_sensetive_beacon_switch" id="monitor_hyper_sensetive_beacon_switch_container"> <span class="mdl-switch__label">Hyper sensitive beacon</span>
+							<input type="checkbox" id="monitor_hyper_sensetive_beacon_switch" class="mdl-switch__input">
+						</label>
+
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_publish_location_switch" id="monitor_publish_location_switch_container"> <span class="mdl-switch__label">Publish Location</span>
+							<input type="checkbox" id="monitor_publish_location_switch" class="mdl-switch__input" checked>
+						</label>
+
+						<button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Clear
+						</button>
+						<button id="monitor-ad" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Publish Ad
+						</button>
+						<button id="monitor-training" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Training
+						</button>
+						<button id="monitor-take-photo" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+							Take Photo
+						</button>
+						<div class="mdl-shadow--2dp" id="beacons-distance-table"></div>
+
+						<img id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
+						<canvas id="monitor-bg" width="1000" height="400"/canvas>
+
+					</div>
+				</section>
+
+				<div class="warning-card-square mdl-card mdl-shadow--2dp"  id="warning-card">
+					<div class="mdl-card__title mdl-card--expand">
+						<h2 class="mdl-card__title-text">Warning!</h2>
+					</div>
+					<div class="mdl-card__supporting-text">
+						Unrecognized beacons!
+					</div>
+					<div class="mdl-card__actions mdl-card--border">
+						<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="warning-button"> Done </a>
+					</div>
+				</div>
+
+			</main>
 		</div>
-				
-    <section class="mdl-layout__tab-panel" id="ad-management-tab">
-      <div class="page-content">
-      	<button id="ad-management-add" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Add </button>
-        <button id="ad-management-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Clear </button>
-          
-      	<img id="ad-management-plan" src="css/storePlan.png" width="1000" height="400">
-        <canvas id="ad-management-bg" width="1000" height="400"></canvas>
-      </div>
-    </section>
-    
-    <section class="mdl-layout__tab-panel" id="monitor-tab">
-      <div class="page-content">
-				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container">
-					<span class="mdl-switch__label">Single sensor mode</span>
-				  <input type="checkbox" id="monitor_single_sensor_switch" class="mdl-switch__input" checked>
-				</label>
-				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_hyper_sensetive_beacon_switch" id="monitor_hyper_sensetive_beacon_switch_container">
-					<span class="mdl-switch__label">Hyper sensitive beacon</span>
-				  <input type="checkbox" id="monitor_hyper_sensetive_beacon_switch" class="mdl-switch__input">
-				</label>
-				
-				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_publish_location_switch" id="monitor_publish_location_switch_container">
-					<span class="mdl-switch__label">Publish Location</span>
-				  <input type="checkbox" id="monitor_publish_location_switch" class="mdl-switch__input" checked>
-				</label>
-				
-        <button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Clear </button>
-        <button id="monitor-ad" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Publish Ad </button>
-        <button id="monitor-training" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Training </button>
-        <button id="monitor-take-photo" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Take Photo </button>
-        <div id="beacons-distance-table"></div>
-        
-        <img id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
-        <canvas id="monitor-bg" width="1000" height="400"/canvas>
-        
-      </div>
-    </section>
-  </main>
-</div>
-
-
-</body>
+	</body>
 </html>

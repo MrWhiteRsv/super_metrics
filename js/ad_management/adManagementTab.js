@@ -47,8 +47,11 @@ var adManagementTab = {
   	for (var i = 0; i < allProducts.length; i++) {
   		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
   	}
+  	this.renderProductCard(document.getElementById("product-card-details"), allProducts[0]);
   },
   
+  /* Implementation */
+ 
   /**
    * Draw ad marker on background canvas.
    * both x and y are given in the [0.0, 1.0] range.
@@ -61,5 +64,29 @@ var adManagementTab = {
     ctx.drawImage(this.adMarker, x * width - 10, y * height - 30, 20, 30);
   },
   
+  /**
+   * Render the content of the card on the card itself.
+   */
+  renderProductCard : function(card, content) {
+		while (card.hasChildNodes()) {
+      card.removeChild(card.lastChild);
+    }
+    this.addTextToNode(card, "Name: " + content.name);
+    this.addTextToNode(card, "Description: " + content.description);
+    this.addTextToNode(card, "Price: " + content.price);
+    this.addTextToNode(card, "Ingridiants: " + content.ingridiants);
+    
+   /* var para = document.createElement("p");
+    var text = document.createTextNode("Name: " + content.name);
+    para.appendChild(text);
+    card.appendChild(para);*/
+  },
   
+  addTextToNode : function(node, str) {
+    var para = document.createElement("p");
+    var textNode = document.createTextNode(str);
+    para.appendChild(textNode);
+    node.appendChild(para); 	
+  	
+  }
  }
