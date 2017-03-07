@@ -104,7 +104,7 @@
   color: #ccc;
   height: 20vh;
   margin: 2vh 2vw 2vh 2vw;
-  background: url('whole_tomatos.png') no-repeat #ffffff;
+  background: url('./products/tide.png') no-repeat #ffffff;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;

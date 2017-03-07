@@ -4,8 +4,7 @@ var adManagementTab = {
   
   init : function() {
     this.adMarker = new Image();
-    //this.adMarker.src = 'css/ic_blue_dot.png';
-    this.adMarker.src = 'css/marker.png';
+    this.adMarker.src = 'css/markers/marker.png';
     if (false) {
     	this.adMarker.onload = function () {
 	  	  var canvas = document.getElementById('ad-management-canvas');
@@ -81,6 +80,21 @@ var adManagementTab = {
     this.addTextToNode(card, "Description: " + content.description);
     this.addTextToNode(card, "Price: " + content.price);
     this.addTextToNode(card, "Ingridiants: " + content.ingridiants);
+    
+    var product_card = document.getElementById("product-card");
+    var children = product_card.childNodes;
+    var title_child = undefined;
+		for(child in children) {
+			var childClassName = children[child].className;
+			if (childClassName && childClassName.includes('mdl-card__title')) {
+				title_child = children[child];
+			}
+		}
+		console.log('image: ' + content.all_photo_urls[0]);
+		if (title_child) {
+			var path = "url('css/products/" + content.all_photo_urls[0] + "')";
+			title_child.style.backgroundImage = path;
+		}
   },
   
   addTextToNode : function(node, str) {
