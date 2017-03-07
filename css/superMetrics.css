@@ -49,13 +49,28 @@
   z-index: 1;
 }
 
-/*** Ad Management ***/
-#ad-management-plan,
-#ad-management-bg {
+/*** General ***/
+
+.supermarket-plan-container {
   position: absolute;
   top: 15vh;
   left: 5vw;
+  width : 1012px;
+  height : 412px;
 }
+
+.supermarket-plan,
+.supermarket-canvas {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.supermarket-canvas {
+  z-index: 1;
+}
+
+/*** Ad Management ***/
 
 #ad-management-add,
 #ad-management-clear {
@@ -102,17 +117,6 @@
 }
 
 /*** Monitor ***/
-
-#monitor-plan,
-#monitor-bg {
-  position: absolute;
-  top: 15vh;
-  left: 5vw;
-}
-
-#monitor-bg {
-  z-index: 10;
-}
 
 #monitor-clear,
 #monitor-ad,

@@ -6,7 +6,7 @@ var monitorTab = {
     this.cartImage = new Image();
     this.cartImage.src = 'css/cart.png';
     var plan = document.getElementById("monitor-plan");
-    var canvas = document.getElementById("monitor-bg");
+    var canvas = document.getElementById("monitor-canvas");
     canvas.style.height = plan.offsetHeight + 'px';
     canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
@@ -64,7 +64,7 @@ var monitorTab = {
    * @param {Beacons} beacons. The beacons to be displayed on plan.
    */
    drawPlanBackground : function () {
-  	var canvas = document.getElementById('monitor-bg');
+  	var canvas = document.getElementById('monitor-canvas');
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
@@ -144,7 +144,7 @@ var monitorTab = {
    * both x and y are given in the [0.0, 1.0] range.
    */
   drawCart : function(x, y) {
-  	var canvas = document.getElementById('monitor-bg');
+  	var canvas = document.getElementById('monitor-canvas');
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;

@@ -8,7 +8,7 @@ var adManagementTab = {
     this.adMarker.src = 'css/marker.png';
     if (false) {
     	this.adMarker.onload = function () {
-	  	  var canvas = document.getElementById('ad-management-bg');
+	  	  var canvas = document.getElementById('ad-management-canvas');
 	      var ctx = canvas.getContext("2d");
 	      ctx.drawImage(this, 30, 15);
 	      ctx.drawImage(this, 88, 110);
@@ -22,7 +22,7 @@ var adManagementTab = {
 	    }
 		}
     var plan = document.getElementById("ad-management-plan");
-    var canvas = document.getElementById("ad-management-bg");
+    var canvas = document.getElementById("ad-management-canvas");
     canvas.style.height = plan.offsetHeight + 'px';
     canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
@@ -38,12 +38,10 @@ var adManagementTab = {
     var x = (event.clientX - rect.left) / width;
     var y = (event.clientY - rect.top) / height;
     this.drawAdMarker(x, y);
-    console.log("x: " + x);
   },
   
   updateView : function() {
   	var allProducts = controller.getAllProducts();
-  	console.log('location_str: ' + allProducts[0].location_str);
   	for (var i = 0; i < allProducts.length; i++) {
   		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
   	}
@@ -51,13 +49,12 @@ var adManagementTab = {
   },
   
   /* Implementation */
- 
   /**
    * Draw ad marker on background canvas.
    * both x and y are given in the [0.0, 1.0] range.
    */
   drawAdMarker : function(x, y) {
-  	var canvas = document.getElementById('ad-management-bg');
+  	var canvas = document.getElementById('ad-management-canvas');
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
