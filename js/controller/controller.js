@@ -69,6 +69,32 @@ var controller = {
   	return this.beaconsGraph;
   },
   
+  getNearestProductUuid : function(x, y) {
+  	var allProducts = this.getAllProducts();
+  	var minDist = undefined;
+  	var minDistUuid = undefined;
+  	for (var i = 0; i < allProducts.length; i++) {
+  		var prd_x = allProducts[i].location_px.px;
+  		var prd_y = allProducts[i].location_px.py;
+  		var dist = Math.pow((prd_x - x), 2) + Math.pow((prd_y - y), 2);
+  		if (minDist == undefined || dist < minDist) {
+  			minDist = dist;
+  			minDistUuid = allProducts[i].uuid;
+  		}
+  	}
+  	return minDistUuid;
+  },
+  
+  getProductDetails : function(uuid) {
+  	var allProducts = this.getAllProducts();
+    for (var i = 0; i < allProducts.length; i++) {
+    	if (allProducts[i].uuid == uuid) {
+    		return allProducts[i];
+    	}
+    }
+    return undefined;
+  },
+  
   /**
    * Main Entry Point.
    * Called once map is loaded.

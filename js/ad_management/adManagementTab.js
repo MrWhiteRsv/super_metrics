@@ -27,17 +27,8 @@ var adManagementTab = {
     canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
     canvas.addEventListener("mousedown", function(event) {
-					self.getCursorPosition(canvas, event);
+					self.treatCanvasMouseDown(canvas, event);
 			  }, false);
-  },
-  
-  getCursorPosition : function(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
-    var height = canvas.height;
-    var width = canvas.width;
-    var x = (event.clientX - rect.left) / width;
-    var y = (event.clientY - rect.top) / height;
-    this.drawAdMarker(x, y);
   },
   
   updateView : function() {
@@ -45,10 +36,28 @@ var adManagementTab = {
   	for (var i = 0; i < allProducts.length; i++) {
   		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
   	}
-  	this.renderProductCard(document.getElementById("product-card-details"), allProducts[0]);
   },
   
   /* Implementation */
+ 
+  /**
+   * display details of the product corresponding to the clicked marker.
+   */
+  treatCanvasMouseDown : function(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    var height = canvas.height;
+    var width = canvas.width;
+    var x = (event.clientX - rect.left) / width;
+    var y = (event.clientY - rect.top) / height;
+    var uuid = controller.getNearestProductUuid(x, y);
+    if (uuid) {
+    	var productDetails = controller.getProductDetails(uuid);
+    	if (productDetails) {
+    	  this.renderProductCard(document.getElementById("product-card-details"), productDetails);
+    	}
+    }
+  },
+  
   /**
    * Draw ad marker on background canvas.
    * both x and y are given in the [0.0, 1.0] range.
@@ -72,11 +81,6 @@ var adManagementTab = {
     this.addTextToNode(card, "Description: " + content.description);
     this.addTextToNode(card, "Price: " + content.price);
     this.addTextToNode(card, "Ingridiants: " + content.ingridiants);
-    
-   /* var para = document.createElement("p");
-    var text = document.createTextNode("Name: " + content.name);
-    para.appendChild(text);
-    card.appendChild(para);*/
   },
   
   addTextToNode : function(node, str) {
