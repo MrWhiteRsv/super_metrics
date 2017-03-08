@@ -9,6 +9,7 @@ var controller = {
   singleSensorMode : true,
   hyperSentistiveBeacons : false,
   publishLocation : true,
+  adMode : false,
   
   setHardCodedBeaconDistance: function(value) {
   	controller.hardCodedBeaconDistance = value;
@@ -61,8 +62,8 @@ var controller = {
     return this.beacons.getBeaconMarkerType(mac);
   },
   
-  getBeaconLocation : function(mac) {
-    return this.beacons.getBeaconLocation(mac);
+  getBeaconRssi : function(mac) {
+    return this.beacons.getBeaconRssi(mac);
   },
   
   getBeaconsGraph : function() {
@@ -146,9 +147,10 @@ var controller = {
 	  }
  	},
  	
-  publishAd : function() {
+  toggleAdMode : function() {
   	topic = "monitor/cartId/command";
-    var payload = JSON.stringify({publishAd: true});
+  	this.adMode = !this.adMode;
+    var payload = JSON.stringify({publishAd: this.adMode});
     mqtt_listener.sendMessage(topic, payload);
  	},
  	
@@ -186,7 +188,6 @@ var controller = {
   },
   
   treatMsg : function(type, jsonPayload) {
-//  	console.log('treatMsg: ' + type);
     var payload = JSON.parse(jsonPayload);
     switch (type) {
       case 'revolution':
@@ -296,23 +297,22 @@ var controller = {
   
   treatBleMsg : function(payload) {
     var mac = payload["mac"];
+    var rssi = payload["nearest_rssi"];
     if (!this.isValidBeacon(mac)) {
     	this.issueBeaconDoesNotExistWarning();
       return;    	
     }
-    console.log('Ble Proximity');
     var prevMac = this.revolutionPath.findLatestNearbyBeacon();
     var nearestTime = payload['nearest_time'];
     if (!this.hardCodedBeaconDistance) {  // Learn beacons distance.
     	if (prevMac) {
 	    	var dist = prevMac === mac ? 0 : this.revolutionPath.countRevolutionsSinceLatestProximityEvent();
-	    	console.log('bla proximity event dist:' + dist);
 	    	if (dist >= 0) {
 	    	  this.beaconsGraph.addEdgeLength(prevMac, mac, dist);
-	    	  console.log('adding edge (prevMac, mac, dist): (' + prevMac	 + ', ' + mac + ', ' + dist + ')');
 	    	}
 	    }
     }
+    this.beacons.addBeaconSample(mac, rssi)
     this.revolutionPath.addProximityEvent(mac, nearestTime);
     this.publishCurrentLocation();
     mainPage.updateView(/*clearMonitorTab*/ true);

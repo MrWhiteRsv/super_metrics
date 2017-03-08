@@ -79,6 +79,7 @@ var adManagementTab = {
     this.addTextToNode(card, "Name: " + content.name);
     this.addTextToNode(card, "Description: " + content.description);
     this.addTextToNode(card, "Price: " + content.price);
+    this.addTextToNode(card, "Discount: %" + content.discount_percent);
     this.addTextToNode(card, "Ingridiants: " + content.ingridiants);
     
     var product_card = document.getElementById("product-card");

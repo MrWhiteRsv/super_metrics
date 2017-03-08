@@ -93,11 +93,11 @@
   position: absolute;
   top : 15vh;
   left: 75vw;
-  height: 80vh;
+  height: 64vh;
 }
 
 #product-card-details {
-  height: 60vh;
+  height: 44vh;
 }
 
 #product-card > .mdl-card__title {
@@ -166,12 +166,12 @@
   top : 18vh;
 }
 
-#beacons-distance-table {
+#monitor-beacons-table-container {
   position: absolute;
+  padding : 1vw;
   top : 25vh;
   left : 75vw;
   width : 18vw;
-  height : 30vh;
 }
 
 .warning-card-square.mdl-card {

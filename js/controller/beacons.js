@@ -14,8 +14,12 @@ Beacons.prototype = {
     return this.mapMacToBeaconData[mac].markerType;
   },
   
-  getBeaconLocation : function(mac) {
+  /*getBeaconLocation : function(mac) {
     return this.mapMacToBeaconData[mac].location;
+  },*/
+ 
+   getBeaconRssi : function(mac) {
+    return this.mapMacToBeaconData[mac].rssi;
   },
   
    getBeaconColor : function(mac) {
@@ -30,7 +34,20 @@ Beacons.prototype = {
   addBeacon(mac, beaconData) {
     this.mapMacToBeaconData[mac] = beaconData;
   },
+ 
+  addBeaconSample : function(mac, rssi) {
+    var numberOfSamples = this.mapMacToBeaconData[mac].samples + 1;
+    this.mapMacToBeaconData[mac].samples = numberOfSamples;
+    if (numberOfSamples == 1) {
+      this.mapMacToBeaconData[mac].rssi = rssi;
+    } else {
+      this.mapMacToBeaconData[mac].rssi =
+          (this.mapMacToBeaconData[mac].rssi * (numberOfSamples - 1) + rssi) * 1.0 /
+           numberOfSamples;
+    }
+  },
   
+  /* Deprecated
   addBeaconSample : function(mac, nearestTime, nearestLocation) {
     var numberOfSamples = this.mapMacToBeaconData[mac].samples + 1;
     this.mapMacToBeaconData[mac].samples = numberOfSamples;
@@ -44,7 +61,7 @@ Beacons.prototype = {
           (this.mapMacToBeaconData[mac].location.lon * (numberOfSamples - 1) +
           nearestLocation.lon) * 1.0 / numberOfSamples;
     }
-  },  
+  }, */
   
   toString : function() {
     return JSON.stringify(this);

@@ -19,7 +19,7 @@ var monitorTab = {
     document.getElementById("monitor-ad").addEventListener(
       "click",
       function() {
-      	controller.publishAd();
+      	controller.toggleAdMode();
       });
      document.getElementById("monitor-take-photo").addEventListener(
           "click", function() {
@@ -44,7 +44,8 @@ var monitorTab = {
   
   updateView : function() {
   	if (controller.getGoogleChartsLoaded()) {
-      this.drawTable();
+      this.drawDistanceTable();
+      this.drawSignalLevelTable();
   	}
 		this.drawPlanBackground();
 		var latestPixel = controller.getCartPixel();
@@ -158,7 +159,7 @@ var monitorTab = {
     ctx.stroke();*/
   },
   
-  drawTable : function() {
+  drawDistanceTable : function() {
   	var beacons = controller.getBeacons().getAllBeaconsMac();
   	var beaconsGreaph = controller.getBeaconsGraph();
     var data = new google.visualization.DataTable();
@@ -175,7 +176,24 @@ var monitorTab = {
     	}
     	data.addRows([row]);
     }
-    var table = new google.visualization.Table(document.getElementById('beacons-distance-table'));
+    var table = new google.visualization.Table(document.getElementById('monitor-beacons-distance-table'));
+    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+	},
+	
+	drawSignalLevelTable : function() {
+  	var allBeaconsMac = controller.getAllBeaconsMac();
+    var data = new google.visualization.DataTable();
+    for (var c = 0; c < allBeaconsMac.length; c++) {
+    	data.addColumn('number', '' + (c + 1));
+    }
+    var row = [];
+    for (var i = 0; i < allBeaconsMac.length; i++) {
+	    var rssi = controller.getBeaconRssi(allBeaconsMac[i]);
+	    rssi = (rssi == undefined) ? -1 : rssi;
+	    row.push(rssi);
+    }
+    data.addRows([row]);
+    var table = new google.visualization.Table(document.getElementById('monitor-beacons-signal-level-table'));
     table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
 	}
 }

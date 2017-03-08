@@ -8,9 +8,9 @@
 		rel="stylesheet">
 		<script src="paho.javascript-1.0.2/mqttws31.js"></script>
 		<script src="js/ad_management/adManagementTab.js"></script>
-		<script src="js/beacons.js"></script>
 		<script src="js/beaconsGraph.js"></script>
 		<script src="js/config.js"></script>
+		<script src="js/controller/beacons.js"></script>
 		<script src="js/controller/controller.js"></script>
 		<script src="js/graph.js"></script>
 		<script src="js/supermarketTab.js"></script>
@@ -28,6 +28,7 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
 		<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 	</head>
 	<body onload="controller.onMapLoaded()">
 
@@ -64,8 +65,8 @@
 							<input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
 							<span class="mdl-radio__label">Visibility</span> </label>
 						<img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
-						<div id="supermarket-histogram"></div>
-						<div id="supermarket-line-time"></div>
+						<div id="supermarket-histogram">
+						<div id="supermarket-line-time">
 						<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" id ='analytics-link'>
 							<i class="material-icons">link</i>
 						</button>
@@ -87,11 +88,11 @@
 							</div>
 							<div class="mdl-card__supporting-text" id="product-card-details">
 							</div>
-							<div class="mdl-card__actions mdl-card--border"></div>
 						</div>
-						<div class = "mdl-shadow--4dp supermarket-plan-container">
-							<img class = "supermarket-plan" id="ad-management-plan" src="css/storePlan.png" width="1000" height="400">
-						  <canvas class = "supermarket-canvas" id="ad-management-canvas"  width="1000" height="400"></canvas>
+						
+						<div class="mdl-shadow--4dp supermarket-plan-container">
+							<img class="supermarket-plan" id="ad-management-plan" src="css/storePlan.png" width="1000" height="400">
+						  <canvas class="supermarket-canvas" id="ad-management-canvas"  width="1000" height="400">
 						</div>
 					</div>
 				</section>
@@ -121,10 +122,17 @@
 						<button id="monitor-take-photo" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
 							Take Photo
 						</button>
-						<div class="mdl-shadow--2dp" id="beacons-distance-table"></div>
-						<div class = "mdl-shadow--4dp supermarket-plan-container">
-							<img class = "supermarket-plan" id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
-						  <canvas class = "supermarket-canvas" id="monitor-canvas"  width="1000" height="400"></canvas>
+						<div class="mdl-shadow--2dp" id="monitor-beacons-table-container">
+							<br> <div class="mdl-typography--title">Distane table</div>
+							<br> <div id="monitor-beacons-distance-table"> </div> <br>
+							<br> <div class="mdl-typography--title">Signal level(dbi) table</div>
+							<br> <div id="monitor-beacons-signal-level-table"> </div> <br>
+
+						</div>
+						
+						<div class="mdl-shadow--4dp supermarket-plan-container">
+							<img class="supermarket-plan" id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
+						  <canvas class="supermarket-canvas" id="monitor-canvas" width="1000" height="400">
 						</div>
 					</div>
 				</section>
