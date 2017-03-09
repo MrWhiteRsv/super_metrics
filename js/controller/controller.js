@@ -176,9 +176,9 @@ var controller = {
     mqtt_listener.sendMessage(topic, payload);
  	},
  	
-  takePhotoOnCart : function() {
+  captureImageWithCart : function(name) {
   	topic = "monitor/cartId/command";
-    var payload = JSON.stringify({takePhotoOnCart: true});
+    var payload = JSON.stringify({captureImageWithCart: true, name: name});
     mqtt_listener.sendMessage(topic, payload);
  	}, 	 
  	 

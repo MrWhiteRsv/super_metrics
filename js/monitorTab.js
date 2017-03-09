@@ -23,7 +23,7 @@ var monitorTab = {
       });
      document.getElementById("monitor-take-photo").addEventListener(
           "click", function() {
-      	    controller.takePhotoOnCart();
+      	    controller.captureImageWithCart('test_image');
           });
      document.getElementById("monitor_single_sensor_switch").addEventListener(
          "change", function() {
