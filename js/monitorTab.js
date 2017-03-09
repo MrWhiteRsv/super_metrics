@@ -40,6 +40,13 @@ var monitorTab = {
       	   controller.setPublishLocation(document.getElementById(
       	       "monitor_publish_location_switch").checked);
          });
+     document.getElementById("monitor_adaptive_threshold_switch").addEventListener(
+         "change", function() {
+      	   controller.setAdaptiveBleThreshold(document.getElementById(
+      	       "monitor_adaptive_threshold_switch").checked);
+      	   self.updateView();
+      	   controller.onBleThresholdMethodChange();
+         });
   },
   
   updateView : function() {
@@ -95,7 +102,7 @@ var monitorTab = {
          
     var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {
-      var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
+      var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
       var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
       color = "#303030";
       this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
@@ -106,13 +113,13 @@ var monitorTab = {
       ctx.beginPath();
       var width = canvas.width;
       var height = canvas.height;
-      var beaconPix = controller.getBeaconPixLocation(allBeaconsMac[0]);
+      var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
       ctx.moveTo(width * beaconPix['px'], height * beaconPix['py']);
       for (var i in allBeaconsMac) {
-        beaconPix = controller.getBeaconPixLocation(allBeaconsMac[i]);
+        beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
         ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
       }
-      beaconPix = controller.getBeaconPixLocation(allBeaconsMac[0]);
+      beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
       ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
       ctx.stroke();
     }
@@ -171,29 +178,49 @@ var monitorTab = {
     	var row = [];
     	for (var c = 0; c < beacons.length; c++) {
     		var val = beaconsGreaph.getEdgeLength(allBeacons[r], allBeacons[c]);
-    		val = (val == undefined) ? -1 : val;
     	  row.push(val);
     	}
     	data.addRows([row]);
     }
+    for (var r = 0; r < beacons.length; r++) {
+      for (var c = 0; c < beacons.length; c++) {
+        data.setProperty(r, c, 'style', 'text-align: center');
+      }
+    }
     var table = new google.visualization.Table(document.getElementById('monitor-beacons-distance-table'));
-    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+    table.draw(data, {showRowNumber: true, allowHtml: true, width: '100%', height: '100%'});
 	},
 	
 	drawSignalLevelTable : function() {
   	var allBeaconsMac = controller.getAllBeaconsMac();
     var data = new google.visualization.DataTable();
+    data.addColumn('string', '');
     for (var c = 0; c < allBeaconsMac.length; c++) {
     	data.addColumn('number', '' + (c + 1));
     }
-    var row = [];
+    var row = ['Avg RSSI'];
     for (var i = 0; i < allBeaconsMac.length; i++) {
-	    var rssi = controller.getBeaconRssi(allBeaconsMac[i]);
-	    rssi = (rssi == undefined) ? -1 : rssi;
-	    row.push(rssi);
+	    row.push(controller.getBeacons().getBeaconAverageRssi(allBeaconsMac[i]));
     }
     data.addRows([row]);
-    var table = new google.visualization.Table(document.getElementById('monitor-beacons-signal-level-table'));
-    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+    var row = ['Recent'];
+    for (var i = 0; i < allBeaconsMac.length; i++) {
+	    row.push(controller.getBeacons().getBeaconRecentRssi(allBeaconsMac[i]));
+    }
+    data.addRows([row]);
+    var row = ['Threshold'];
+    for (var i = 0; i < allBeaconsMac.length; i++) {
+	    //row.push(controller.getBeaconThRssi(allBeaconsMac[i]));
+      row.push(controller.getBeaconProximityThreshold(allBeaconsMac[i]));
+    }
+    data.addRows([row]);
+    var table = new google.visualization.Table(
+    	  document.getElementById('monitor-beacons-signal-level-table'));
+    for (var r = 0; r < 3; r++) {
+	    for (var c = 1; c < 5; c++) {
+	      data.setProperty(r, c, 'style', 'text-align: center');
+	    }
+	  }
+    table.draw(data, {showRowNumber: false, allowHtml: true,  width: '100%', height: '100%'});
 	}
 }

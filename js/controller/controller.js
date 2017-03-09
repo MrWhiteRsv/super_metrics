@@ -8,8 +8,9 @@ var controller = {
   mqttConnected : false,
   singleSensorMode : true,
   hyperSentistiveBeacons : false,
-  publishLocation : true,
-  adMode : false,
+  publishLocation : true,  
+  adMode : false, 
+  adaptiveBleThreshold : true,
   
   setHardCodedBeaconDistance: function(value) {
   	controller.hardCodedBeaconDistance = value;
@@ -27,6 +28,10 @@ var controller = {
   	this.hyperSentistiveBeacons = value;
   },
   
+  setAdaptiveBleThreshold: function(value) {
+  	this.adaptiveBleThreshold = value;
+  },
+  
   setPublishLocation: function(value) {
   	this.publishLocation = value;
   },
@@ -42,6 +47,7 @@ var controller = {
   getSingleSensorMode : function() {
   	return this.singleSensorMode;
   },
+  
   getGoogleChartsLoaded : function() {
   	return this.googleChartsLoaded;
   },
@@ -53,21 +59,21 @@ var controller = {
   getBeacons : function() {
   	return this.beacons;
   },
-  
-  getBeaconPixLocation : function(mac) {
-    return this.beacons.getBeaconPixLocation(mac);
-  },
     
   getBeaconMarkerType : function(mac) {
     return this.beacons.getBeaconMarkerType(mac);
   },
   
-  getBeaconRssi : function(mac) {
-    return this.beacons.getBeaconRssi(mac);
-  },
-  
   getBeaconsGraph : function() {
   	return this.beaconsGraph;
+  },
+  
+  getBeaconAverageRssi : function(mac) {
+    return this.mapMacToBeaconData[mac].avgRssi;
+  },
+  
+  getAdaptiveBleThreshold: function() {
+  	return this.adaptiveBleThreshold;
   },
   
   getNearestProductUuid : function(x, y) {
@@ -96,6 +102,15 @@ var controller = {
     return undefined;
   },
   
+  getBeaconProximityThreshold : function(mac) {
+  	if (this.getAdaptiveBleThreshold()) {
+  		var average = this.getBeacons().getBeaconAverageRssi(mac);
+  	  return average == undefined ? undefined : average + 10;
+  	} else {
+      return -50;
+    }
+  },
+  
   /**
    * Main Entry Point.
    * Called once map is loaded.
@@ -110,6 +125,13 @@ var controller = {
   	this.hardCodedBeaconDistance = false;
   	this.init();
     supermarketTab.updateView();
+  },
+
+  /**
+   * Handle a change in the BLE threshold triggered by the UI.
+   */  
+  onBleThresholdMethodChange : function() {
+  	this.publishBleProximityThresholds();
   },
   
   init : function() {
@@ -316,6 +338,18 @@ var controller = {
     this.revolutionPath.addProximityEvent(mac, nearestTime);
     this.publishCurrentLocation();
     mainPage.updateView(/*clearMonitorTab*/ true);
+  },
+  
+  publishBleProximityThresholds : function() {
+  	var topic = "monitor/cartId/command";
+  	var allBeaconsMac = controller.getAllBeaconsMac();
+    for (var i = 0; i < allBeaconsMac.length; i++) {
+    	var mac = allBeaconsMac[i];
+    	var threshold = this.getBeaconProximityThreshold(mac);
+    	var payload = JSON.stringify({changeThreshold: true, mac: mac, threshold: threshold});
+    	mqtt_listener.sendMessage(topic, payload);
+    }
+  	
   },
   
 }

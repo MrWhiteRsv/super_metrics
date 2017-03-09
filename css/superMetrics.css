@@ -147,8 +147,9 @@
 
 #monitor_single_sensor_switch_container,
 #monitor_hyper_sensetive_beacon_switch_container,
-#monitor_publish_location_switch_container
- {
+#monitor_publish_location_switch_container,
+#monitor_adaptive_threshold_switch_container 
+{
 	position: absolute;
   left: 75vw;
   width: 18vw;
@@ -166,10 +167,15 @@
   top : 18vh;
 }
 
+#monitor_adaptive_threshold_switch_container {
+  top : 24vh;
+}
+
+
 #monitor-beacons-table-container {
   position: absolute;
   padding : 1vw;
-  top : 25vh;
+  top : 30vh;
   left : 75vw;
   width : 18vw;
 }

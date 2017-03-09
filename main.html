@@ -74,7 +74,7 @@
 					</div>
 				</section>
 
-				<section class="mdl-layout__tab-panel is-active" id="ad-management-tab">
+				<section class="mdl-layout__tab-panel" id="ad-management-tab">
 					<div class="page-content">
 						<button id="ad-management-add" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
 							Add
@@ -97,7 +97,7 @@
 					</div>
 				</section>
 
-				<section class="mdl-layout__tab-panel" id="monitor-tab">
+				<section class="mdl-layout__tab-panel is-active" id="monitor-tab">
 					<div class="page-content">
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> <span class="mdl-switch__label">Single sensor mode</span>
 							<input type="checkbox" id="monitor_single_sensor_switch" class="mdl-switch__input" checked>
@@ -106,8 +106,14 @@
 							<input type="checkbox" id="monitor_hyper_sensetive_beacon_switch" class="mdl-switch__input">
 						</label>
 
-						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_publish_location_switch" id="monitor_publish_location_switch_container"> <span class="mdl-switch__label">Publish Location</span>
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_publish_location_switch" id="monitor_publish_location_switch_container">
+							 <span class="mdl-switch__label">Publish Location</span>
 							<input type="checkbox" id="monitor_publish_location_switch" class="mdl-switch__input" checked>
+						</label>
+						
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_adaptive_threshold_switch" id="monitor_adaptive_threshold_switch_container">
+							<span class="mdl-switch__label">Adaptive Threshold </span>
+							<input type="checkbox" id="monitor_adaptive_threshold_switch" class="mdl-switch__input" checked>
 						</label>
 
 						<button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
@@ -123,9 +129,9 @@
 							Take Photo
 						</button>
 						<div class="mdl-shadow--2dp" id="monitor-beacons-table-container">
-							<br> <div class="mdl-typography--title">Distane table</div>
+							<br> <div class="mdl-typography--title">Distance [rev]</div>
 							<br> <div id="monitor-beacons-distance-table"> </div> <br>
-							<br> <div class="mdl-typography--title">Signal level(dbi) table</div>
+							<br> <div class="mdl-typography--title">Signal level [db]</div>
 							<br> <div id="monitor-beacons-signal-level-table"> </div> <br>
 
 						</div>
