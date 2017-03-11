@@ -176,9 +176,9 @@ var controller = {
     mqtt_listener.sendMessage(topic, payload);
  	},
  	
-  captureImageWithCart : function(name) {
+  captureImageWithCart : function(imageName) {
   	topic = "monitor/cartId/command";
-    var payload = JSON.stringify({captureImageWithCart: true, name: name});
+    var payload = JSON.stringify({captureImageWithCart: true, image_name: imageName});
     mqtt_listener.sendMessage(topic, payload);
  	}, 	 
  	 
@@ -244,7 +244,40 @@ var controller = {
   
   getAllProducts : function() {
   	res = [
-  	{"category": "discount", "location_str": "aisle 2", "all_photo_urls": ["836093010028.png"],
+      {"category": "asian", "location_str": "aisle 5", "uuid": "070844005073",
+        "ingredients": "WATER, SUGAR, SOYBEAN PASTE (FERMENTED SOYBEANS, WHEAT FLOUR, SOY SAUCE, SUGAR), GARLIC, CORN STARCH, SALT, VINEGAR, SESAME OIL, CARAMEL COLOR, SPICES, XANTHAN GUM (FOR TEXTURE) AND CITRIC ACID (ACIDULANT).",
+        "ndbno": "45042286", "nutrients": [
+        {"unit": "kcal", "name": "Energy", "value": "156"},
+        {"unit": "g", "name": "Protein", "value": "0.00"},
+        {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"},
+        {"unit": "g", "name": "Carbohydrate, by difference", "value": "37.50"},
+        {"unit": "g", "name": "Fiber, total dietary", "value": "0.0"},
+        {"unit": "g", "name": "Sugars, total", "value": "18.75"},
+        {"unit": "mg", "name": "Calcium, Ca", "value": "0"},
+        {"unit": "mg", "name": "Iron, Fe", "value": "0.00"},
+        {"unit": "mg", "name": "Sodium, Na", "value": "3062"},
+        {"unit": "mg", "name": "Vitamin C, total ascorbic acid", "value": "0.0"},
+        {"unit": "IU", "name": "Vitamin A, IU", "value": "0"},
+        {"unit": "g", "name": "Fatty acids, total saturated", "value": "0.00"},
+        {"unit": "g", "name": "Fatty acids, total trans", "value": "0.00"},
+        {"unit": "mg", "name": "Cholesterol", "value": "0"}],
+         "price": "$2.29", "location_px": {"px": 0.181, "py": 0.3}, 
+         "description": "KA-ME, HOISIN SAUCE, UPC: 070844005073", "discount_percent": 0,
+         "images": ["hoisin.png"], "name": "Hoisin Sauce"},
+
+      {"category": "asian", "location_str": "aisle 6", "uuid": "041390002847",
+        "ingredients": "WATER, WHEAT, SOYBEANS, SALT, SODIUM BENZOATE; LESS THAN 1/10 OF 1% AS A PRESERVATIVE",
+        "ndbno": "45135919", "nutrients": [
+        {"unit": "kcal", "name": "Energy", "value": "67"},
+        {"unit": "g", "name": "Protein", "value": "13.33"},
+        {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"},
+        {"unit": "g", "name": "Carbohydrate, by difference", "value": "0.00"},
+        {"unit": "mg", "name": "Sodium, Na", "value": "6133"}],
+         "price": "$2.29", "location_px": {"px": 0.215, "py": 0.45},
+         "description": "KIKKOMAN, SOY SAUCE, UPC: 041390002847",
+         "discount_percent": 0, "images": ["soy_sauce.png"],
+         "name": "Soy Sauce"},
+           	{"category": "discount", "location_str": "aisle 2", "images": ["836093010028.png"],
   	 "uuid": "836093010028", "ndbno": "45243227", "nutrients":
   	 [{"unit": "kcal", "name": "Energy", "value": "3"}, {"unit": "g", "name": "Protein", "value": "0.00"},
   	 {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"},
@@ -252,11 +285,11 @@ var controller = {
   	 {"unit": "g", "name": "Sugars, total", "value": "0.56"},
   	 {"unit": "mg", "name": "Sodium, Na", "value": "3"}],
   	 "price": "$7.99", "location_px": {"px": 0.094, "py": 0.3},
-  	 "ingridiants": "CARBONATED WATER, ORGANIC CANE SUGAR, CERTIFIED ORGANIC NATURAL FLAVORS, CITRIC ACID",
+  	 "ingredients": "CARBONATED WATER, ORGANIC CANE SUGAR, CERTIFIED ORGANIC NATURAL FLAVORS, CITRIC ACID",
   	 "description": "IZZE, SPARKLING WATER BEVERAGE, RASPBERRY WATERMELON, UPC: 836093010028",
   	 "discount_percent": 20, "name": "IZZE"},
   	 
-    {"category": "gourmet", "location_str": "aisle 16", "all_photo_urls": ["merlot.png"], "uuid": "14602", "ndbno": 14602,
+    {"category": "gourmet", "location_str": "aisle 16", "images": ["merlot.png"], "uuid": "14602", "ndbno": 14602,
      "nutrients": [{"unit": "g", "name": "Water", "value": "86.59"},
      {"unit": "kcal", "name": "Energy", "value": "83"},
      {"unit": "g", "name": "Protein", "value": "0.07"},
@@ -282,9 +315,11 @@ var controller = {
      "description": "Alcoholic Beverage, wine, table, red, Merlot",
      "discount_percent": 20,
      "name": "Miolo Reserva Merlot 2009"}
-     ];
-     return res;
+       ];
+    return res;
   },
+  
+
   
   // Implementation
   
@@ -328,7 +363,8 @@ var controller = {
     var nearestTime = payload['nearest_time'];
     if (!this.hardCodedBeaconDistance) {  // Learn beacons distance.
     	if (prevMac) {
-	    	var dist = prevMac === mac ? 0 : this.revolutionPath.countRevolutionsSinceLatestProximityEvent();
+	    	var dist = prevMac === mac ?
+	    	    0 : this.revolutionPath.countRevolutionsSinceLatestProximityEvent();
 	    	if (dist >= 0) {
 	    	  this.beaconsGraph.addEdgeLength(prevMac, mac, dist);
 	    	}
@@ -346,10 +382,11 @@ var controller = {
     for (var i = 0; i < allBeaconsMac.length; i++) {
     	var mac = allBeaconsMac[i];
     	var threshold = this.getBeaconProximityThreshold(mac);
-    	var payload = JSON.stringify({changeThreshold: true, mac: mac, threshold: threshold});
-    	mqtt_listener.sendMessage(topic, payload);
+    	if (threshold != undefined) {
+    	  var payload = JSON.stringify({changeThreshold: true, mac: mac, threshold: threshold});
+    	  mqtt_listener.sendMessage(topic, payload);
+    	}
     }
-  	
   },
   
 }
