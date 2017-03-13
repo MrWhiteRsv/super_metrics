@@ -6,14 +6,21 @@ var adManagementTab = {
     REMOVE: 2
   },
   
-	adMarker : undefined,
+	noAdMarker : undefined,
+	nearbyAdMarker : undefined,
+  awayAdMarker : undefined,
 	editMode : undefined,
-  
+	selectedProductUuid : undefined,
 
   init : function() {
-    this.adMarker = new Image();
-    this.adMarker.src = 'css/markers/marker.png';
+    this.noAdMarker = new Image();
+    this.nearbyAdMarker = new Image();
+    this.awayAdMarker = new Image();
+    this.noAdMarker.src = 'css/markers/white_marker.png';
+    this.nearbyAdMarker.src = 'css/markers/red_black_marker.png';
+    this.awayAdMarker.src = 'css/markers/white_black_marker.png';
     this.editMode = this.EDIT_MODE.REMOVE;
+    this.selectedProductUuid = undefined;
     var plan = document.getElementById("ad-management-plan");
     var canvas = document.getElementById("ad-management-canvas");
     canvas.style.height = plan.offsetHeight + 'px';
@@ -41,7 +48,10 @@ var adManagementTab = {
   	}, false);
   },
   
-  updateView : function() {  
+  updateView : function() {
+  	var canvas = document.getElementById('ad-management-canvas');
+  	var ctx = canvas.getContext("2d");
+  	ctx.clearRect(0, 0, canvas.width, canvas.height);
   	var button = document.getElementById("ad-mannagement-button");
   	switch (this.editMode) {
   		case this.EDIT_MODE.ADD:
@@ -56,7 +66,12 @@ var adManagementTab = {
   	}  	  	
   	var allProducts = controller.getAllProducts();
   	for (var i = 0; i < allProducts.length; i++) {
-  		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
+  		console.log('allProducts[i].uuid: ', allProducts[i].uuid);
+  		if (allProducts[i].uuid == this.selectedProductUuid) {
+  		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.nearbyAdMarker);
+  		} else {
+  		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.noAdMarker);	
+  		}
   	}
   },
   
@@ -71,13 +86,14 @@ var adManagementTab = {
     var width = canvas.width;
     var x = (event.clientX - rect.left) / width;
     var y = (event.clientY - rect.top) / height;
-    var uuid = controller.getNearestProductUuid(x, y);
-    if (uuid) {
-    	var productDetails = controller.getProductDetails(uuid);
+    this.selectedProductUuid = controller.getNearestProductUuid(x, y);
+    if (this.selectedProductUuid) {
+    	var productDetails = controller.getProductDetails(this.selectedProductUuid);
     	if (productDetails) {
     	  this.renderProductCard(document.getElementById("product-card-details"), productDetails);
     	}
     }
+    this.updateView();
   },
   
   /**
@@ -89,7 +105,16 @@ var adManagementTab = {
     var ctx = canvas.getContext("2d");
     var width = canvas.width;
     var height = canvas.height;
-    ctx.drawImage(this.adMarker, x * width - 10, y * height - 30, 20, 30);
+    ctx.drawImage(this.noAdMarker, x * width - 10, y * height - 30, 20, 30);
+  },
+  
+  drawMarker : function(x, y, markerImg) {
+  	var canvas = document.getElementById('ad-management-canvas');
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    ctx.drawImage(markerImg, x * width - 10, y * height - 30, 20, 30);
+    // ctx.drawImage(this.noAdMarker, x * width - 10, y * height - 30, 20, 30);
   },
   
   /**
