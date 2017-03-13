@@ -31,7 +31,6 @@ var adManagementTab = {
 			  }, false);
   	var button = document.getElementById("ad-mannagement-button");
   	button.addEventListener("click", function(event) {
-  		console.log('bla');
   		switch (self.editMode) {
 	  		case self.EDIT_MODE.ADD:
 	  		  self.editMode = self.EDIT_MODE.REMOVE;
@@ -66,7 +65,6 @@ var adManagementTab = {
   	}  	  	
   	var allProducts = controller.getAllProducts();
   	for (var i = 0; i < allProducts.length; i++) {
-  		console.log('allProducts[i].uuid: ', allProducts[i].uuid);
   		if (allProducts[i].uuid == this.selectedProductUuid) {
   		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.nearbyAdMarker);
   		} else {
@@ -81,12 +79,13 @@ var adManagementTab = {
    * display details of the product corresponding to the clicked marker.
    */
   treatCanvasMouseDown : function(canvas, event) {
+  	var canvas = document.getElementById('ad-management-canvas');
     var rect = canvas.getBoundingClientRect();
-    var height = canvas.height;
-    var width = canvas.width;
-    var x = (event.clientX - rect.left) / width;
-    var y = (event.clientY - rect.top) / height;
-    this.selectedProductUuid = controller.getNearestProductUuid(x, y);
+    this.selectedProductUuid = this.getNearestProductUuid(
+    	  event.clientX - rect.left /*px*/,
+    	  event.clientY - rect.top /*py*/ + 15,
+    	  canvas.width,
+    	  canvas.height);
     if (this.selectedProductUuid) {
     	var productDetails = controller.getProductDetails(this.selectedProductUuid);
     	if (productDetails) {
@@ -94,6 +93,22 @@ var adManagementTab = {
     	}
     }
     this.updateView();
+  },
+  
+  getNearestProductUuid : function(px, py, canvasWidth, canvasHeight) {
+  	var allProducts = controller.getAllProducts();
+  	var minDist = undefined;
+  	var minDistUuid = undefined;
+  	for (var i = 0; i < allProducts.length; i++) {
+  		var prd_x = allProducts[i].location_px.px * canvasWidth;
+  		var prd_y = allProducts[i].location_px.py * canvasHeight;
+  		var dist = Math.pow((prd_x - px), 2) + Math.pow((prd_y - py), 2);
+  		if (minDist == undefined || dist < minDist) {
+  			minDist = dist;
+  			minDistUuid = allProducts[i].uuid;
+  		}
+  	}
+  	return minDistUuid;
   },
   
   /**
