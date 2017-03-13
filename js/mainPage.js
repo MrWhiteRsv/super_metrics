@@ -2,13 +2,13 @@ var mainPage = {
 
   init : function() {
     monitorTab.init();
-    supermarketTab.init();
+    // supermarketTab.init();
     adManagementTab.init();
-    document.getElementById("supermarket-tab-title").addEventListener(
+    /*document.getElementById("supermarket-tab-title").addEventListener(
         "click",
         function() {
           supermarketTab.updateView();
-        });
+        });*/
     document.getElementById("ad-management-tab-title").addEventListener(
         "click",
         function() {

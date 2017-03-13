@@ -79,26 +79,7 @@ var monitorTab = {
     
     ctx.clearRect(0, 0, width, height);
     
-    /*this.drawBeacon(ctx, width, height, 0.575, 0.3, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.595, 0.6, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.61, 0.4, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.63, 0.7, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.790, 0.4, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.395, 0.2, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.4175, 0.2, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.454, 0.6, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.5, 0.5, '#B71C1C');
-    this.drawBeacon(ctx, width, height, 0.525, 0.55, '#B71C1C'); */
-    /*this.drawBeacon(ctx, width, height, 0.682, 0.3, '#B71C1C'); // 19 L 
-    this.drawBeacon(ctx, width, height, 0.755, 0.3, '#B71C1C'); // 21 L*/
-    /*this.drawBeacon(ctx, width, height, 0.107, 0.16, '#B71C1C'); // 3 L 
-    this.drawBeacon(ctx, width, height, 0.128, 0.3, '#B71C1C'); // 3 R
-    this.drawBeacon(ctx, width, height, 0.141, 0.3, '#B71C1C'); // 4 L 
-    this.drawBeacon(ctx, width, height, 0.160, 0.3, '#B71C1C'); // 4 R
-    this.drawBeacon(ctx, width, height, 0.181, 0.3, '#B71C1C'); // 5 L 
-    this.drawBeacon(ctx, width, height, 0.201, 0.3, '#B71C1C'); // 5 R
-    this.drawBeacon(ctx, width, height, 0.215, 0.3, '#B71C1C'); // 6 L
-    this.drawBeacon(ctx, width, height, 0.235, 0.75, '#B71C1C'); // 6 R*/
+
          
     var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i in allBeaconsMac) {

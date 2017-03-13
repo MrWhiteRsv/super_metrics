@@ -42,13 +42,6 @@
   margin: 3% 0 0 0%; 
 }
 
-#analytics-link {
-  position: absolute;
-  top : 90%;
-  left: 95%;
-  z-index: 1;
-}
-
 /*** General ***/
 
 .supermarket-plan-container {
@@ -70,23 +63,28 @@
   z-index: 1;
 }
 
+.common-button {
+  position: absolute;
+  top : 79vh;
+  left: 95vw;
+  z-index: 1;
+}
 /*** Ad Management ***/
 
-#ad-management-add,
-#ad-management-clear {
-  position: absolute;
-  top: 6vh;
-  width: 8vw;
-  height :4vh;
-  font-size: 12px;
+#ad-management_switch_container,
+#ad-management_monitor_cart_switch_container
+{
+	position: absolute;
+  left: 75vw;
+  width: 18vw;
 }
 
-#ad-management-add {
-  left: 5vw;
+#ad-management_switch_container {
+  top: 4vh;
 }
 
-#ad-management-clear {
-  left: 15vw;
+#ad-management_monitor_cart_switch_container {
+  top: 10vh;
 }
 
 #product-card {
@@ -123,7 +121,7 @@
 #monitor-training,
 #monitor-take-photo {
   position: absolute;
-  top: 6vh;
+  top: 4vh;
   width: 8vw;
   height :4vh;
   font-size: 12px;
@@ -156,19 +154,19 @@
 }
 
 #monitor_single_sensor_switch_container {
-  top: 6vh;
+  top: 4vh;
 }
 
 #monitor_hyper_sensetive_beacon_switch_container {
-  top: 12vh;
+  top: 10vh;
 }
 
 #monitor_publish_location_switch_container {
-  top : 18vh;
+  top : 16vh;
 }
 
 #monitor_adaptive_threshold_switch_container {
-  top : 24vh;
+  top : 22vh;
 }
 
 

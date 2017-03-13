@@ -1,25 +1,19 @@
 var adManagementTab = {
-
-	adMarker : undefined,
   
+  EDIT_MODE : {
+    VIEW: 0,
+    ADD: 1,
+    REMOVE: 2
+  },
+  
+	adMarker : undefined,
+	editMode : undefined,
+  
+
   init : function() {
     this.adMarker = new Image();
     this.adMarker.src = 'css/markers/marker.png';
-    if (false) {
-    	this.adMarker.onload = function () {
-	  	  var canvas = document.getElementById('ad-management-canvas');
-	      var ctx = canvas.getContext("2d");
-	      ctx.drawImage(this, 30, 15);
-	      ctx.drawImage(this, 88, 110);
-	      ctx.drawImage(this, 150, 200);
-	      ctx.drawImage(this, 150, 220);
-	      ctx.drawImage(this, 318, 57);
-	      ctx.drawImage(this, 525, 210);
-	      ctx.drawImage(this, 480, 40);
-	      ctx.drawImage(this, 535, 60);
-	      ctx.drawImage(this, 555, 70);
-	    }
-		}
+    this.editMode = this.EDIT_MODE.REMOVE;
     var plan = document.getElementById("ad-management-plan");
     var canvas = document.getElementById("ad-management-canvas");
     canvas.style.height = plan.offsetHeight + 'px';
@@ -28,9 +22,38 @@ var adManagementTab = {
     canvas.addEventListener("mousedown", function(event) {
 					self.treatCanvasMouseDown(canvas, event);
 			  }, false);
+  	var button = document.getElementById("ad-mannagement-button");
+  	button.addEventListener("click", function(event) {
+  		console.log('bla');
+  		switch (self.editMode) {
+	  		case self.EDIT_MODE.ADD:
+	  		  self.editMode = self.EDIT_MODE.REMOVE;
+	  		  break;
+	  	  case self.EDIT_MODE.REMOVE:
+	  	    self.editMode = self.EDIT_MODE.VIEW;
+	  		  break;
+	  		case self.EDIT_MODE.VIEW:
+	  		  self.editMode = self.EDIT_MODE.ADD;
+	  		  break;
+	  	} 
+	  	self.updateView.bind(self);
+	  	self.updateView();
+  	}, false);
   },
   
-  updateView : function() {
+  updateView : function() {  
+  	var button = document.getElementById("ad-mannagement-button");
+  	switch (this.editMode) {
+  		case this.EDIT_MODE.ADD:
+  		  button.children[0].childNodes[0].data = "add";
+  		  break;
+  	  case this.EDIT_MODE.REMOVE:
+  		  button.children[0].childNodes[0].data = "remove";
+  		  break;
+  		case this.EDIT_MODE.VIEW:
+  		  button.children[0].childNodes[0].data = "create";
+  		  break;
+  	}  	  	
   	var allProducts = controller.getAllProducts();
   	for (var i = 0; i < allProducts.length; i++) {
   		this.drawAdMarker(allProducts[i].location_px.px, allProducts[i].location_px.py);
@@ -95,6 +118,7 @@ var adManagementTab = {
 			var path = "url('css/products/" + content.images[0] + "')";
 			title_child.style.backgroundImage = path;
 		}
+		this.addTextToNode(card, "Advertise: " + (true ? 'on' : 'off'));
   },
   
   addTextToNode : function(node, str) {
@@ -102,6 +126,6 @@ var adManagementTab = {
     var textNode = document.createTextNode(str);
     para.appendChild(textNode);
     node.appendChild(para); 	
-  	
-  }
+  },
+  
  }

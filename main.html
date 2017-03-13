@@ -40,7 +40,7 @@
 				</div>
 				<!-- Tabs -->
 				<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-					<a href="#supermarket-tab" id="supermarket-tab-title" class="mdl-layout__tab is-active">Queue Metrics</a>
+					<!--a href="#supermarket-tab" id="supermarket-tab-title" class="mdl-layout__tab is-active">Queue Metrics</a-->
 					<a href="#ad-management-tab" id="ad-management-tab-title" class="mdl-layout__tab">Ad Management</a>
 					<a href="#monitor-tab" id="monitor-tab-title" class="mdl-layout__tab">Dev</a>
 				</div>
@@ -56,7 +56,7 @@
 			</div>
 
 			<main class="mdl-layout__content">
-				<section class="mdl-layout__tab-panel" id="supermarket-tab">
+				<!--section class="mdl-layout__tab-panel" id="supermarket-tab">
 					<div class="page-content">
 						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
 							<input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
@@ -72,17 +72,20 @@
 						</button>
 						<canvas id="supermarketTabCanvas">
 					</div>
-				</section>
+				</section-->
 
-				<section class="mdl-layout__tab-panel" id="ad-management-tab">
+				<section class="mdl-layout__tab-panel" is-active id="ad-management-tab">
 					<div class="page-content">
-						<button id="ad-management-add" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-							Add
-						</button>
-						<button id="ad-management-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-							Clear
-						</button>
 						
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_switch" id="ad-management_switch_container"> <span class="mdl-switch__label">Show ads to customers</span>
+							<input type="checkbox" id="ad-management_switch_switch" class="mdl-switch__input" checked>
+						</label>
+						
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_monitor_cart_switch" id="ad-management_monitor_cart_switch_container"> <span class="mdl-switch__label">Monitor Carts</span>
+							<input type="checkbox" id="ad-management_monitor_cart_switch" class="mdl-switch__input">
+						</label>
+
+
 						<div class="product-card-square mdl-card mdl-shadow--4dp"  id="product-card">
 							<div class="mdl-card__title mdl-card--expand mdl-card--border mdl-shadow--2dp">
 							</div>
@@ -94,14 +97,19 @@
 							<img class="supermarket-plan" id="ad-management-plan" src="css/storePlan.png" width="1000" height="400">
 						  <canvas class="supermarket-canvas" id="ad-management-canvas"  width="1000" height="400">
 						</div>
-					</div>
+						
+						<button id='ad-mannagement-button' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored common-button">
+							<i class="material-icons">create</i>
+						</button>
+					</div>						
 				</section>
 
-				<section class="mdl-layout__tab-panel is-active" id="monitor-tab">
+				<section class="mdl-layout__tab-panel" id="monitor-tab">
 					<div class="page-content">
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> <span class="mdl-switch__label">Single sensor mode</span>
 							<input type="checkbox" id="monitor_single_sensor_switch" class="mdl-switch__input" checked>
 						</label>
+						
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_hyper_sensetive_beacon_switch" id="monitor_hyper_sensetive_beacon_switch_container"> <span class="mdl-switch__label">Hyper sensitive beacon</span>
 							<input type="checkbox" id="monitor_hyper_sensetive_beacon_switch" class="mdl-switch__input">
 						</label>
