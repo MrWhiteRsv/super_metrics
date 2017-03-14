@@ -57,33 +57,18 @@
 			</div>
 
 			<main class="mdl-layout__content">
-				<!--section class="mdl-layout__tab-panel" id="supermarket-tab">
-					<div class="page-content">
-						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="traffic-button" id="traffic-button-container">
-							<input type="radio" class="mdl-radio__button" name="options" value="1" checked id="traffic-button">
-							<span class="mdl-radio__label">Traffic Volume</span> </label>
-						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="speed-button" id="speed-button-container">
-							<input type="radio" class="mdl-radio__button" name="options" value="2" id="speed-button">
-							<span class="mdl-radio__label">Visibility</span> </label>
-						<img id="supermarketTabBackground" src="css/floorPlan.png" style="width:70%;">
-						<div id="supermarket-histogram">
-						<div id="supermarket-line-time">
-						<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" id ='analytics-link'>
-							<i class="material-icons">link</i>
-						</button>
-						<canvas id="supermarketTabCanvas">
-					</div>
-				</section-->
 
 				<section class="mdl-layout__tab-panel" is-active id="ad-management-tab">
 					<div class="page-content">
 						
-						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_switch" id="ad-management_switch_container"> <span class="mdl-switch__label">Show ads to customers</span>
-							<input type="checkbox" id="ad-management_switch_switch" class="mdl-switch__input" checked>
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_switch" id="ad-management_switch_container">
+							<span class="mdl-switch__label">Enable Ads</span>
+							<input type="checkbox" id="ad-management_switch" class="mdl-switch__input">
 						</label>
 						
-						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_monitor_cart_switch" id="ad-management_monitor_cart_switch_container"> <span class="mdl-switch__label">Monitor Carts</span>
-							<input type="checkbox" id="ad-management_monitor_cart_switch" class="mdl-switch__input">
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_monitor_switch" id="ad-management_monitor_switch_container">
+							<span class="mdl-switch__label">Monitor</span>
+							<input type="checkbox" id="ad-management_monitor_switch" class="mdl-switch__input">
 						</label>
 
 
@@ -107,11 +92,13 @@
 
 				<section class="mdl-layout__tab-panel" id="monitor-tab">
 					<div class="page-content">
-						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> <span class="mdl-switch__label">Single sensor mode</span>
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> 
+							<span class="mdl-switch__label">Single sensor mode</span>
 							<input type="checkbox" id="monitor_single_sensor_switch" class="mdl-switch__input" checked>
 						</label>
 						
-						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_hyper_sensetive_beacon_switch" id="monitor_hyper_sensetive_beacon_switch_container"> <span class="mdl-switch__label">Hyper sensitive beacon</span>
+						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_hyper_sensetive_beacon_switch" id="monitor_hyper_sensetive_beacon_switch_container">
+							<span class="mdl-switch__label">Hyper sensitive beacon</span>
 							<input type="checkbox" id="monitor_hyper_sensetive_beacon_switch" class="mdl-switch__input">
 						</label>
 

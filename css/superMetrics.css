@@ -65,14 +65,14 @@
 
 .common-button {
   position: absolute;
-  top : 79vh;
-  left: 95vw;
+  top : 81vh;
+  left: 96.2vw;
   z-index: 1;
 }
 /*** Ad Management ***/
 
 #ad-management_switch_container,
-#ad-management_monitor_cart_switch_container
+#ad-management_monitor_switch_container
 {
 	position: absolute;
   left: 75vw;
@@ -83,7 +83,7 @@
   top: 4vh;
 }
 
-#ad-management_monitor_cart_switch_container {
+#ad-management_monitor_switch_container {
   top: 10vh;
 }
 

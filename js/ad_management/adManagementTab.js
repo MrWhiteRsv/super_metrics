@@ -11,6 +11,7 @@ var adManagementTab = {
   awayAdMarker : undefined,
 	editMode : undefined,
 	selectedProductUuid : undefined,
+  monitor : undefined,
 
   init : function() {
     this.noAdMarker = new Image();
@@ -19,8 +20,9 @@ var adManagementTab = {
     this.noAdMarker.src = 'css/markers/white_marker.png';
     this.nearbyAdMarker.src = 'css/markers/red_black_marker.png';
     this.awayAdMarker.src = 'css/markers/white_black_marker.png';
-    this.editMode = this.EDIT_MODE.REMOVE;
+    this.editMode = this.EDIT_MODE.VIEW;
     this.selectedProductUuid = undefined;
+    this.monitor = false;
     var plan = document.getElementById("ad-management-plan");
     var canvas = document.getElementById("ad-management-canvas");
     canvas.style.height = plan.offsetHeight + 'px';
@@ -45,18 +47,29 @@ var adManagementTab = {
 	  	self.updateView.bind(self);
 	  	self.updateView();
   	}, false);
+  	
+  	document.getElementById("ad-management_switch").addEventListener("change", function() {
+			controller.setShowAdsToCustomers(document.getElementById("ad-management_switch").checked);
+			self.updateView();
+		});
+		document.getElementById("ad-management_monitor_switch").addEventListener("change", function() {
+			self.monitor = document.getElementById("ad-management_monitor_switch").checked;
+			self.updateView();
+		});
+		
   },
   
   updateView : function() {
   	var canvas = document.getElementById('ad-management-canvas');
-  	// var ctx = canvas.getContext("2d");
-  	// ctx.clearRect(0, 0, canvas.width, canvas.height);
-  	common.drawPlanBackground(document.getElementById('ad-management-canvas'));
-  	var latestPixel = controller.getCartPixel();
-		if (latestPixel) {
-			common.drawCart(latestPixel['px'], latestPixel['py'], document.getElementById('ad-management-canvas'),
-			    document.getElementById('monitor-canvas'));
-		}
+  	common.clearCanvas(canvas);
+  	if (this.monitor) {
+  	  common.drawPlanBackground(document.getElementById('ad-management-canvas'));
+	  	var latestPixel = controller.getCartPixel();
+			if (latestPixel) {
+				common.drawCart(latestPixel['px'], latestPixel['py'], document.getElementById('ad-management-canvas'),
+				    document.getElementById('monitor-canvas'));
+			}
+		}	
   	var button = document.getElementById("ad-mannagement-button");
   	switch (this.editMode) {
   		case this.EDIT_MODE.ADD:
@@ -66,7 +79,7 @@ var adManagementTab = {
   		  button.children[0].childNodes[0].data = "remove";
   		  break;
   		case this.EDIT_MODE.VIEW:
-  		  button.children[0].childNodes[0].data = "create";
+  		  button.children[0].childNodes[0].data = "visibility";
   		  break;
   	}  	  	
   	var allProducts = controller.getAllProducts();
@@ -164,7 +177,7 @@ var adManagementTab = {
 			var path = "url('css/products/" + content.images[0] + "')";
 			title_child.style.backgroundImage = path;
 		}
-		this.addTextToNode(card, "Advertise: " + (true ? 'on' : 'off'));
+		// this.addTextToNode(card, "Advertise: " + (true ? 'on' : 'off'));
   },
   
   addTextToNode : function(node, str) {

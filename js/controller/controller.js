@@ -9,8 +9,13 @@ var controller = {
   singleSensorMode : true,
   hyperSentistiveBeacons : false,
   publishLocation : true,  
-  adMode : false, 
+  adMode : false,
+  showAdsToCustomers : false,
   adaptiveBleThreshold : true,
+  
+  setShowAdsToCustomers : function(value) {
+  	this.showAdsToCustomers = value;
+  },
   
   setHardCodedBeaconDistance: function(value) {
   	controller.hardCodedBeaconDistance = value;
@@ -34,6 +39,10 @@ var controller = {
   
   setPublishLocation: function(value) {
   	this.publishLocation = value;
+  },
+  
+  getShowAdsToCustomers : function() {
+  	return this.showAdsToCustomers;
   },
   
   getPublishLocation : function() {
@@ -168,14 +177,15 @@ var controller = {
  	}, 	 
  	 
   initBeacons : function() {
+  	var shift = 0.215;
     this.beacons.addBeacon('34:b1:f7:d3:91:f8',
-      {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.78});
+      {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : shift + 0.118, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
-      {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : 0.19, py : 0.78});
+      {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : shift + 0.19, py : 0.78});
     this.beacons.addBeacon('34:b1:f7:d3:9e:2b',
-      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : 0.19, py : 0.12}); //0.152,
+      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : shift + 0.19, py : 0.12}); //0.152,
     this.beacons.addBeacon('34:b1:f7:d3:9d:eb',
-      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : 0.118, py : 0.12});
+      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : shift + 0.118, py : 0.12});
     /*this.beacons.addBeacon('34:b1:f7:d3:90:8e',
       {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.195, py : 0.3}); */
   },

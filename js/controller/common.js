@@ -23,16 +23,21 @@ var common = {
 		ctx.drawImage(this.getCartImage(), x * width - 10, y * height - 17);
 	},
 
+  clearCanvas : function(canvas) {
+		var ctx = canvas.getContext("2d");
+		var width = canvas.width;
+		var height = canvas.height;
+		ctx.clearRect(0, 0, width, height);  	
+  },
+  
 	/**
 	 * Draw plan, including beacons and backkground.
 	 * @param {Beacons} beacons. The beacons to be displayed on plan.
 	 */
 	drawPlanBackground : function(canvas) {
-		// var canvas = document.getElementById('monitor-canvas');
 		var ctx = canvas.getContext("2d");
 		var width = canvas.width;
 		var height = canvas.height;
-
 		ctx.clearRect(0, 0, width, height);
 
 		var allBeaconsMac = controller.getAllBeaconsMac();
