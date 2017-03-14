@@ -104,6 +104,10 @@ var controller = {
     }
   },
   
+  getActiveAdUuid : function() {
+  	return 45007485;
+  },
+  
   /**
    * Main Entry Point.
    * Called once map is loaded.

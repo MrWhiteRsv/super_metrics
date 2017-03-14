@@ -7,19 +7,19 @@ var adManagementTab = {
   },
   
 	noAdMarker : undefined,
-	nearbyAdMarker : undefined,
-  awayAdMarker : undefined,
+	activeAdMarker : undefined,
+  selectedAdMarker : undefined,
 	editMode : undefined,
 	selectedProductUuid : undefined,
   monitor : undefined,
 
   init : function() {
     this.noAdMarker = new Image();
-    this.nearbyAdMarker = new Image();
-    this.awayAdMarker = new Image();
+    this.activeAdMarker = new Image();
+    this.selectedAdMarker = new Image();
     this.noAdMarker.src = 'css/markers/white_marker.png';
-    this.nearbyAdMarker.src = 'css/markers/red_black_marker.png';
-    this.awayAdMarker.src = 'css/markers/white_black_marker.png';
+    this.activeAdMarker.src = 'css/markers/red_black_marker.png';
+    this.selectedAdMarker.src = 'css/markers/white_black_marker.png';
     this.editMode = this.EDIT_MODE.VIEW;
     this.selectedProductUuid = undefined;
     this.monitor = false;
@@ -55,8 +55,7 @@ var adManagementTab = {
 		document.getElementById("ad-management_monitor_switch").addEventListener("change", function() {
 			self.monitor = document.getElementById("ad-management_monitor_switch").checked;
 			self.updateView();
-		});
-		
+		});	
   },
   
   updateView : function() {
@@ -85,15 +84,28 @@ var adManagementTab = {
   	var allProducts = controller.getAllProducts();
   	for (var i = 0; i < allProducts.length; i++) {
   		if (allProducts[i].uuid == this.selectedProductUuid) {
-  		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.nearbyAdMarker);
+  		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.selectedAdMarker);
   		} else {
   		  this.drawMarker(allProducts[i].location_px.px, allProducts[i].location_px.py, this.noAdMarker);	
   		}
   	}
+  	if (this.selectedProductUuid == undefined) {
+  		document.getElementById("product-card").style.visibility = "hidden";
+      document.getElementById("product-card-details").style.visibility = "hidden";
+    }
+    var activeAdUuid = controller.getActiveAdUuid();
+    if (activeAdUuid != undefined) {
+    	this.highlightNearbyAd(activeAdUuid);
+    }
   },
   
   /* Implementation */
  
+  highlightNearbyAd : function(uuid) {
+  	var productDetails = controller.getProductDetails(uuid);
+  	this.drawMarker(productDetails.location_px.px, productDetails.location_px.py, this.activeAdMarker);
+  },
+  
   /**
    * display details of the product corresponding to the clicked marker.
    */
@@ -108,6 +120,8 @@ var adManagementTab = {
     if (this.selectedProductUuid) {
     	var productDetails = controller.getProductDetails(this.selectedProductUuid);
     	if (productDetails) {
+    		document.getElementById("product-card").style.visibility = "visible";
+        document.getElementById("product-card-details").style.visibility = "visible";
     	  this.renderProductCard(document.getElementById("product-card-details"), productDetails);
     	}
     }
