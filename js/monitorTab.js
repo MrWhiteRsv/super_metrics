@@ -12,7 +12,6 @@ var monitorTab = {
 		var self = this;
 		document.getElementById("monitor-clear").addEventListener("click", function() {
 			controller.init();
-			//self.updateView();
 		});
 		document.getElementById("monitor-ad").addEventListener("click", function() {
 			controller.toggleAdMode();
@@ -41,86 +40,18 @@ var monitorTab = {
 			this.drawDistanceTable();
 			this.drawSignalLevelTable();
 		}
-		this.drawPlanBackground();
+		common.drawPlanBackground(document.getElementById('monitor-canvas'));
 		var latestPixel = controller.getCartPixel();
 		if (latestPixel) {
-			this.drawCart(latestPixel['px'], latestPixel['py']);
+			common.drawCart(latestPixel['px'], latestPixel['py'], document.getElementById('monitor-canvas'),
+			    document.getElementById('monitor-canvas'));
 		}
 		document.getElementById("monitor_single_sensor_switch").checked = controller.getSingleSensorMode();
 		document.getElementById("monitor_hyper_sensetive_beacon_switch").checked = controller.getHyperSentistiveBeacons();
 		document.getElementById("monitor_publish_location_switch").checked = controller.getPublishLocation();
 	},
 
-	/**
-	 * Draw plan, including beacons and backkground.
-	 * @param {Beacons} beacons. The beacons to be displayed on plan.
-	 */
-	drawPlanBackground : function() {
-		var canvas = document.getElementById('monitor-canvas');
-		var ctx = canvas.getContext("2d");
-		var width = canvas.width;
-		var height = canvas.height;
-
-		ctx.clearRect(0, 0, width, height);
-
-		var allBeaconsMac = controller.getAllBeaconsMac();
-		for (var i in allBeaconsMac) {
-			var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
-			var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
-			color = "#303030";
-			this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
-		}
-		if (allBeaconsMac.length > 1) {
-			ctx.lineWidth = 1.0;
-			ctx.strokeStyle = "#303030";
-			ctx.beginPath();
-			var width = canvas.width;
-			var height = canvas.height;
-			var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
-			ctx.moveTo(width * beaconPix['px'], height * beaconPix['py']);
-			for (var i in allBeaconsMac) {
-				beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
-				ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
-			}
-			beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
-			ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
-			ctx.stroke();
-		}
-	},
-
-	clearAndUpdateView : function() {
-		this.clearAndUpdateViewIndoor();
-	},
-
 	// Implementation.
-
-	clearAndUpdateViewIndoor : function() {
-		this.updateView();
-	},
-
-	/**
-	 * Draw marker on background canvas.
-	 * @param {Integer} beacons. The beacons to be displayed on plan.
-	 */
-	drawBeacon : function(ctx, width, height, x, y, color) {
-		ctx.beginPath();
-		ctx.arc(x * width, y * height, 1, 0, 2 * Math.PI);
-		ctx.strokeStyle = color;
-		ctx.lineWidth = 1;
-		ctx.stroke();
-	},
-
-	/**
-	 * Draw cart on background canvas.
-	 * both x and y are given in the [0.0, 1.0] range.
-	 */
-	drawCart : function(x, y) {
-		var canvas = document.getElementById('monitor-canvas');
-		var ctx = canvas.getContext("2d");
-		var width = canvas.width;
-		var height = canvas.height;
-		ctx.drawImage(this.cartImage, x * width - 10, y * height - 17);
-	},
 
 	drawDistanceTable : function() {
 		var beacons = controller.getBeacons().getAllBeaconsMac();

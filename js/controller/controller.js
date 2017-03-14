@@ -218,7 +218,7 @@ var controller = {
   
   treatGpsMsg : function(payload) {
     gpsPath.pushPoint(payload);
-    mainPage.updateView(/*clearMonitorTab*/ false);
+    mainPage.updateView();
   },
   
   getGraph : function() {
@@ -325,7 +325,7 @@ var controller = {
     // {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
     this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
     this.publishCurrentLocation();
-    mainPage.updateView(/*clearMonitorTab*/ false);
+    mainPage.updateView();
   },
   
   treatBleMsg : function(payload) {
@@ -349,7 +349,7 @@ var controller = {
     this.beacons.addBeaconSample(mac, rssi)
     this.revolutionPath.addProximityEvent(mac, nearestTime);
     this.publishCurrentLocation();
-    mainPage.updateView(/*clearMonitorTab*/ true);
+    mainPage.updateView();
   },
   
   publishBleProximityThresholds : function() {

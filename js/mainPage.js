@@ -2,13 +2,8 @@ var mainPage = {
 
   init : function() {
     monitorTab.init();
-    // supermarketTab.init();
     adManagementTab.init();
-    /*document.getElementById("supermarket-tab-title").addEventListener(
-        "click",
-        function() {
-          supermarketTab.updateView();
-        });*/
+
     document.getElementById("ad-management-tab-title").addEventListener(
         "click",
         function() {
@@ -28,14 +23,12 @@ var mainPage = {
         });
     google.charts.setOnLoadCallback(controller.setGoogleChartsLoadedTrue);
     google.charts.load('current', {packages: ['table']}); //"corechart"
+    
   },
   
-  updateView : function(clearMonitorTab) {
-    if (clearMonitorTab) {
-      monitorTab.clearAndUpdateView();
-    } else {
-      monitorTab.updateView();
-    }
+  updateView : function() {
+    monitorTab.updateView();
+    adManagementTab.updateView();
   },
   
   displayBeaconDoesNotExistWarning : function () {

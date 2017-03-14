@@ -49,8 +49,14 @@ var adManagementTab = {
   
   updateView : function() {
   	var canvas = document.getElementById('ad-management-canvas');
-  	var ctx = canvas.getContext("2d");
-  	ctx.clearRect(0, 0, canvas.width, canvas.height);
+  	// var ctx = canvas.getContext("2d");
+  	// ctx.clearRect(0, 0, canvas.width, canvas.height);
+  	common.drawPlanBackground(document.getElementById('ad-management-canvas'));
+  	var latestPixel = controller.getCartPixel();
+		if (latestPixel) {
+			common.drawCart(latestPixel['px'], latestPixel['py'], document.getElementById('ad-management-canvas'),
+			    document.getElementById('monitor-canvas'));
+		}
   	var button = document.getElementById("ad-mannagement-button");
   	switch (this.editMode) {
   		case this.EDIT_MODE.ADD:
