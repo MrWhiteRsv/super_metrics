@@ -41,9 +41,12 @@ var monitorTab = {
 			this.drawSignalLevelTable();
 		}
 		common.drawPlanBackground(document.getElementById('monitor-canvas'));
-		var latestPixel = controller.getCartPixel();
-		if (latestPixel) {
-			common.drawCart(latestPixel['px'], latestPixel['py'], document.getElementById('monitor-canvas'),
+		var cartLocation = controller.getCartLocation();
+		if (cartLocation) {
+			common.drawCart(
+			    cartLocation['px'],
+			    cartLocation['py'],
+			    document.getElementById('monitor-canvas'),
 			    document.getElementById('monitor-canvas'));
 		}
 		document.getElementById("monitor_single_sensor_switch").checked = controller.getSingleSensorMode();
@@ -55,7 +58,7 @@ var monitorTab = {
 
 	drawDistanceTable : function() {
 		var beacons = controller.getBeacons().getAllBeaconsMac();
-		var beaconsGreaph = controller.getBeaconsGraph();
+		var beaconsGreaph = controller.getGraph();
 		var data = new google.visualization.DataTable();
 		for (var c = 0; c < beacons.length; c++) {
 			data.addColumn('number', '' + (c + 1));

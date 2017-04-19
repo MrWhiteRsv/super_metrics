@@ -1,8 +1,7 @@
 var controller = {
   beacons : undefined,
-  revolutionPath : undefined,
-  beaconsGraph : undefined,
-  hardCodedBeaconDistance : true,
+  locationWizard : undefined,
+  graph : undefined,
   firstInvalidBeaconWarningIssued : false,
   googleChartsLoaded : false,
   mqttConnected : false,
@@ -15,10 +14,6 @@ var controller = {
   
   setShowAdsToCustomers : function(value) {
   	this.showAdsToCustomers = value;
-  },
-  
-  setHardCodedBeaconDistance: function(value) {
-  	controller.hardCodedBeaconDistance = value;
   },
   
   setGoogleChartsLoadedTrue: function() {
@@ -69,12 +64,8 @@ var controller = {
   	return this.beacons;
   },
     
-  getBeaconMarkerType : function(mac) {
-    return this.beacons.getBeaconMarkerType(mac);
-  },
-  
-  getBeaconsGraph : function() {
-  	return this.beaconsGraph;
+  getGraph : function() {
+  	return this.graph;
   },
   
   getBeaconAverageRssi : function(mac) {
@@ -105,7 +96,40 @@ var controller = {
   },
   
   getActiveAdUuid : function() {
-  	return 45007485;
+  	var cartLocation = this.getCartLocation();
+  	if (cartLocation == undefined) {
+  		return undefined;
+  	}
+  	var px = cartLocation['px'];
+  	var py = cartLocation['py']
+  	var allProducts = controller.getAllProducts();
+  	var minDist = undefined;
+  	var minDistUuid = undefined;
+   	for (var i = 0; i < allProducts.length; i++) {
+  		var prd_x = allProducts[i].location_px.px;
+  		var prd_y = allProducts[i].location_px.py ;
+  		var dist = Math.pow((prd_x - px), 2) + Math.pow((prd_y - py), 2);
+  		if (minDist == undefined || dist < minDist) {
+  			minDist = dist;
+  			minDistUuid = allProducts[i].uuid;
+  		}
+  	}
+  	if (minDist != undefined && minDist < 0.001) {
+  		return minDistUuid;
+  	}
+  },
+  
+  getNearestProductUuid : function(px, py, canvasWidth, canvasHeight) {
+  	for (var i = 0; i < allProducts.length; i++) {
+  		var prd_x = allProducts[i].location_px.px * canvasWidth;
+  		var prd_y = allProducts[i].location_px.py * canvasHeight;
+  		var dist = Math.pow((prd_x - px), 2) + Math.pow((prd_y - py), 2);
+  		if (minDist == undefined || dist < minDist) {
+  			minDist = dist;
+  			minDistUuid = allProducts[i].uuid;
+  		}
+  	}
+  	return minDistUuid;
   },
   
   /**
@@ -115,11 +139,10 @@ var controller = {
   onMapLoaded : function() {
   	// One time actions.
   	mqtt_listener.init();
-  	graph.build();
-  	graph.mockEdgeTraficVolume();
-    graph.mockEdgeTraficSpeed();
+  	//graph.build();
+  	//graph.mockEdgeTraficVolume();
+    //graph.mockEdgeTraficSpeed();
   	// testAll();
-  	this.hardCodedBeaconDistance = false;
   	this.init();
   	adManagementTab.updateView();
     // supermarketTab.updateView();
@@ -134,12 +157,12 @@ var controller = {
   
   init : function() {
     mainPage.init();
-  	this.beaconsGraph = new BeaconsGraph();
+  	this.graph = new Graph();
     this.beacons = new Beacons();
-    this.revolutionPath = new RevolutionPath(this.beacons);
+    this.locationWizard = new LocationWizard(this.graph);
     this.firstInvalidBeaconWarningIssued = false;
-    this.initBeacons();
-    this.initBeaconsGraph();
+    //this.initBeacons();
+    this.initGraphAndBeacons();
     if (this.mqttConnected) {
       this.resetCartDetector();
     }
@@ -159,9 +182,9 @@ var controller = {
   publishCurrentLocation : function() {
   	if (this.getPublishLocation()) {
 	  	topic = "monitor/cartId/location";
-	  	var latestPixel = controller.getCartPixel();
-			if (latestPixel) {
-	      var payload = JSON.stringify({px: latestPixel['px'], py : latestPixel['py']});
+	  	var cartLocation = controller.getCartLocation();
+			if (cartLocation) {
+	      var payload = JSON.stringify({px: cartLocation['px'], py : cartLocation['py']});
 	      mqtt_listener.sendMessage(topic, payload);
 	    }
 	  }
@@ -179,35 +202,7 @@ var controller = {
     var payload = JSON.stringify({captureImageWithCart: true, image_name: imageName});
     mqtt_listener.sendMessage(topic, payload);
  	}, 	 
- 	 
-  initBeacons : function() {
-  	var shift = 0.215;
-    this.beacons.addBeacon('34:b1:f7:d3:91:f8',
-      {color : '#B71C1C', markerType : 'RED_MARKER', location : undefined, samples : 0, px : shift + 0.118, py : 0.78});
-    this.beacons.addBeacon('34:b1:f7:d3:9c:cb',
-      {color : '#1B5E20', markerType : 'GREEN_MARKER', location : undefined, samples : 0, px : shift + 0.19, py : 0.78});
-    this.beacons.addBeacon('34:b1:f7:d3:9e:2b',
-      {color : '#1A237E', markerType : 'BLUE_MARKER', location : undefined, samples : 0, px : shift + 0.19, py : 0.12}); //0.152,
-    this.beacons.addBeacon('34:b1:f7:d3:9d:eb',
-      {color : '#FFFF00', markerType : 'YELLOW_MARKER', location : undefined, samples : 0, px : shift + 0.118, py : 0.12});
-    /*this.beacons.addBeacon('34:b1:f7:d3:90:8e',
-      {color : '#4A148C', markerType : 'PURPLE_MARKER', location : undefined, samples : 0, px : 0.195, py : 0.3}); */
-  },
-  
-  initBeaconsGraph : function() {
-  	this.beaconsGraph.init();
-    if (this.hardCodedBeaconDistance) {
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:f8', '34:b1:f7:d3:9c:cb', 10);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:9e:2b', 80);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9d:eb', 10);
-    	this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:91:f8', 80);
-    }
-    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:91:f8', '34:b1:f7:d3:91:f8', 0);
-    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9c:cb', '34:b1:f7:d3:9c:cb', 0);
-    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9e:2b', 0);
-    this.beaconsGraph.addEdgeLength('34:b1:f7:d3:9d:eb', '34:b1:f7:d3:9d:eb', 0);
-  },
-  
+
   treatMsg : function(type, jsonPayload) {
     var payload = JSON.parse(jsonPayload);
     switch (type) {
@@ -220,29 +215,20 @@ var controller = {
     }
   },
   
-  getCartPixel : function() {
-    var expectedNextBeacon = this.guessNextBeacon(
-    	  this.revolutionPath.findLatestNearbyBeacon());
-  	return this.revolutionPath.getCartPixel(this.beaconsGraph, expectedNextBeacon);
+  getCartLocation : function() {
+  	return this.locationWizard.getCartLocation(this.graph);
   },
-  
-  getRevolutionBasedLocationAtTime : function(ts) {
-    return (this.revolutionPath.getCartLatLng(ts));
-  },
-  
-  treatGpsMsg : function(payload) {
-    gpsPath.pushPoint(payload);
-    mainPage.updateView();
-  },
-  
+
   getGraph : function() {
-    return graph;
+    return this.graph;
   },
   
   // Temp
   
   getAllProducts : function() {
   	res = [
+
+//{"category": "discount", "location_str": "aisle 2", "uuid": "1", "ingredients": "CARBONATED WATER", "ndbno": "45243227", "price": "$7.99", "location_px": {"px": 0.19, "py": 0.71401}, "description": "IZZE", "discount_percent": 20, "images": ["836093010028.png"], "name": "IZZE"}
 
 
 {"category": "discount", "location_str": "aisle 2", "uuid": "836093010028", "ingredients": "CARBONATED WATER, ORGANIC CANE SUGAR, CERTIFIED ORGANIC NATURAL FLAVORS, CITRIC ACID", "ndbno": "45243227", "nutrients": [{"unit": "kcal", "name": "Energy", "value": "3"}, {"unit": "g", "name": "Protein", "value": "0.00"}, {"unit": "g", "name": "Total lipid (fat)", "value": "0.00"}, {"unit": "g", "name": "Carbohydrate, by difference", "value": "0.56"}, {"unit": "g", "name": "Sugars, total", "value": "0.56"}, {"unit": "mg", "name": "Sodium, Na", "value": "3"}], "price": "$7.99", "location_px": {"px": 0.094, "py": 0.3}, "description": "IZZE, SPARKLING WATER BEVERAGE, RASPBERRY WATERMELON, UPC: 836093010028", "discount_percent": 20, "images": ["836093010028.png"], "name": "IZZE"}
@@ -303,25 +289,46 @@ var controller = {
 , {"category": "gluten_free", "location_str": "register", "uuid": "079200975852", "ingredients": "CORN SYRUP, SUGAR, PALM OIL, AND LESS THAN 2% OF MALIC ACID, MONO- AND DIGLYCERIDES, HYDROGENATED COTTONSEED OIL, SALT LECITHIN, NATURAL FLAVOR, BLUE 1, YELLOW 5.", "ndbno": "45158034", "nutrients": [{"unit": "kcal", "name": "Energy", "value": "359"}, {"unit": "g", "name": "Protein", "value": "0.00"}, {"unit": "g", "name": "Total lipid (fat)", "value": "5.13"}, {"unit": "g", "name": "Carbohydrate, by difference", "value": "76.92"}, {"unit": "g", "name": "Sugars, total", "value": "48.72"}, {"unit": "mg", "name": "Sodium, Na", "value": "128"}, {"unit": "g", "name": "Fatty acids, total saturated", "value": "3.850"}], "price": "$2.99", "location_px": {"px": 0.22, "py": 0.89}, "description": "LAFFY TAFFY, TAFFY CANDY, SOUR APPLE, BLUE RASPBERRY, UPC: 079200975852", "discount_percent": 0, "images": ["laffy_taffy.png"], "name": "Laffy Taffy"}
 
        ];
-       
-       
-       
     return res;
   },
-  
 
-  
   // Implementation
-  
-  guessNextBeacon : function(currentMac) {
-  	var expectedPath = ['34:b1:f7:d3:91:f8', '34:b1:f7:d3:9c:cb', '34:b1:f7:d3:9e:2b', '34:b1:f7:d3:9d:eb'];
-  	var index = expectedPath.indexOf(currentMac);
-  	if (!index && index != 0) {
-  		return undefined;
-  	}
-  	return expectedPath[(index + 1) % expectedPath.length];
+
+  addBeacon : function(mac, nodeId) {
+    this.beacons.addBeacon(mac);
+    this.graph.bindNodeAndBeacon(nodeId, mac);
   },
-  
+
+  removeBeacon : function(mac) {
+    this.beacons.removeBeacon(mac);
+    this.graph.unbindBeacon(mac);
+  },
+
+  initGraphAndBeacons : function() {
+    this.graph.init();
+    var rowDistance = 0.66;
+    var colDistance = 0.072;
+    var x0 = 0.118;
+    var y0 = 0.12;
+    for (var r = 0; r < 2; r++) {
+      for (var c = 0; c < 3; c ++ ) {
+        this.graph.upsertNode(common.arrToNodeId([r, c]), x0 + c * colDistance, y0 + r * rowDistance);
+      }
+    }
+    for (var r = 0; r < 2; r++) {
+      for (var c = 0; c < 3; c ++ ) {
+        this.graph.addEdgeLength(common.arrToNodeId([r, c]), common.arrToNodeId([r, c]), 0);
+      }
+    }
+    this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([0, 0]));
+    this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([0, 1]));
+    this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([0, 2]));
+    this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([1, 0]));
+    this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([1, 1]));
+    this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([1, 2]));
+    // this.graph.log();
+   },
+
   // Returns true if beacon is one of pre configured beacons.
   isValidBeacon : function(mac) {
   	return this.beacons.getAllBeaconsMac().indexOf(mac) != -1;
@@ -337,7 +344,7 @@ var controller = {
   
   treatRevolutionMsg : function(payload) {
     // {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
-    this.revolutionPath.addRevolutionEvent(payload.forward_revolution, payload.start_time);
+    this.locationWizard.addRevolutionEvent(payload.forward_revolution, payload.start_time);
     this.publishCurrentLocation();
     mainPage.updateView();
   },
@@ -349,19 +356,18 @@ var controller = {
     	this.issueBeaconDoesNotExistWarning();
       return;    	
     }
-    var prevMac = this.revolutionPath.findLatestNearbyBeacon();
+    var nodeId = this.graph.getBeaconsNode(mac);
+    var prevNodeId = this.locationWizard.findLatestNearbyNodeId();
     var nearestTime = payload['nearest_time'];
-    if (!this.hardCodedBeaconDistance) {  // Learn beacons distance.
-    	if (prevMac) {
-	    	var dist = prevMac === mac ?
-	    	    0 : this.revolutionPath.countRevolutionsSinceLatestProximityEvent();
-	    	if (dist >= 0) {
-	    	  this.beaconsGraph.addEdgeLength(prevMac, mac, dist);
-	    	}
-	    }
+  	if (prevNodeId) {
+    	var dist = nodeId === prevNodeId ?
+    	    0 : this.locationWizard.countRevolutionsSinceLatestProximityEvent();
+    	if (dist >= 0) {
+    	  this.graph.addEdgeLength(prevNodeId, nodeId, dist);
+    	}
     }
     this.beacons.addBeaconSample(mac, rssi)
-    this.revolutionPath.addProximityEvent(mac, nearestTime);
+    this.locationWizard.addProximityEvent(nodeId, nearestTime);
     this.publishCurrentLocation();
     mainPage.updateView();
   },
@@ -378,5 +384,4 @@ var controller = {
     	}
     }
   },
-  
 }

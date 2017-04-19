@@ -5,6 +5,10 @@ var Beacons = function(rawBeacons) {
 Beacons.prototype = {
   
   mapMacToBeaconData : undefined,
+
+  init : function() {
+   this.mapMacToBeaconData = {};
+  },
   
   getAllBeaconsMac : function() {
     return Object.keys(this.mapMacToBeaconData);
@@ -18,25 +22,20 @@ Beacons.prototype = {
     return result;
   },
   
-  getBeaconMarkerType : function(mac) {
-    return this.mapMacToBeaconData[mac].markerType;
-  },
-  
-  getBeaconColor : function(mac) {
-  	return this.mapMacToBeaconData[mac].color;
-  },
-
-  getBeaconPixLocation : function(mac) {
-  	utils.assert(mac, 'undefined mac: ' + mac);
-    return {px : this.mapMacToBeaconData[mac].px, py : this.mapMacToBeaconData[mac].py};
-  },
-  
   getBeaconRecentRssi : function(mac) {
     return this.mapMacToBeaconData[mac].recentRssi;
   },
     
-  addBeacon(mac, beaconData) {
-    this.mapMacToBeaconData[mac] = beaconData;
+  addBeacon(mac) {
+    this.mapMacToBeaconData[mac] = {
+      avgRssi : undefined,
+      samples : 0,
+      recentRssi : undefined,
+    };
+  },
+
+  removeBeacon(mac) {
+    delete this.mapMacToBeaconData[mac];
   },
  
   addBeaconSample : function(mac, rssi) {
@@ -57,8 +56,5 @@ Beacons.prototype = {
   },
     
   // Internals.
-  
-  init : function(rawBeacons) {
-    this.mapMacToBeaconData = rawBeacons ? rawBeacons : {};
-  },
+
 }

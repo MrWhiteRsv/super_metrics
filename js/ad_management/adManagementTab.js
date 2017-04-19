@@ -94,7 +94,7 @@ var adManagementTab = {
       document.getElementById("product-card-details").style.visibility = "hidden";
     }
     var activeAdUuid = controller.getActiveAdUuid();
-    if (activeAdUuid != undefined) {
+    if (activeAdUuid != undefined && self.monitor) {
     	this.highlightNearbyAd(activeAdUuid);
     }
   },

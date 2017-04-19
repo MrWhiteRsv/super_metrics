@@ -16,7 +16,6 @@ var common = {
 	 * both x and y are given in the [0.0, 1.0] range.
 	 */
 	drawCart : function(x, y, canvas) {
-		//var canvas = document.getElementById('monitor-canvas');
 		var ctx = canvas.getContext("2d");
 		var width = canvas.width;
 		var height = canvas.height;
@@ -35,35 +34,35 @@ var common = {
 	 * @param {Beacons} beacons. The beacons to be displayed on plan.
 	 */
 	drawPlanBackground : function(canvas) {
-		var ctx = canvas.getContext("2d");
-		var width = canvas.width;
-		var height = canvas.height;
-		ctx.clearRect(0, 0, width, height);
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    ctx.clearRect(0, 0, width, height);
+    for (var c = 0; c < 3; c++) {
+      this.drawEdge(ctx, width, height, this.arrToNodeId([0, c]), this.arrToNodeId([1, c]));
+    }
+    for (var r = 0; r < 2; r++) {
+      for (var c = 0; c < 2; c++) {
+        this.drawEdge(ctx, width, height, this.arrToNodeId([r, c]),
+            this.arrToNodeId([r, c + 1]));
+      }
+    }
+  },
 
-		var allBeaconsMac = controller.getAllBeaconsMac();
-		for (var i in allBeaconsMac) {
-			var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
-			var color = controller.getBeacons().getBeaconColor(allBeaconsMac[i]);
-			color = "#303030";
-			this.drawBeacon(ctx, width, height, beaconPix['px'], beaconPix['py'], color);
-		}
-		if (allBeaconsMac.length > 1) {
-			ctx.lineWidth = 1.0;
-			ctx.strokeStyle = "#303030";
-			ctx.beginPath();
-			var width = canvas.width;
-			var height = canvas.height;
-			var beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
-			ctx.moveTo(width * beaconPix['px'], height * beaconPix['py']);
-			for (var i in allBeaconsMac) {
-				beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[i]);
-				ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
-			}
-			beaconPix = controller.getBeacons().getBeaconPixLocation(allBeaconsMac[0]);
-			ctx.lineTo(width * beaconPix['px'], height * beaconPix['py']);
-			ctx.stroke();
-		}
-	},
+  /**
+   * Draw edge between two nodes
+   * @param {Integer} beacons. The beacons to be displayed on plan.
+   */
+  drawEdge : function(ctx, width, height, n0, n1) {
+    ctx.lineWidth = 1.0;
+    ctx.strokeStyle = "#303030";
+    ctx.beginPath();
+    var n0Px = controller.getGraph().getNodeLocation(n0);
+    var n1Px = controller.getGraph().getNodeLocation(n1);
+    ctx.moveTo(width * n0Px.px, height * n0Px.py);
+    ctx.lineTo(width * n1Px.px, height * n1Px.py);
+    ctx.stroke();
+  },
 
 	/**
 	 * Draw marker on background canvas.
@@ -75,6 +74,10 @@ var common = {
 		ctx.strokeStyle = color;
 		ctx.lineWidth = 1;
 		ctx.stroke();
+	},
+
+	arrToNodeId : function(arr) {
+	  return arr.join(',');
 	},
 	
 };

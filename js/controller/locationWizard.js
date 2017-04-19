@@ -1,17 +1,18 @@
-var RevolutionPath = function(beacons) {
-  this.init(beacons);
+var LocationWizard = function(graph) {
+  this.sortedEvents = [];
+  this.graph = graph;
 }
 
-RevolutionPath.prototype = {
+LocationWizard.prototype = {
   
-  beacons : undefined,
-  sortedEvents : undefined,  // [{type : 'proximity', ts : , mac : }, {type : 'revolution', forward: true, ts :}, ...]
+  graph : undefined,
+  sortedEvents : undefined,  // [{type : 'proximity', ts : , nodeId : }, {type : 'revolution', forward: true, ts :}, ...]
 
   // Add cart near beacon event.
-  addProximityEvent : function(mac, ts) {
+  addProximityEvent : function(nodeId, ts) {
     this.addEvent({
       type : 'proximity',
-      mac : mac,
+      nodeId : nodeId,
       ts : ts,
     });
   },
@@ -24,77 +25,51 @@ RevolutionPath.prototype = {
     });
   },
 
-  // Return the cart's estimated pixel {px :..., py :...} getCartPixel.
+  addHeadingEvent : function(direction, ts) {
+    this.addEvent({
+      type : 'heading event',
+      direction : direction,
+      ts : ts,
+    });
+  },
+
+  // Return the cart's estimated pixel {px :..., py :...}.
   // Both coordinates are in the [0.0, 1.0] range.
-  getCartPixel : function(beaconsGraph, nextBeacon) {
-  	var currentBeacon =  this.findLatestNearbyBeacon();
-  	if (!currentBeacon) {
+  getCartLocation : function() {
+    var currentNodeId =  this.findLatestNearbyNodeId();
+  	if (!currentNodeId) {
   		return undefined;
   	}
-  	var currentBeaconPix = this.beacons.getBeaconPixLocation(currentBeacon);
-  	var dist = beaconsGraph.getEdgeLength(currentBeacon, nextBeacon);
+  	var expectedNextNodeId = this.guessNextNode(currentNodeId);
+  	var currentNodeLocation = this.graph.getNodeLocation(currentNodeId);
+  	var dist = this.graph.getEdgeLength(currentNodeId, expectedNextNodeId);
     if (!dist) {
-  		return currentBeaconPix;
+  		return currentNodeLocation;
   	}
-  	if (alpha < 0.0) {
-  		return currentBeaconPix;
-  	}
-  	var nextBeaconPix = this.beacons.getBeaconPixLocation(nextBeacon);
+
+  	var nextNodeLovation = this.graph.getNodeLocation(expectedNextNodeId);
   	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
   	var alpha = revSinceLastBeacon/ dist * 1.0;
     if (alpha < 0.0) {
-  		return currentBeaconPix;
+  		return currentNodeLocation;
   	}
     if (alpha > 1.0) {
-  		return nextBeaconPix;
+  		return nextNodeLovation;
   	}
-  	var res = {px : (1 - alpha) * currentBeaconPix.px + alpha * nextBeaconPix.px,
-  	    py : (1 - alpha) * currentBeaconPix.py + alpha * nextBeaconPix.py}
+  	var res = {px : (1 - alpha) * currentNodeLocation.px + alpha * nextNodeLovation.px,
+  	    py : (1 - alpha) * currentNodeLocation.py + alpha * nextNodeLovation.py}
   	return res
   },
 
-  // Compute cart's estimated location {lat:..., lng:...} at a given timesrtamp.
-  getCartLatLng : function(ts) {
-    var endBeaconIndex = this.findFirstProximityEventIndexAfterTs(ts);
-    var startBeaconIndex = this.findLastProximityEventIndexBeforeTs(ts);
-    if (startBeaconIndex == undefined || endBeaconIndex == undefined) {
-      return undefined;
-    }
-    var startBeaconMac = (startBeaconIndex == undefined) ? undefined :
-        this.sortedEvents[startBeaconIndex].mac;
-    var endBeaconMac = (endBeaconIndex == undefined) ? undefined :
-        this.sortedEvents[endBeaconIndex].mac;
-    var startBeaconLocation = (startBeaconIndex == undefined) ? undefined : 
-          this.beacons.getBeaconLocation(startBeaconMac);
-    var endBeaconLocation = (endBeaconIndex == undefined) ? undefined : 
-        this.beacons.getBeaconLocation(endBeaconMac);      
-    var segmentRevolutions = this.countRevolutionsBetweenIndices(startBeaconIndex,
-        endBeaconIndex);
-    if (segmentRevolutions == 0) {
-      return {
-        lat : startBeaconLocation.lat,
-        lon : startBeaconLocation.lon,
-      };
-    } else {
-      var segmentPrefixRevolutions = this.countRevolutionsBetweenIndexAndTs(startBeaconIndex,
-          ts);    
-      var alpha = segmentPrefixRevolutions * 1.0 / segmentRevolutions;
-      return {
-        lat : (1 - alpha) * startBeaconLocation.lat + alpha * endBeaconLocation.lat,
-        lon : (1 - alpha) * startBeaconLocation.lon + alpha * endBeaconLocation.lon,
-      };
-    }
-  },
-  
-  findLatestNearbyBeacon : function() {
+  findLatestNearbyNodeId : function() {
     for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
     	if (this.sortedEvents[i].type == 'proximity') {
-    		return this.sortedEvents[i].mac;
+    		return this.sortedEvents[i].nodeId;
     	}
     }
     return undefined;
   },
-  
+
   countRevolutionsSinceLatestProximityEvent : function() {
     var result = 0;
     for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
@@ -107,9 +82,9 @@ RevolutionPath.prototype = {
     }
     return result;
   },
-  
+
   // Internals.
-    
+
   countRevolutionsBetweenIndices : function(indx0, indx1) {
     var result = 0;
     for (var i = indx0 + 1; i < indx1; i++) {
@@ -119,7 +94,7 @@ RevolutionPath.prototype = {
     }
     return result;
   },
-  
+
   countRevolutionsBetweenIndexAndTs : function(indx, ts) {
     var result = 0;
     for (var i = indx + 1; this.sortedEvents[i].ts < ts; i++) {
@@ -129,7 +104,7 @@ RevolutionPath.prototype = {
     }
     return result;
   },
-  
+
   findFirstProximityEventIndexAfterTs : function(ts) {
     var result = undefined;
     for (var i =  this.sortedEvents.length - 1; i >= 0; i--) {
@@ -143,7 +118,7 @@ RevolutionPath.prototype = {
     }
     return result;
   },
-  
+
   findLastProximityEventIndexBeforeTs : function(ts) {
     var result = undefined;
     for (var i = 0; i < this.sortedEvents.length; i++) {
@@ -159,15 +134,10 @@ RevolutionPath.prototype = {
   },
 
   toString : function() {
-    return JSON.stringify(this.beacons) + '\n\n' +  
+    return JSON.stringify(this.beacons) + '\n\n' +
        JSON.stringify(this.sortedEvents) + '\n';
   },
-  
-  init : function(beacons) {
-    this.sortedEvents = [];
-    this.beacons = beacons;
-  },
-  
+
   addEvent(event) {
     var sort = false;
     if (this.sortedEvents.length > 0) {
@@ -179,15 +149,34 @@ RevolutionPath.prototype = {
     this.sortedEvents.push(event);
     if (sort) {
       this.sortedEvents.sort(this.compareEvents);
-    }    
+    }
   },
-  
+
   compareEvents : function(e0, e1) {
     if (e0.ts < e1.ts)
       return -1;
     if (e0.ts > e1.ts)
       return 1;
     return 0;
+  },
+
+  guessNextNode : function(currentNodeId) {
+
+    var expectedPath = [
+      common.arrToNodeId([1, 0]),
+      common.arrToNodeId([1, 1]),
+      common.arrToNodeId([1, 2]),
+      common.arrToNodeId([0, 2]),
+      common.arrToNodeId([0, 1]),
+      common.arrToNodeId([0, 0])
+    ];
+
+    var index = expectedPath.indexOf(currentNodeId);
+    if (!index && index != 0) {
+      return undefined;
+    }
+    var res =  expectedPath[(index + 1) % expectedPath.length];
+    return res;
   },
 }
 
