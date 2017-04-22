@@ -11,6 +11,19 @@ var controller = {
   adMode : false,
   showAdsToCustomers : false,
   adaptiveBleThreshold : true,
+
+  init : function() {
+    mainPage.init();
+  	this.graph = new Graph();
+    this.beacons = new Beacons();
+    this.locationWizard = new LocationWizard(this.graph);
+    this.firstInvalidBeaconWarningIssued = false;
+    //this.initBeacons();
+    this.initGraphAndBeacons();
+    if (this.mqttConnected) {
+      this.resetCartDetector();
+    }
+  },
   
   setShowAdsToCustomers : function(value) {
   	this.showAdsToCustomers = value;
@@ -153,19 +166,6 @@ var controller = {
    */  
   onBleThresholdMethodChange : function() {
   	this.publishBleProximityThresholds();
-  },
-  
-  init : function() {
-    mainPage.init();
-  	this.graph = new Graph();
-    this.beacons = new Beacons();
-    this.locationWizard = new LocationWizard(this.graph);
-    this.firstInvalidBeaconWarningIssued = false;
-    //this.initBeacons();
-    this.initGraphAndBeacons();
-    if (this.mqttConnected) {
-      this.resetCartDetector();
-    }
   },
   
   onMqttConnect : function() {

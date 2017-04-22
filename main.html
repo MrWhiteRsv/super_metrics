@@ -19,6 +19,9 @@
 		<script src="js/utils.js"></script>
 		<script src="js/model/beacons.js"></script>
 		<script src="js/model/graph.js"></script>
+        <script src="js/view/distance/distanceTab.js"></script>
+        <script src="js/view/heading/headingTab.js"></script>
+        <script src="js/view/proximity/proximityTab.js"></script>
 		<script src="test/test.js"></script>
 		<script src="test/beaconsTest.js"></script>
 		<script src="test/beaconsGraphTest.js"></script>
@@ -43,6 +46,9 @@
 					<!--a href="#supermarket-tab" id="supermarket-tab-title" class="mdl-layout__tab is-active">Queue Metrics</a-->
 					<a href="#ad-management-tab" id="ad-management-tab-title" class="mdl-layout__tab">Ad Management</a>
 					<a href="#monitor-tab" id="monitor-tab-title" class="mdl-layout__tab">Dev</a>
+					<a href="#proximity-tab" id="proximity-tab-title" class="mdl-layout__tab">Dev Proximity</a>
+                    <a href="#distance-tab" id="distance-tab-title" class="mdl-layout__tab">Dev Distance</a>
+                    <a href="#heading-tab" id="heading-tab-title" class="mdl-layout__tab">Dev Heading</a>
 				</div>
 			</header>
 			<div class="mdl-layout__drawer">
@@ -129,10 +135,45 @@
 							<br> <div id="monitor-beacons-signal-level-table"> </div> <br>
 
 						</div>
-						
 						<div class="mdl-shadow--4dp supermarket-plan-container">
 							<img class="supermarket-plan" id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
 						  <canvas class="supermarket-canvas" id="monitor-canvas" width="1000" height="400">
+						</div>
+					</div>
+				</section>
+
+
+                <section class="mdl-layout__tab-panel" id="proximity-tab">
+                    <div class="page-content">
+                        <div class="mdl-shadow--2dp" id="proximity-beacons-table-container">
+                            <br> <div class="mdl-typography--title">Signal level [db]</div>
+                            <br> <div id="proximity-beacons-signal-level-table"> </div> <br>
+                        </div>
+                        <div class="mdl-shadow--4dp supermarket-plan-container">
+                            <img class="supermarket-plan" id="proximity-plan" src="css/storePlan.png" width="1000" height="400">
+                            <canvas class="supermarket-canvas" id="proximity-canvas" width="1000" height="400">
+                        </div>
+                    </div>
+                </section>
+
+				<section class="mdl-layout__tab-panel" id="distance-tab">
+					<div class="page-content">
+						<div class="mdl-shadow--2dp" id="distance-table-container">
+							<br> <div class="mdl-typography--title">Distance [rev]</div>
+							<br> <div id="distance-table"> </div> <br>
+						</div>
+						<div class="mdl-shadow--4dp supermarket-plan-container">
+							<img class="supermarket-plan" id="distance-plan" src="css/storePlan.png" width="1000" height="400">
+							<canvas class="supermarket-canvas" id="distance-canvas" width="1000" height="400">
+						</div>
+					</div>
+				</section>
+
+				<section class="mdl-layout__tab-panel" id="heading-tab">
+					<div class="page-content">
+						<div class="mdl-shadow--4dp supermarket-plan-container">
+							<img class="supermarket-plan" id="heading-plan" src="css/storePlan.png" width="1000" height="400">
+							<canvas class="supermarket-canvas" id="heading-canvas" width="1000" height="400">
 						</div>
 					</div>
 				</section>

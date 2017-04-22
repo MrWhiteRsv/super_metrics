@@ -178,6 +178,28 @@
   width : 18vw;
 }
 
+/*** Proximity ***/
+
+#proximity-beacons-table-container {
+  position: absolute;
+  padding : 1vw;
+  top : 30vh;
+  left : 75vw;
+  width : 18vw;
+}
+
+/*** Distance ***/
+
+#distance-table-container {
+  position: absolute;
+  padding : 1vw;
+  top : 30vh;
+  left : 75vw;
+  width : 18vw;
+}
+
+/*** Heading ***/
+
 .warning-card-square.mdl-card {
   width: 20vw;
   height: 20vw;

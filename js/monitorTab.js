@@ -49,35 +49,39 @@ var monitorTab = {
 			    document.getElementById('monitor-canvas'),
 			    document.getElementById('monitor-canvas'));
 		}
-		document.getElementById("monitor_single_sensor_switch").checked = controller.getSingleSensorMode();
-		document.getElementById("monitor_hyper_sensetive_beacon_switch").checked = controller.getHyperSentistiveBeacons();
-		document.getElementById("monitor_publish_location_switch").checked = controller.getPublishLocation();
+		document.getElementById("monitor_single_sensor_switch").checked =
+		    controller.getSingleSensorMode();
+		document.getElementById("monitor_hyper_sensetive_beacon_switch").checked =
+		    controller.getHyperSentistiveBeacons();
+		document.getElementById("monitor_publish_location_switch").checked =
+		    controller.getPublishLocation();
 	},
 
 	// Implementation.
 
 	drawDistanceTable : function() {
-		var beacons = controller.getBeacons().getAllBeaconsMac();
-		var beaconsGreaph = controller.getGraph();
+		var graph = controller.getGraph();
 		var data = new google.visualization.DataTable();
-		for (var c = 0; c < beacons.length; c++) {
+    var allNodes = controller.getGraph().getAlNodes();
+		for (var c = 0; c < allNodes.length; c++) {
 			data.addColumn('number', '' + (c + 1));
 		}
-		var allBeacons = controller.getAllBeaconsMac();
-		for (var r = 0; r < beacons.length; r++) {
+		for (var r = 0; r < allNodes.length; r++) {
 			var row = [];
-			for (var c = 0; c < beacons.length; c++) {
-				var val = beaconsGreaph.getEdgeLength(allBeacons[r], allBeacons[c]);
+			for (var c = 0; c < allNodes.length; c++) {
+				var val = graph.getEdgeLength(allNodes[r], allNodes[c]);
+				console.log('val: ' + val);
 				row.push(val);
 			}
 			data.addRows([row]);
 		}
-		for (var r = 0; r < beacons.length; r++) {
-			for (var c = 0; c < beacons.length; c++) {
+		for (var r = 0; r < allNodes.length; r++) {
+			for (var c = 0; c < allNodes.length; c++) {
 				data.setProperty(r, c, 'style', 'text-align: center');
 			}
 		}
-		var table = new google.visualization.Table(document.getElementById('monitor-beacons-distance-table'));
+		var table = new google.visualization.Table(document.getElementById(
+		    'monitor-beacons-distance-table'));
 		table.draw(data, {
 			showRowNumber : true,
 			allowHtml : true,

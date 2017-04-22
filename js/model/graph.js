@@ -21,6 +21,7 @@ Graph.prototype = {
       py : py
     };
     this.mapNodeIdToNodeInfo.set(nodeId, nodeInfo);
+    console.log("allNodes.length: " + this.getAlNodes().length);
   },
 
   bindNodeAndBeacon : function(nodeId, beaconId) {
@@ -47,6 +48,9 @@ Graph.prototype = {
     return this.mapBeaconIdToNodeId.get(beaconId);
   },
 
+  getAlNodes : function() {
+    return Array.from(this.mapNodeIdToNodeInfo.keys() )
+  },
 
   toString : function() {
     return JSON.stringify(this);	

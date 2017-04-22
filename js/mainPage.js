@@ -3,6 +3,9 @@ var mainPage = {
   init : function() {
     monitorTab.init();
     adManagementTab.init();
+    proximityTab.init();
+    headingTab.init();
+    distanceTab.init();
 
     document.getElementById("ad-management-tab-title").addEventListener(
         "click",
@@ -15,6 +18,25 @@ var mainPage = {
         function() {
           monitorTab.updateView();
         });
+
+    document.getElementById("proximity-tab-title").addEventListener(
+        "click",
+        function() {
+          proximityTab.updateView();
+        });
+
+    document.getElementById("distance-tab-title").addEventListener(
+        "click",
+        function() {
+          distanceTab.updateView();
+        });
+
+     document.getElementById("heading-tab-title").addEventListener(
+         "click",
+         function() {
+           headingTab.updateView();
+         });
+
         
     document.getElementById("warning-button").addEventListener(
         "click",
