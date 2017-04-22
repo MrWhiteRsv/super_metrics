@@ -157,8 +157,7 @@ var controller = {
     //graph.mockEdgeTraficSpeed();
   	// testAll();
   	this.init();
-  	adManagementTab.updateView();
-    // supermarketTab.updateView();
+  	mainPage.updateView();
   },
 
   /**

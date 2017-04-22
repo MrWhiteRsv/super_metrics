@@ -21,7 +21,6 @@ Graph.prototype = {
       py : py
     };
     this.mapNodeIdToNodeInfo.set(nodeId, nodeInfo);
-    console.log("allNodes.length: " + this.getAlNodes().length);
   },
 
   bindNodeAndBeacon : function(nodeId, beaconId) {

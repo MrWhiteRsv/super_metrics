@@ -32,8 +32,6 @@ var distanceTab = {
 		var graph = controller.getGraph();
 		var data = new google.visualization.DataTable();
     var allNodes = controller.getGraph().getAlNodes();
-		console.log("allNodes.length: " + allNodes.length);
-
 		for (var c = 0; c < allNodes.length; c++) {
 			data.addColumn('number', '' + (c + 1));
 		}
@@ -42,7 +40,6 @@ var distanceTab = {
 			var row = [];
 			for (var c = 0; c < allNodes.length; c++) {
 				var val = graph.getEdgeLength(allNodes[r], allNodes[c]);
-				console.log('val: ' + val);
 				row.push(val);
 			}
 			data.addRows([row]);

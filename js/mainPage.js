@@ -1,5 +1,7 @@
 var mainPage = {
 
+  activeTag : undefined,
+
   init : function() {
     monitorTab.init();
     adManagementTab.init();
@@ -7,34 +9,41 @@ var mainPage = {
     headingTab.init();
     distanceTab.init();
 
+    this.activeTag = adManagementTab;
+    var self = this;
     document.getElementById("ad-management-tab-title").addEventListener(
         "click",
         function() {
-          adManagementTab.updateView();
+          self.updateView();
+          self.activeTag = adManagementTab;
         });
         
     document.getElementById("monitor-tab-title").addEventListener(
         "click",
         function() {
-          monitorTab.updateView();
+          self.updateView();
+          self.activeTag = monitorTab;
         });
 
     document.getElementById("proximity-tab-title").addEventListener(
         "click",
         function() {
-          proximityTab.updateView();
+          self.updateView();
+          self.activeTag = proximityTab;
         });
 
     document.getElementById("distance-tab-title").addEventListener(
         "click",
         function() {
-          distanceTab.updateView();
+          self.updateView();
+          self.activeTag = distanceTab;
         });
 
      document.getElementById("heading-tab-title").addEventListener(
          "click",
          function() {
-           headingTab.updateView();
+           self.updateView();
+           self.activeTag = headingTab;
          });
 
         
@@ -49,8 +58,9 @@ var mainPage = {
   },
   
   updateView : function() {
-    monitorTab.updateView();
-    adManagementTab.updateView();
+    if (this.activeTag) {
+      this.activeTag.updateView();
+    }
   },
   
   displayBeaconDoesNotExistWarning : function () {

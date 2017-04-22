@@ -13,10 +13,6 @@ var headingTab = {
 	},
 
 	updateView : function() {
-		if (controller.getGoogleChartsLoaded()) {
-			this.drawDistanceTable();
-			this.drawSignalLevelTable();
-		}
 		common.drawPlanBackground(document.getElementById('heading-canvas'));
 		var cartLocation = controller.getCartLocation();
 		if (cartLocation) {
