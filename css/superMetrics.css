@@ -12,27 +12,6 @@
   z-index: 0;
 }
 
-#traffic-button-container {
-  float: left;
-  width : 100%;
-  margin: 3% 0 0 5%;  
-}
-
-#speed-button-container {
-  float: left;
-  width : 100%;
-  margin: 3% 0 0 5%; 
-}
-
-#supermarket-histogram {
-  position: absolute;
-  top : 20% ;
-  left : 2%;
-  width : 20%;
-  height : 30%;
-  margin: 3% 0 0 0%; 
-}
-
 #supermarket-line-time {
   position: absolute;
   top : 50%;
@@ -69,6 +48,13 @@
   left: 96.2vw;
   z-index: 1;
 }
+
+.normal-text {
+  font-size: 13px;
+  padding: 0 40px;
+  white-space: nowrap;
+}
+
 /*** Ad Management ***/
 
 #ad-management_switch_container,
@@ -169,7 +155,6 @@
   top : 22vh;
 }
 
-
 #monitor-beacons-table-container {
   position: absolute;
   padding : 1vw;
@@ -180,21 +165,75 @@
 
 /*** Proximity ***/
 
+#proximity-clear {
+  position: absolute;
+  top: 4vh;
+  width: 8vw;
+  height :4vh;
+  font-size: 12px;
+}
+
+#proximity-clear {
+  left: 5vw;
+}
+
+#proximity_adaptive_threshold_switch_container
+{
+	position: absolute;
+  left: 70vw;
+  width: 18vw;
+}
+
+#proximity_adaptive_threshold_switch_container {
+  top: 4vh;
+}
+
+#proximity-selected-beacon {
+  position: absolute;
+  top : 15vh;
+  left : 67vw;
+}
+
+#proximity-slider-min-threshold-title {
+  position: absolute;
+  top : 20vh;
+  left : 70vw;
+}
+
+#proximity-slider-min-threshold-container {
+  position: absolute;
+  top : 21vh;
+  left : 73vw;
+  width : 15vw;
+}
+
+#proximity-slider-max-threshold-title {
+  position: absolute;
+  top : 23vh;
+  left : 70vw;
+}
+
+#proximity-slider-max-threshold-container {
+  position: absolute;
+  top : 24vh;
+  left : 73vw;
+  width : 15vw;
+}
+
 #proximity-beacons-table-container {
   position: absolute;
   padding : 1vw;
-  top : 30vh;
-  left : 75vw;
-  width : 18vw;
+  top : 28vh;
+  left : 70vw;
+  width : 25vw;
 }
-
 /*** Distance ***/
 
 #distance-table-container {
   position: absolute;
   padding : 1vw;
   top : 30vh;
-  left : 75vw;
+  left : 65vw;
   width : 18vw;
 }
 
@@ -217,9 +256,6 @@
   background-repeat: no-repeat;
   background-position: center center;
 }
-
-
-
 
 canvas {
   image-rendering: optimizeSpeed;             /* Older versions of FF          */

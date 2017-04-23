@@ -145,6 +145,24 @@
 
                 <section class="mdl-layout__tab-panel" id="proximity-tab">
                     <div class="page-content">
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_adaptive_threshold_switch" id="proximity_adaptive_threshold_switch_container">
+                            <span class="mdl-switch__label">Adaptive Threshold </span>
+                            <input type="checkbox" id="proximity_adaptive_threshold_switch" class="mdl-switch__input" checked>
+                        </label>
+                        <button id="proximity-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                            Clear
+                        </button>
+                        <p id="proximity-selected-beacon" class="normal-text"> <b>#FF2323 </b></p>
+                        <p id="proximity-slider-min-threshold-title">Min:</p>
+                        <p id="proximity-slider-min-threshold-container">
+                            <input class="mdl-slider mdl-js-slider" type="range"
+                                   id="proximity-slider-min-threshold" min="0" max="10" value="4" step="2">
+                        </p>
+                        <p id="proximity-slider-max-threshold-title">Max:</p>
+                        <p id="proximity-slider-max-threshold-container">
+                            <input class="mdl-slider mdl-js-slider" type="range"
+                                   id="proximity-slider-max-threshold" min="0" max="10" value="4" step="2">
+                        </p>
                         <div class="mdl-shadow--2dp" id="proximity-beacons-table-container">
                             <br> <div class="mdl-typography--title">Signal level [db]</div>
                             <br> <div id="proximity-beacons-signal-level-table"> </div> <br>

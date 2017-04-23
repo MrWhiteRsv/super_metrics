@@ -21,29 +21,29 @@ var mainPage = {
     document.getElementById("monitor-tab-title").addEventListener(
         "click",
         function() {
-          self.updateView();
           self.activeTag = monitorTab;
+          self.updateView();
         });
 
     document.getElementById("proximity-tab-title").addEventListener(
         "click",
         function() {
-          self.updateView();
           self.activeTag = proximityTab;
+          self.updateView();
         });
 
     document.getElementById("distance-tab-title").addEventListener(
         "click",
         function() {
-          self.updateView();
           self.activeTag = distanceTab;
+          self.updateView();
         });
 
      document.getElementById("heading-tab-title").addEventListener(
          "click",
          function() {
-           self.updateView();
            self.activeTag = headingTab;
+           self.updateView();
          });
 
         

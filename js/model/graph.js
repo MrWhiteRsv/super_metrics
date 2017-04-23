@@ -48,7 +48,7 @@ Graph.prototype = {
   },
 
   getAlNodes : function() {
-    return Array.from(this.mapNodeIdToNodeInfo.keys() )
+    return Array.from(this.mapNodeIdToNodeInfo.keys());
   },
 
   toString : function() {

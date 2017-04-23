@@ -11,6 +11,7 @@ Beacons.prototype = {
   },
   
   getAllBeaconsMac : function() {
+    //return Array.from(this.mapMacToBeaconData.keys() )
     return Object.keys(this.mapMacToBeaconData);
   },
   

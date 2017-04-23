@@ -70,7 +70,6 @@ var monitorTab = {
 			var row = [];
 			for (var c = 0; c < allNodes.length; c++) {
 				var val = graph.getEdgeLength(allNodes[r], allNodes[c]);
-				console.log('val: ' + val);
 				row.push(val);
 			}
 			data.addRows([row]);

@@ -99,7 +99,7 @@ var controller = {
     return undefined;
   },
   
-  getBeaconProximityThreshold : function(mac) {
+  getBeaconMinThreshold : function(mac) {
   	if (this.getAdaptiveBleThreshold()) {
   		var average = this.getBeacons().getBeaconAverageRssi(mac);
   	  return average == undefined ? undefined : average + 10;
@@ -107,7 +107,16 @@ var controller = {
       return -50;
     }
   },
-  
+
+  getBeaconMaxThreshold : function(mac) {
+    if (this.getAdaptiveBleThreshold()) {
+      var average = this.getBeacons().getBeaconAverageRssi(mac);
+      return average == undefined ? undefined : average + 10;
+    } else {
+      return -50;
+    }
+  },
+
   getActiveAdUuid : function() {
   	var cartLocation = this.getCartLocation();
   	if (cartLocation == undefined) {
