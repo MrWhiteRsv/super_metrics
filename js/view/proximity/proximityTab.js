@@ -12,32 +12,16 @@ var proximityTab = {
 		canvas.style.height = plan.offsetHeight + 'px';
 		canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
-    /*var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
-    var nearbyListener = function() {
-      window.requestAnimationFrame(function() {
-        controller.getBeacons().setNearbyManualThreshold(self.getFocusedBeacon(),
-            parseInt(nearbyRangeInput.value));
-        self.drawSignalLevelTable();
-      });
-    };
-    nearbyRangeInput.addEventListener("mousedown", function() {;
-      nearbyListener();
-      nearbyRangeInput.addEventListener("mousemove", nearbyListener);
-    });
-    nearbyRangeInput.addEventListener("mouseup", function() {
-      nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
-    });
-*/
     this.initAwaySlider();
     this.initNearbySlider();
     document.getElementById("proximity-reset").addEventListener("click", function() {
       controller.getBeacons().resetThresholds();
       self.updateView();
-      //console.log("JJJ0");
     });
     document.getElementById("proximity-update-cart").addEventListener("click", function() {
-      console.log("JJJ1");
+      controller.publishBleProximityThresholds();
     });
+
     document.getElementById("proximity_adaptive_threshold_switch").addEventListener("change", function() {
       /*controller.setAdaptiveBleThreshold(document.getElementById("proximity_adaptive_threshold_switch").checked);
       self.updateView();
@@ -51,7 +35,7 @@ var proximityTab = {
 		  if (this.table == undefined) {
 		    this.table = new google.visualization.Table(document.getElementById(
             'proximity-beacons-signal-level-table'));
-        this.setFocusedBeacon(controller.getAllBeaconsMac()[0]);
+        this.setFocusedBeacon(controller.getBeacons().getAllBeaconsMac()[0]);
       }
 			this.drawSignalLevelTable();
 		}
@@ -70,7 +54,7 @@ var proximityTab = {
 	// Implementation.
 
 	drawSignalLevelTable : function() {
-		var allBeaconsMac = controller.getAllBeaconsMac();
+		var allBeaconsMac = controller.getBeacons().getAllBeaconsMac();
 		this.tableData = new google.visualization.DataTable();
 		this.tableData.addColumn('string', '');
 		this.tableData.addColumn('string', 'Avg RSSI');

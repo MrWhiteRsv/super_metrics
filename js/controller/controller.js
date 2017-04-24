@@ -18,7 +18,6 @@ var controller = {
     this.beacons = new Beacons();
     this.locationWizard = new LocationWizard(this.graph);
     this.firstInvalidBeaconWarningIssued = false;
-    //this.initBeacons();
     this.initGraphAndBeacons();
     if (this.mqttConnected) {
       this.resetCartDetector();
@@ -69,20 +68,12 @@ var controller = {
   	return this.googleChartsLoaded;
   },
 
-  getAllBeaconsMac : function() {
-    return this.beacons.getAllBeaconsMac();
-  },
-
   getBeacons : function() {
   	return this.beacons;
   },
     
   getGraph : function() {
   	return this.graph;
-  },
-  
-  getBeaconAverageRssi : function(mac) {
-    return this.mapMacToBeaconData[mac].avgRssi;
   },
   
   getAdaptiveBleThreshold: function() {
@@ -143,10 +134,6 @@ var controller = {
   onMapLoaded : function() {
   	// One time actions.
   	mqtt_listener.init();
-  	//graph.build();
-  	//graph.mockEdgeTraficVolume();
-    //graph.mockEdgeTraficSpeed();
-  	// testAll();
   	this.init();
   	mainPage.updateView();
   },
@@ -363,6 +350,22 @@ var controller = {
   },
   
   publishBleProximityThresholds : function() {
+    var topic = "monitor/cartId/command";
+    var beacons = this.getBeacons();
+    var allBeaconsMac = beacons.getAllBeaconsMac();
+    for (var i = 0; i < allBeaconsMac.length; i++) {
+    	var mac = allBeaconsMac[i];
+      var nearbyThreshold = beacons.getNearbyThreshold(allBeaconsMac[i]);
+      var awayThreshold = beacons.getAwayThreshold(allBeaconsMac[i]);
+    	if (mac != undefined && nearbyThreshold != undefined && awayThreshold != undefined) {
+    	  var payload = JSON.stringify({changeThreshold: true, mac: mac,
+    	      nearbyThreshold: nearbyThreshold, awayThreshold : awayThreshold});
+        console.log('payload: ' + payload);
+    	  mqtt_listener.sendMessage(topic, payload);
+    	}
+    }
+
+  	/*
   	var topic = "monitor/cartId/command";
   	var allBeaconsMac = controller.getAllBeaconsMac();
     for (var i = 0; i < allBeaconsMac.length; i++) {
@@ -373,5 +376,7 @@ var controller = {
     	  mqtt_listener.sendMessage(topic, payload);
     	}
     }
+    */
   },
+
 }
