@@ -26,12 +26,42 @@ Beacons.prototype = {
   getBeaconRecentRssi : function(mac) {
     return this.mapMacToBeaconData[mac].recentRssi;
   },
-    
+
+  getNearbyThreshold : function(mac) {
+    return this.mapMacToBeaconData[mac].nearbyManualThreshold;
+    /*if (this.getAdaptiveBleThreshold()) {
+      var average = this.getBeacons().getBeaconAverageRssi(mac);
+      return average == undefined ? undefined : average + 10;
+    } else {
+      return -50;
+    } */
+  },
+
+  getAwayThreshold : function(mac) {
+    return this.mapMacToBeaconData[mac].awayManualThreshold;
+    /*if (this.getAdaptiveBleThreshold()) {
+      var average = this.getBeacons().getBeaconAverageRssi(mac);
+      return average == undefined ? undefined : average + 10;
+    } else {
+      return -50;
+    }*/
+  },
+
+  setNearbyManualThreshold(mac, value) {
+    this.mapMacToBeaconData[mac].nearbyManualThreshold = value;
+  },
+
+  setAwayManualThreshold(mac, value) {
+    this.mapMacToBeaconData[mac].awayManualThreshold = value;
+  },
+
   addBeacon(mac) {
     this.mapMacToBeaconData[mac] = {
       avgRssi : undefined,
       samples : 0,
       recentRssi : undefined,
+      nearbyManualThreshold : -60,
+      awayManualThreshold : -70,
     };
   },
 

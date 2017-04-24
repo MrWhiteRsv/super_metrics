@@ -165,7 +165,8 @@
 
 /*** Proximity ***/
 
-#proximity-clear {
+#proximity-clear,
+#proximity-update-cart {
   position: absolute;
   top: 4vh;
   width: 8vw;
@@ -175,6 +176,10 @@
 
 #proximity-clear {
   left: 5vw;
+}
+
+#proximity-update-cart {
+  left: 15vw;
 }
 
 #proximity_adaptive_threshold_switch_container
@@ -194,30 +199,30 @@
   left : 67vw;
 }
 
-#proximity-slider-min-threshold-title {
+#proximity-slider-nearby-threshold-title {
   position: absolute;
   top : 20vh;
   left : 70vw;
 }
 
-#proximity-slider-min-threshold-container {
+#proximity-slider-nearby-threshold-container {
   position: absolute;
   top : 21vh;
-  left : 73vw;
-  width : 15vw;
+  left : 75vw;
+  width : 35 vw;
 }
 
-#proximity-slider-max-threshold-title {
+#proximity-slider-away-threshold-title {
   position: absolute;
   top : 23vh;
   left : 70vw;
 }
 
-#proximity-slider-max-threshold-container {
+#proximity-slider-away-threshold-container {
   position: absolute;
   top : 24vh;
-  left : 73vw;
-  width : 15vw;
+  left : 75vw;
+  width : 35vw;
 }
 
 #proximity-beacons-table-container {

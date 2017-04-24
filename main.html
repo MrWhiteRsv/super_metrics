@@ -30,7 +30,7 @@
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-indigo.min.css">
-		<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 	</head>
 	<body onload="controller.onMapLoaded()">
@@ -142,26 +142,28 @@
 					</div>
 				</section>
 
-
                 <section class="mdl-layout__tab-panel" id="proximity-tab">
                     <div class="page-content">
-                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_adaptive_threshold_switch" id="proximity_adaptive_threshold_switch_container">
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="proximity_adaptive_threshold_switch" id="proximity_adaptive_threshold_switch_container">
                             <span class="mdl-switch__label">Adaptive Threshold </span>
                             <input type="checkbox" id="proximity_adaptive_threshold_switch" class="mdl-switch__input" checked>
                         </label>
                         <button id="proximity-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
                             Clear
                         </button>
+                        <button id="proximity-update-cart" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                            Update Cart
+                        </button>
                         <p id="proximity-selected-beacon" class="normal-text"> <b>#FF2323 </b></p>
-                        <p id="proximity-slider-min-threshold-title">Min:</p>
-                        <p id="proximity-slider-min-threshold-container">
-                            <input class="mdl-slider mdl-js-slider" type="range"
-                                   id="proximity-slider-min-threshold" min="0" max="10" value="4" step="2">
+                        <p id="proximity-slider-nearby-threshold-title">Nearby:</p>
+                        <p id="proximity-slider-nearby-threshold-container">
+                            <input type="range" id="proximity-slider-nearby-threshold"
+                                   min="-100" max="-10" value="-70" step="1">
                         </p>
-                        <p id="proximity-slider-max-threshold-title">Max:</p>
-                        <p id="proximity-slider-max-threshold-container">
-                            <input class="mdl-slider mdl-js-slider" type="range"
-                                   id="proximity-slider-max-threshold" min="0" max="10" value="4" step="2">
+                        <p id="proximity-slider-away-threshold-title">Away:</p>
+                        <p id="proximity-slider-away-threshold-container">
+                            <input type="range" id="proximity-slider-away-threshold"
+                                   min="-100" max="-10" value="-40" step="1">
                         </p>
                         <div class="mdl-shadow--2dp" id="proximity-beacons-table-container">
                             <br> <div class="mdl-typography--title">Signal level [db]</div>
