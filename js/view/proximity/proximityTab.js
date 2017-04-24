@@ -16,7 +16,7 @@ var proximityTab = {
     var nearbyListener = function() {
       window.requestAnimationFrame(function() {
         controller.getBeacons().setNearbyManualThreshold(self.getFocusedBeacon(),
-            nearbyRangeInput.value);
+            parseInt(nearbyRangeInput.value));
         self.drawSignalLevelTable();
       });
     };
@@ -28,21 +28,8 @@ var proximityTab = {
       nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
     });
 
-    var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
-    var awayListener = function() {
-      window.requestAnimationFrame(function() {
-        controller.getBeacons().setAwayManualThreshold(self.getFocusedBeacon(),
-            awayRangeInput.value);
-        self.drawSignalLevelTable();
-      });
-    };
-    awayRangeInput.addEventListener("mousedown", function() {;
-      awayListener();
-      awayRangeInput.addEventListener("mousemove", awayListener);
-    });
-    awayRangeInput.addEventListener("mouseup", function() {
-      awayRangeInput.removeEventListener("mousemove", awayListener);
-    });
+    this.initAwaySlider();
+    this.initNearbySlider();
 
     document.getElementById("proximity-clear").addEventListener("click", function() {
       console.log("JJJ0");
@@ -60,12 +47,66 @@ var proximityTab = {
     });
 	},
 
+	initNearbySlider : function() {
+	  var self = this;
+    var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
+    var nearbyListener = function() {
+      var focusedBeacon = self.getFocusedBeacon();
+      window.requestAnimationFrame(function() {
+        var nearbyThreshold = parseInt(nearbyRangeInput.value);
+        var awayThreshold = controller.getBeacons().getAwayThreshold(focusedBeacon);
+        if (nearbyThreshold < awayThreshold) {
+          awayThreshold = nearbyThreshold;
+        }
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        self.updateView();
+      });
+    };
+    nearbyRangeInput.addEventListener("mousedown", function() {;
+      nearbyListener();
+      nearbyRangeInput.addEventListener("mousemove", nearbyListener);
+    });
+    nearbyRangeInput.addEventListener("mouseup", function() {
+      nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
+    });
+	},
+
+  initAwaySlider : function() {
+    var self = this;
+    var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
+    var awayListener = function() {
+      var focusedBeacon = self.getFocusedBeacon();
+      window.requestAnimationFrame(function() {
+        var nearbyThreshold = controller.getBeacons().getNearbyThreshold(focusedBeacon);
+        var awayThreshold = parseInt(awayRangeInput.value);
+        if (nearbyThreshold < awayThreshold) {
+          nearbyThreshold = awayThreshold;
+        }
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        self.updateView();
+      });
+    };
+    awayRangeInput.addEventListener("mousedown", function() {;
+      awayListener();
+      awayRangeInput.addEventListener("mousemove", awayListener);
+    });
+    awayRangeInput.addEventListener("mouseup", function() {
+      awayRangeInput.removeEventListener("mousemove", awayListener);
+    });
+  },
+
 	updateView : function() {
 		if (controller.getGoogleChartsLoaded()) {
 		  if (this.table == undefined) {
 		    this.table = new google.visualization.Table(document.getElementById(
             'proximity-beacons-signal-level-table'));
-        this.setFocusedBeadon(controller.getAllBeaconsMac()[0]);
+        this.setFocusedBeacon(controller.getAllBeaconsMac()[0]);
       }
 			this.drawSignalLevelTable();
 		}
@@ -78,6 +119,7 @@ var proximityTab = {
 			    document.getElementById('proximity-canvas'),
 			    document.getElementById('proximity-canvas'));
 		}
+		this.updateSliders();
 	},
 
 	// Implementation.
@@ -125,12 +167,13 @@ var proximityTab = {
     }
     if (selection.length == 1) {
       if (selection[0].row != null) {
-        this.setFocusedBeadon(this.tableData.getFormattedValue(selection[0].row, 0));
+        this.setFocusedBeacon(this.tableData.getFormattedValue(selection[0].row, 0));
+        this.updateView();
        }
      }
 	},
 
-	setFocusedBeadon : function(mac) {
+	setFocusedBeacon : function(mac) {
 	  var item = document.getElementById("proximity-selected-beacon");
     while (item.hasChildNodes()) {
       item.removeChild(item.lastChild);
@@ -138,12 +181,17 @@ var proximityTab = {
     var textNode = document.createElement('b');
     textNode.innerHTML = mac;
     item.appendChild(textNode);
+	},
+
+	updateSliders : function() {
+	  var mac = this.getFocusedBeacon();
     var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
     nearbyRangeInput.value = controller.getBeacons().getNearbyThreshold(mac);
     var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
     awayRangeInput.value = controller.getBeacons().getAwayThreshold(mac);
 	},
 
+  // static
 	getFocusedBeacon : function() {
 	  var item = document.getElementById("proximity-selected-beacon");
 	  return item.hasChildNodes() ? item.children[0].innerText : undefined;

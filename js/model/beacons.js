@@ -48,6 +48,9 @@ Beacons.prototype = {
   },
 
   setNearbyManualThreshold(mac, value) {
+    utils.assertIsString(mac, "");
+    utils.assertIsInteger(value, "");
+    utils.assert(this.mapMacToBeaconData[mac], "undefined: " + mac);
     this.mapMacToBeaconData[mac].nearbyManualThreshold = value;
   },
 

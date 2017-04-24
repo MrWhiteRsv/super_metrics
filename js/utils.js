@@ -9,7 +9,15 @@ var utils = {
       throw message; // Fallback
     }
   },
-  
+
+  assertIsString : function(variable, message) {
+    this.assert(typeof variable === 'string' || variable instanceof String, message);
+  },
+
+  assertIsInteger : function(variable, message) {
+    this.assert(Number.isInteger(variable), message);
+  },
+
   isNumeric : function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   },
