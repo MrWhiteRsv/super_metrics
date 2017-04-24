@@ -165,7 +165,7 @@
 
 /*** Proximity ***/
 
-#proximity-clear,
+#proximity-reset,
 #proximity-update-cart {
   position: absolute;
   top: 4vh;
@@ -174,7 +174,7 @@
   font-size: 12px;
 }
 
-#proximity-clear {
+#proximity-reset {
   left: 5vw;
 }
 

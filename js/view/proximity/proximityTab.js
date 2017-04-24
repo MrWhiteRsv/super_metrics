@@ -12,7 +12,7 @@ var proximityTab = {
 		canvas.style.height = plan.offsetHeight + 'px';
 		canvas.style.width = plan.offsetWidth + 'px';
     var self = this;
-    var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
+    /*var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
     var nearbyListener = function() {
       window.requestAnimationFrame(function() {
         controller.getBeacons().setNearbyManualThreshold(self.getFocusedBeacon(),
@@ -27,18 +27,17 @@ var proximityTab = {
     nearbyRangeInput.addEventListener("mouseup", function() {
       nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
     });
-
+*/
     this.initAwaySlider();
     this.initNearbySlider();
-
-    document.getElementById("proximity-clear").addEventListener("click", function() {
-      console.log("JJJ0");
+    document.getElementById("proximity-reset").addEventListener("click", function() {
+      controller.getBeacons().resetThresholds();
+      self.updateView();
+      //console.log("JJJ0");
     });
-
     document.getElementById("proximity-update-cart").addEventListener("click", function() {
       console.log("JJJ1");
     });
-
     document.getElementById("proximity_adaptive_threshold_switch").addEventListener("change", function() {
       /*controller.setAdaptiveBleThreshold(document.getElementById("proximity_adaptive_threshold_switch").checked);
       self.updateView();
@@ -46,60 +45,6 @@ var proximityTab = {
       console.log("JJJ2");
     });
 	},
-
-	initNearbySlider : function() {
-	  var self = this;
-    var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
-    var nearbyListener = function() {
-      var focusedBeacon = self.getFocusedBeacon();
-      window.requestAnimationFrame(function() {
-        var nearbyThreshold = parseInt(nearbyRangeInput.value);
-        var awayThreshold = controller.getBeacons().getAwayThreshold(focusedBeacon);
-        if (nearbyThreshold < awayThreshold) {
-          awayThreshold = nearbyThreshold;
-        }
-        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
-        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
-        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
-        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
-        self.updateView();
-      });
-    };
-    nearbyRangeInput.addEventListener("mousedown", function() {;
-      nearbyListener();
-      nearbyRangeInput.addEventListener("mousemove", nearbyListener);
-    });
-    nearbyRangeInput.addEventListener("mouseup", function() {
-      nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
-    });
-	},
-
-  initAwaySlider : function() {
-    var self = this;
-    var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
-    var awayListener = function() {
-      var focusedBeacon = self.getFocusedBeacon();
-      window.requestAnimationFrame(function() {
-        var nearbyThreshold = controller.getBeacons().getNearbyThreshold(focusedBeacon);
-        var awayThreshold = parseInt(awayRangeInput.value);
-        if (nearbyThreshold < awayThreshold) {
-          nearbyThreshold = awayThreshold;
-        }
-        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
-        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
-        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
-        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
-        self.updateView();
-      });
-    };
-    awayRangeInput.addEventListener("mousedown", function() {;
-      awayListener();
-      awayRangeInput.addEventListener("mousemove", awayListener);
-    });
-    awayRangeInput.addEventListener("mouseup", function() {
-      awayRangeInput.removeEventListener("mousemove", awayListener);
-    });
-  },
 
 	updateView : function() {
 		if (controller.getGoogleChartsLoaded()) {
@@ -195,5 +140,60 @@ var proximityTab = {
 	getFocusedBeacon : function() {
 	  var item = document.getElementById("proximity-selected-beacon");
 	  return item.hasChildNodes() ? item.children[0].innerText : undefined;
-	}
+	},
+
+  initNearbySlider : function() {
+    var self = this;
+    var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
+    var nearbyListener = function() {
+      var focusedBeacon = self.getFocusedBeacon();
+      window.requestAnimationFrame(function() {
+        var nearbyThreshold = parseInt(nearbyRangeInput.value);
+        var awayThreshold = controller.getBeacons().getAwayThreshold(focusedBeacon);
+        if (nearbyThreshold < awayThreshold) {
+          awayThreshold = nearbyThreshold;
+        }
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        self.updateView();
+      });
+    };
+    nearbyRangeInput.addEventListener("mousedown", function() {;
+      nearbyListener();
+      nearbyRangeInput.addEventListener("mousemove", nearbyListener);
+    });
+    nearbyRangeInput.addEventListener("mouseup", function() {
+      nearbyRangeInput.removeEventListener("mousemove", nearbyListener);
+    });
+  },
+
+  initAwaySlider : function() {
+    var self = this;
+    var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
+    var awayListener = function() {
+      var focusedBeacon = self.getFocusedBeacon();
+      window.requestAnimationFrame(function() {
+        var nearbyThreshold = controller.getBeacons().getNearbyThreshold(focusedBeacon);
+        var awayThreshold = parseInt(awayRangeInput.value);
+        if (nearbyThreshold < awayThreshold) {
+          nearbyThreshold = awayThreshold;
+        }
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        controller.getBeacons().setNearbyManualThreshold(focusedBeacon, nearbyThreshold);
+        controller.getBeacons().setAwayManualThreshold(focusedBeacon, awayThreshold);
+        self.updateView();
+      });
+    };
+    awayRangeInput.addEventListener("mousedown", function() {;
+      awayListener();
+      awayRangeInput.addEventListener("mousemove", awayListener);
+    });
+    awayRangeInput.addEventListener("mouseup", function() {
+      awayRangeInput.removeEventListener("mousemove", awayListener);
+    });
+  },
+
 }

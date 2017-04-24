@@ -11,7 +11,6 @@ Beacons.prototype = {
   },
   
   getAllBeaconsMac : function() {
-    //return Array.from(this.mapMacToBeaconData.keys() )
     return Object.keys(this.mapMacToBeaconData);
   },
   
@@ -84,7 +83,16 @@ Beacons.prototype = {
            numberOfSamples;
     }
   },
-  
+
+  resetThresholds : function() {
+    var allBeacons = this.getAllBeaconsMac();
+    for (var i = 0; i < allBeacons.length; ++i) {
+      this.mapMacToBeaconData[allBeacons[i]].nearbyManualThreshold = -60;
+      this.mapMacToBeaconData[allBeacons[i]].awayManualThreshold = -70;
+    }
+    return Object.keys(this.mapMacToBeaconData);
+  },
+
   toString : function() {
     return JSON.stringify(this);
   },
