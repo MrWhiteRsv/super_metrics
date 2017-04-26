@@ -3,15 +3,22 @@ var Beacons = function(rawBeacons) {
 }
 
 Beacons.prototype = {
-  
   mapMacToBeaconData : undefined,
+  adaptiveBleThreshold : true,
+  nearby_hard_coded_threshold : -48,
+  away_hard_coded_threshold : -53,
 
   init : function() {
    this.mapMacToBeaconData = {};
+   adaptiveBleThreshold = false;
   },
   
   getAllBeaconsMac : function() {
     return Object.keys(this.mapMacToBeaconData);
+  },
+
+  getAdaptiveBleThreshold: function() {
+    return this.adaptiveBleThreshold;
   },
   
   getBeaconAverageRssi : function(mac) {
@@ -27,23 +34,38 @@ Beacons.prototype = {
   },
 
   getNearbyThreshold : function(mac) {
+    if (this.adaptiveBleThreshold) {
+      var samples = this.mapMacToBeaconData[mac].samples;
+      if (samples < 2) {
+        return this.mapMacToBeaconData[mac].nearbyManualThreshold;
+      } else {
+        return this.getBeaconAverageRssi(mac) + 5;
+      }
+    }
     return this.mapMacToBeaconData[mac].nearbyManualThreshold;
-    /*if (this.getAdaptiveBleThreshold()) {
-      var average = this.getBeacons().getBeaconAverageRssi(mac);
-      return average == undefined ? undefined : average + 10;
-    } else {
-      return -50;
-    } */
   },
 
   getAwayThreshold : function(mac) {
+    if (this.adaptiveBleThreshold) {
+      var samples = this.mapMacToBeaconData[mac].samples;
+      if (samples < 2) {
+        return this.mapMacToBeaconData[mac].awayManualThreshold;
+      } else {
+        return this.getBeaconAverageRssi(mac) - 5;
+      }
+    }
     return this.mapMacToBeaconData[mac].awayManualThreshold;
-    /*if (this.getAdaptiveBleThreshold()) {
-      var average = this.getBeacons().getBeaconAverageRssi(mac);
-      return average == undefined ? undefined : average + 10;
-    } else {
-      return -50;
-    }*/
+  },
+
+  setAdaptiveBleThreshold: function(value) {
+  	this.adaptiveBleThreshold = value;
+  },
+
+  setAwayManualThreshold(mac, value) {
+    utils.assertIsString(mac, "");
+    utils.assertIsInteger(value, "");
+    utils.assert(this.mapMacToBeaconData[mac], "undefined: " + mac);
+    this.mapMacToBeaconData[mac].awayManualThreshold = value;
   },
 
   setNearbyManualThreshold(mac, value) {
@@ -53,17 +75,14 @@ Beacons.prototype = {
     this.mapMacToBeaconData[mac].nearbyManualThreshold = value;
   },
 
-  setAwayManualThreshold(mac, value) {
-    this.mapMacToBeaconData[mac].awayManualThreshold = value;
-  },
 
   addBeacon(mac) {
     this.mapMacToBeaconData[mac] = {
       avgRssi : undefined,
       samples : 0,
       recentRssi : undefined,
-      nearbyManualThreshold : -60,
-      awayManualThreshold : -70,
+      nearbyManualThreshold : this.nearby_hard_coded_threshold,
+      awayManualThreshold : this.away_hard_coded_threshold,
     };
   },
 
@@ -87,8 +106,10 @@ Beacons.prototype = {
   resetThresholds : function() {
     var allBeacons = this.getAllBeaconsMac();
     for (var i = 0; i < allBeacons.length; ++i) {
-      this.mapMacToBeaconData[allBeacons[i]].nearbyManualThreshold = -60;
-      this.mapMacToBeaconData[allBeacons[i]].awayManualThreshold = -70;
+      this.mapMacToBeaconData[allBeacons[i]].nearbyManualThreshold =
+          this.nearby_hard_coded_threshold;
+      this.mapMacToBeaconData[allBeacons[i]].awayManualThreshold =
+          this.away_hard_coded_threshold;
     }
     return Object.keys(this.mapMacToBeaconData);
   },

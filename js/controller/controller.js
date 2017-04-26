@@ -10,7 +10,6 @@ var controller = {
   publishLocation : true,  
   adMode : false,
   showAdsToCustomers : false,
-  adaptiveBleThreshold : true,
 
   init : function() {
     mainPage.init();
@@ -22,6 +21,7 @@ var controller = {
     if (this.mqttConnected) {
       this.resetCartDetector();
     }
+    this.beacons.setAdaptiveBleThreshold(true);
   },
   
   setShowAdsToCustomers : function(value) {
@@ -39,11 +39,7 @@ var controller = {
   setHyperSentistiveBeacons: function(value) {
   	this.hyperSentistiveBeacons = value;
   },
-  
-  setAdaptiveBleThreshold: function(value) {
-  	this.adaptiveBleThreshold = value;
-  },
-  
+
   setPublishLocation: function(value) {
   	this.publishLocation = value;
   },
@@ -74,10 +70,6 @@ var controller = {
     
   getGraph : function() {
   	return this.graph;
-  },
-  
-  getAdaptiveBleThreshold: function() {
-  	return this.adaptiveBleThreshold;
   },
   
   getProductDetails : function(uuid) {
@@ -188,6 +180,9 @@ var controller = {
         break;
       case 'ble':
         this.treatBleMsg(payload);
+        if (this.getBeacons().getAdaptiveBleThreshold()) {
+          this.publishBleProximityThresholds();
+        }
         break;
     }
   },
@@ -364,19 +359,5 @@ var controller = {
     	  mqtt_listener.sendMessage(topic, payload);
     	}
     }
-
-  	/*
-  	var topic = "monitor/cartId/command";
-  	var allBeaconsMac = controller.getAllBeaconsMac();
-    for (var i = 0; i < allBeaconsMac.length; i++) {
-    	var mac = allBeaconsMac[i];
-    	var threshold = this.getBeaconProximityThreshold(mac);
-    	if (threshold != undefined) {
-    	  var payload = JSON.stringify({changeThreshold: true, mac: mac, threshold: threshold});
-    	  mqtt_listener.sendMessage(topic, payload);
-    	}
-    }
-    */
   },
-
 }

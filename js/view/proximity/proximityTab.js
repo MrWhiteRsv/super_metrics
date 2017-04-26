@@ -23,10 +23,11 @@ var proximityTab = {
     });
 
     document.getElementById("proximity_adaptive_threshold_switch").addEventListener("change", function() {
-      /*controller.setAdaptiveBleThreshold(document.getElementById("proximity_adaptive_threshold_switch").checked);
-      self.updateView();
+      /*controller.
       controller.onBleThresholdMethodChange();*/
-      console.log("JJJ2");
+      controller.getBeacons().setAdaptiveBleThreshold(document.getElementById(
+          "proximity_adaptive_threshold_switch").checked);
+      self.updateView();
     });
 	},
 
@@ -48,6 +49,13 @@ var proximityTab = {
 			    document.getElementById('proximity-canvas'),
 			    document.getElementById('proximity-canvas'));
 		}
+    if (controller.getBeacons().getAdaptiveBleThreshold()) {
+      document.getElementById("proximity_adaptive_threshold_switch_container").
+          classList.add("is-checked");
+    } else {
+      document.getElementById("proximity_adaptive_threshold_switch_container").
+          classList.remove("is-checked");
+    }
 		this.updateSliders();
 	},
 
@@ -113,11 +121,24 @@ var proximityTab = {
 	},
 
 	updateSliders : function() {
-	  var mac = this.getFocusedBeacon();
+	  utils.assert(controller.getBeacons(), "");
     var nearbyRangeInput = document.getElementById("proximity-slider-nearby-threshold");
-    nearbyRangeInput.value = controller.getBeacons().getNearbyThreshold(mac);
     var awayRangeInput = document.getElementById("proximity-slider-away-threshold");
-    awayRangeInput.value = controller.getBeacons().getAwayThreshold(mac);
+    var useAdaptiveThreshold = controller.getBeacons().getAdaptiveBleThreshold();
+    nearbyRangeInput.style.visibility = useAdaptiveThreshold ? "hidden" : "visible";
+    awayRangeInput.style.visibility = useAdaptiveThreshold ? "hidden" : "visible";
+    document.getElementById("proximity-selected-beacon").style.visibility =
+         useAdaptiveThreshold ? "hidden" : "visible";
+    document.getElementById("proximity-slider-nearby-threshold-title").style.visibility =
+         useAdaptiveThreshold ? "hidden" : "visible";
+    document.getElementById("proximity-slider-away-threshold-title").style.visibility =
+         useAdaptiveThreshold ? "hidden" : "visible";
+    if (!useAdaptiveThreshold) {
+    var mac = this.getFocusedBeacon();
+      utils.assert(mac, mac);
+      nearbyRangeInput.value = controller.getBeacons().getNearbyThreshold(mac);
+      awayRangeInput.value = controller.getBeacons().getAwayThreshold(mac);
+    }
 	},
 
   // static
