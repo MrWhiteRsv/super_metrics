@@ -61,7 +61,8 @@ LocationWizard.prototype = {
   	if (!currentNodeId) {
   		return undefined;
   	}
-  	var expectedNextNodeId = this.guessNextNode(currentNodeId);
+  	var prevNodeId = this.findPrevNearbyNodeId();
+  	var expectedNextNodeId = this.guessNextNode(currentNodeId, prevNodeId);
   	var currentNodeLocation = this.graph.getNodeLocation(currentNodeId);
   	var dist = this.graph.getEdgeLength(currentNodeId, expectedNextNodeId);
     if (!dist) {
@@ -89,6 +90,19 @@ LocationWizard.prototype = {
     }
     return undefined;
   },
+
+  findPrevNearbyNodeId : function() {
+    var count = 2;
+    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
+      if (this.sortedEvents[i].type == 'proximity') {
+        count--;
+        if (count == 0) {
+          return this.sortedEvents[i].nodeId;
+        }
+      }
+     }
+     return undefined;
+   },
 
   countRevolutionsSinceLatestProximityEvent : function() {
     var result = 0;
@@ -170,7 +184,7 @@ LocationWizard.prototype = {
     if (sort) {
       this.sortedEvents.sort(this.compareEvents);
     }
-    if (this.sortedEvents.length > 900) {
+    if (this.sortedEvents.length > 300) {
       this.sortedEvents.shift();
     }
   },
@@ -183,7 +197,8 @@ LocationWizard.prototype = {
     return 0;
   },
 
-  guessNextNode : function(currentNodeId) {
+  guessNextNode : function(currentNodeId, prevNodeId) {
+    console.log("currentNodeId: " + currentNodeId + " prevNodeId" + prevNodeId);
     var expectedPath = [
       common.arrToNodeId([1, 0]),
       common.arrToNodeId([1, 1]),
@@ -193,11 +208,29 @@ LocationWizard.prototype = {
       common.arrToNodeId([0, 0])
     ];
 
-    var index = expectedPath.indexOf(currentNodeId);
-    if (!index && index != 0) {
+    if (currentNodeId && prevNodeId) {
+      var cornerMap = new Map();
+      cornerMap.set("0,1->0,2", "1,2");
+      cornerMap.set("0,2->1,2", "1,1");
+      cornerMap.set("1,1->1,0", "0,0");
+      cornerMap.set("1,0->0,0", "0,1");
+      cornerMap.set("1,2->0,2", "0,1");
+      cornerMap.set("1,1->1,2", "0,2");
+      cornerMap.set("0,0->1,0", "1,1");
+      cornerMap.set("0,1->0,0", "1,0");
+      var next = cornerMap.get(prevNodeId + "->" + currentNodeId);
+      if (next) {
+        console.log("YAY!!!");
+        return next;
+      }
+    }
+
+    var currentIndex = expectedPath.indexOf(currentNodeId);
+    if (!currentIndex && currentIndex != 0) {
       return undefined;
     }
-    var res =  expectedPath[(index + 1) % expectedPath.length];
+
+    var res =  expectedPath[(currentIndex + 1) % expectedPath.length];
     return res;
   },
 }

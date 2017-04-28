@@ -51,9 +51,9 @@ var headingTab = {
     data.addColumn('number', 'y_samples');
     data.addColumn('number', 'y_recent');
     var rows = [];
-    rows.push.apply(rows, this.createDataRows(Array(12).fill().map((e,i) => i * 360 / 12), 0.9, 0));
-    rows.push.apply(rows, this.createDataRows(controller.getAllHeadingAngles(), 0.85, 0));
-    rows.push.apply(rows, this.createDataRows([controller.getHeading()], 0.8, 2));
+    rows.push.apply(rows, this.createDataRows(Array(12).fill().map((e,i) => i * 360 / 12), 0.95, 0));
+    rows.push.apply(rows, this.createDataRows(controller.getAllHeadingAngles(), 0.85, 1));
+    rows.push.apply(rows, this.createDataRows([controller.getHeading()], 0.85, 2));
     data.addRows(rows);
     var table = new google.visualization.
         ScatterChart(document.getElementById('heading-raw-heading'));
