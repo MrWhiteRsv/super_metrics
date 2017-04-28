@@ -37,6 +37,7 @@ Graph.prototype = {
   },
 
   getNodeLocation : function(nodeId) {
+    utils.assert(nodeId, "missing nodeId");
     var nodeinfo = this.mapNodeIdToNodeInfo.get(nodeId);
     return {
       px : nodeinfo.px, py : nodeinfo.py

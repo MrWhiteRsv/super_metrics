@@ -71,6 +71,15 @@ var controller = {
   getGraph : function() {
   	return this.graph;
   },
+
+  getHeading : function() {
+     return this.locationWizard.getLatestHeading();
+  },
+
+  getAllHeadingAngles : function() {
+     return this.locationWizard.getAllHeadingAngles();
+  },
+
   
   getProductDetails : function(uuid) {
   	var allProducts = this.getAllProducts();
@@ -184,6 +193,9 @@ var controller = {
           this.publishBleProximityThresholds();
         }
         break;
+      case 'heading':
+        this.treateHeadinsMsg(payload);
+        break;
     }
   },
   
@@ -292,12 +304,21 @@ var controller = {
         this.graph.addEdgeLength(common.arrToNodeId([r, c]), common.arrToNodeId([r, c]), 0);
       }
     }
+    /*
     this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([0, 0]));
     this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([0, 1]));
     this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([0, 2]));
     this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([1, 0]));
-    this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([1, 1]));
-    this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([1, 2]));
+    this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([1, 2]));
+    this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([1, 1]));*/
+
+        this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([1, 0]));
+        this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([1, 1]));
+        this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([1, 2]));
+        this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([0, 0]));
+        this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([0, 2]));
+        this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([0, 1]));
+
     // this.graph.log();
    },
 
@@ -318,6 +339,12 @@ var controller = {
     // {"start_time": 1487295518.0, "forward_counter": 7, "backward_counter": 0, "forward_revolution": true}
     this.locationWizard.addRevolutionEvent(payload.forward_revolution, payload.start_time);
     this.publishCurrentLocation();
+    mainPage.updateView();
+  },
+
+  treateHeadinsMsg : function(payload) {
+    // Payload: {"start_time":1492665587.29323,"heading":337.64701754385965}
+    this.locationWizard.addHeadingEvent(payload.heading, payload.start_time);
     mainPage.updateView();
   },
   
@@ -355,7 +382,6 @@ var controller = {
     	if (mac != undefined && nearbyThreshold != undefined && awayThreshold != undefined) {
     	  var payload = JSON.stringify({changeThreshold: true, mac: mac,
     	      nearbyThreshold: nearbyThreshold, awayThreshold : awayThreshold});
-        console.log('payload: ' + payload);
     	  mqtt_listener.sendMessage(topic, payload);
     	}
     }

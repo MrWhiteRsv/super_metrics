@@ -8,6 +8,27 @@ LocationWizard.prototype = {
   graph : undefined,
   sortedEvents : undefined,  // [{type : 'proximity', ts : , nodeId : }, {type : 'revolution', forward: true, ts :}, ...]
 
+  getAllHeadingAngles : function() {
+    var result = [];
+    var counter = 0;
+    for (var i = this.sortedEvents.length - 1; i >= 0 && counter < 500; i--) {
+      if (this.sortedEvents[i].type == 'heading') {
+        counter++;
+        result.push(this.sortedEvents[i].direction);
+      }
+    }
+    return result;
+  },
+
+  getLatestHeading : function() {
+    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
+      if (this.sortedEvents[i].type == 'heading') {
+        return this.sortedEvents[i].direction;
+      }
+    }
+    return undefined;
+  },
+
   // Add cart near beacon event.
   addProximityEvent : function(nodeId, ts) {
     this.addEvent({
@@ -27,7 +48,7 @@ LocationWizard.prototype = {
 
   addHeadingEvent : function(direction, ts) {
     this.addEvent({
-      type : 'heading event',
+      type : 'heading',
       direction : direction,
       ts : ts,
     });
@@ -46,7 +67,6 @@ LocationWizard.prototype = {
     if (!dist) {
   		return currentNodeLocation;
   	}
-
   	var nextNodeLovation = this.graph.getNodeLocation(expectedNextNodeId);
   	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
   	var alpha = revSinceLastBeacon/ dist * 1.0;
@@ -150,6 +170,9 @@ LocationWizard.prototype = {
     if (sort) {
       this.sortedEvents.sort(this.compareEvents);
     }
+    if (this.sortedEvents.length > 900) {
+      this.sortedEvents.shift();
+    }
   },
 
   compareEvents : function(e0, e1) {
@@ -161,7 +184,6 @@ LocationWizard.prototype = {
   },
 
   guessNextNode : function(currentNodeId) {
-
     var expectedPath = [
       common.arrToNodeId([1, 0]),
       common.arrToNodeId([1, 1]),

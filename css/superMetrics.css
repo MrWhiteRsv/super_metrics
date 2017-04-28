@@ -244,6 +244,25 @@
 
 /*** Heading ***/
 
+#heading-polar-container {
+  position: absolute;
+  padding : 1vw;
+  top : 15vh;
+  left : 70vw;
+  width : 25vw;
+  height: 25vh;
+}
+
+#heading-raw-heading {
+  float: left;
+}
+
+#heading-fixed-heading {
+  float: right;
+}
+
+/*** Common ***/
+
 .warning-card-square.mdl-card {
   width: 20vw;
   height: 20vw;

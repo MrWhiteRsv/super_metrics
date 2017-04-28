@@ -53,7 +53,7 @@ var mainPage = {
         	document.getElementById("warning-card").style.visibility = "hidden";
         });
     google.charts.setOnLoadCallback(controller.setGoogleChartsLoadedTrue);
-    google.charts.load('current', {packages: ['table']}); //"corechart"
+    google.charts.load('current', {packages: ['corechart', 'table']}); //"corechart"
     
   },
   

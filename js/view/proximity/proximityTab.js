@@ -22,9 +22,8 @@ var proximityTab = {
       controller.publishBleProximityThresholds();
     });
 
-    document.getElementById("proximity_adaptive_threshold_switch").addEventListener("change", function() {
-      /*controller.
-      controller.onBleThresholdMethodChange();*/
+    document.getElementById("proximity_adaptive_threshold_switch").addEventListener("change",
+         function() {
       controller.getBeacons().setAdaptiveBleThreshold(document.getElementById(
           "proximity_adaptive_threshold_switch").checked);
       self.updateView();

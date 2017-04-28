@@ -38,7 +38,6 @@
 		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 			<header class="mdl-layout__header">
 				<div class="mdl-layout__header-row">
-					<!-- Title -->
 					<span class="mdl-layout-title">Super Metrics</span>
 				</div>
 				<!-- Tabs -->
@@ -55,45 +54,38 @@
 				<span class="mdl-layout-title">Super Metrics</span>
 				<nav class="mdl-navigation">
 					<a class="mdl-navigation__link" href="">Path #1</a>
-					<a class="mdl-navigation__link" href="">Path #2</a>
-					<a class="mdl-navigation__link" href="">Path #3</a>
-					<a class="mdl-navigation__link" href="">Path #4</a>
 				</nav>
 			</div>
 
+            <!-- Add Management Tab -->
 			<main class="mdl-layout__content">
-
 				<section class="mdl-layout__tab-panel" is-active id="ad-management-tab">
 					<div class="page-content">
-						
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_switch" id="ad-management_switch_container">
 							<span class="mdl-switch__label">Enable Ads</span>
 							<input type="checkbox" id="ad-management_switch" class="mdl-switch__input">
 						</label>
-						
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ad-management_monitor_switch" id="ad-management_monitor_switch_container">
 							<span class="mdl-switch__label">Monitor</span>
 							<input type="checkbox" id="ad-management_monitor_switch" class="mdl-switch__input">
 						</label>
-
 						<div class="product-card-square mdl-card mdl-shadow--4dp"  id="product-card">
 							<div class="mdl-card__title mdl-card--expand mdl-card--border mdl-shadow--2dp">
 							</div>
 							<div class="mdl-card__supporting-text" id="product-card-details">
 							</div>
 						</div>
-						
 						<div class="mdl-shadow--4dp supermarket-plan-container">
 							<img class="supermarket-plan" id="ad-management-plan" src="css/storePlan.png" width="1000" height="400">
 						  <canvas class="supermarket-canvas" id="ad-management-canvas"  width="1000" height="400">
 						</div>
-						
 						<button id='ad-mannagement-button' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored common-button">
 							<i class="material-icons">create</i>
 						</button>
 					</div>						
 				</section>
 
+                <!-- Monitor Tab -->
 				<section class="mdl-layout__tab-panel" id="monitor-tab">
 					<div class="page-content">
 						<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="monitor_single_sensor_switch" id="monitor_single_sensor_switch_container"> 
@@ -115,7 +107,6 @@
 							<span class="mdl-switch__label">Adaptive Threshold </span>
 							<input type="checkbox" id="monitor_adaptive_threshold_switch" class="mdl-switch__input" checked>
 						</label>
-
 						<button id="monitor-clear" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
 							Clear
 						</button>
@@ -133,7 +124,6 @@
 							<br> <div id="monitor-beacons-distance-table"> </div> <br>
 							<br> <div class="mdl-typography--title">Signal level [db]</div>
 							<br> <div id="monitor-beacons-signal-level-table"> </div> <br>
-
 						</div>
 						<div class="mdl-shadow--4dp supermarket-plan-container">
 							<img class="supermarket-plan" id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
@@ -142,6 +132,7 @@
 					</div>
 				</section>
 
+                <!-- Proximity Tab -->
                 <section class="mdl-layout__tab-panel" id="proximity-tab">
                     <div class="page-content">
                         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="proximity_adaptive_threshold_switch" id="proximity_adaptive_threshold_switch_container">
@@ -176,6 +167,7 @@
                     </div>
                 </section>
 
+                <!-- Distance Tab -->
 				<section class="mdl-layout__tab-panel" id="distance-tab">
 					<div class="page-content">
 						<div class="mdl-shadow--2dp" id="distance-table-container">
@@ -189,6 +181,7 @@
 					</div>
 				</section>
 
+                <!-- Headings Tab -->
 				<section class="mdl-layout__tab-panel" id="heading-tab">
 					<div class="page-content">
 						<div class="mdl-shadow--4dp supermarket-plan-container">
@@ -196,7 +189,15 @@
 							<canvas class="supermarket-canvas" id="heading-canvas" width="1000" height="400">
 						</div>
 					</div>
+                    <section class="mdl-shadow--2dp" id="heading-polar-container">
+                        <div class="mdl-typography--title">Heading (raw/fixed)</div>
+                        <br>
+                        <div class="mdl-shadow--2dp" id="heading-raw-heading"> </div>
+                        <div class="mdl-shadow--2dp" id="heading-fixed-heading"> </div>
+                    </section>
+
 				</section>
+
 
 				<div class="warning-card-square mdl-card mdl-shadow--2dp"  id="warning-card">
 					<div class="mdl-card__title mdl-card--expand">
