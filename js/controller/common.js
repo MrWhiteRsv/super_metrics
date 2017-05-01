@@ -79,5 +79,9 @@ var common = {
 	arrToNodeId : function(arr) {
 	  return arr.join(',');
 	},
+
+  edgeId : function(n0, n1) {
+    return n0 > n1 ? n0 + ',' + n1 : n1 + ',' + n0;
+  },
 	
 };

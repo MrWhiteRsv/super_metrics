@@ -1,21 +1,42 @@
 var LocationWizard = function(graph) {
   this.allSegments = [];
   this.graph = graph;
+  this.cornerMap = new Map();
+  this.cornerMap.set("0,1->0,2", "1,2");
+  this.cornerMap.set("0,2->1,2", "1,1");
+  this.cornerMap.set("1,1->1,0", "0,0");
+  this.cornerMap.set("1,0->0,0", "0,1");
+  this.cornerMap.set("1,2->0,2", "0,1");
+  this.cornerMap.set("1,1->1,2", "0,2");
+  this.cornerMap.set("0,0->1,0", "1,1");
+  this.cornerMap.set("0,1->0,0", "1,0");
 }
 
 LocationWizard.prototype = {
-  
+  proximityCounter : 0,
   graph : undefined,
   allSegments : undefined,
+  cornerMap : undefined,
 
   // Add cart near beacon event.
   addProximityEvent : function(nodeId, ts) {
+    this.proximityCounter++;
+    if (this.allSegments.length > 1) {
+      var prevAvg = this.allSegments[this.allSegments.length - 2].getAverageHeading();
+      var avg = this.allSegments[this.allSegments.length - 1].getAverageHeading();
+      console.log("avg: " + avg);
+      console.log("(" + this.proximityCounter + ", " + (this.proximityCounter + 1) + ") Delta: " +
+             (avg-prevAvg));
+    }
     if (this.allSegments.length > 0) {
       this.allSegments[this.allSegments.length - 1].setEndProximityEvent(nodeId, ts);
     }
     var segmentData = new SegmentData();
     segmentData.setBeginProximityEvent(nodeId, ts);
     this.allSegments.push(segmentData);
+    if (this.allSegments.length > 5) {
+      this.allSegments.push();
+    }
   },
 
   addRevolutionEvent : function(forward, ts) {
@@ -103,6 +124,36 @@ LocationWizard.prototype = {
   },
 
   guessNextNode : function(currentNodeId, prevNodeId) {
+    if (prevNodeId == undefined) {
+      return undefined;
+    }
+    // If the fan out is only 1, just return it.
+    /*if (currentNodeId && prevNodeId) {
+      var next = this.cornerMap.get(prevNodeId + "->" + currentNodeId);
+      if (next) {
+        return next;
+      }
+    }*/
+    var candidates = this.getPossibleNextNode(currentNodeId, prevNodeId);
+    if (candidates.length == 1) {
+      return candidates[0];
+    }
+    // if current path length is m.t. 2x of first edge and l.t. 1.5x of second choose second.
+    console.log("candidates: " + JSON.stringify(candidates));
+    if (candidates.length == 2) {
+      var currentLength = this.getRevolutionsInLastSegment();
+      console.log('candidates[0]: ' + candidates[0]);
+      var len0 = this.graph.getEdgeLength(currentNodeId, candidates[0]);
+      var len1 = this.graph.getEdgeLength(currentNodeId, candidates[1]);
+      console.log("c,0,1: " + currentLength + ", " + len0 + ", " + len1);
+      if ((currentLength > 2 * len0) && (len1 > 1.3 * len0 || (len1 == undefined))) {
+        return candidates[1];
+      }
+      if ((currentLength > 2 * len1) && (len0 > 1.3 * len1 || (len0 == undefined))) {
+        return candidates[0];
+      }
+    }
+
     var expectedPath = [
       common.arrToNodeId([1, 0]),
       common.arrToNodeId([1, 1]),
@@ -111,29 +162,24 @@ LocationWizard.prototype = {
       common.arrToNodeId([0, 1]),
       common.arrToNodeId([0, 0])
     ];
-
-    if (currentNodeId && prevNodeId) {
-      var cornerMap = new Map();
-      cornerMap.set("0,1->0,2", "1,2");
-      cornerMap.set("0,2->1,2", "1,1");
-      cornerMap.set("1,1->1,0", "0,0");
-      cornerMap.set("1,0->0,0", "0,1");
-      cornerMap.set("1,2->0,2", "0,1");
-      cornerMap.set("1,1->1,2", "0,2");
-      cornerMap.set("0,0->1,0", "1,1");
-      cornerMap.set("0,1->0,0", "1,0");
-      var next = cornerMap.get(prevNodeId + "->" + currentNodeId);
-      if (next) {
-        return next;
-      }
-    }
-
     var currentIndex = expectedPath.indexOf(currentNodeId);
     if (!currentIndex && currentIndex != 0) {
       return undefined;
     }
-
     var res =  expectedPath[(currentIndex + 1) % expectedPath.length];
+    if ((candidates.indexOf(res) == -1) && (candidates.length > 0)) {
+      return candidates[0];
+    }
     return res;
   },
+
+  getPossibleNextNode : function (currentNodeId, prevNodeId) {
+    utils.assert(currentNodeId != undefined, "");
+    var res = controller.getGraph().getAllNeighbors(currentNodeId);
+    var index = res.indexOf(prevNodeId);
+    if (index > -1) {
+      res.splice(index, 1);
+    }
+    return res;
+  }
 }

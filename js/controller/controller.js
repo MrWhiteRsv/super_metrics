@@ -299,12 +299,24 @@ var controller = {
         this.graph.upsertNode(common.arrToNodeId([r, c]), x0 + c * colDistance, y0 + r * rowDistance);
       }
     }
+
     for (var r = 0; r < 2; r++) {
-      for (var c = 0; c < 3; c ++ ) {
+      for (var c = 0; c < 3; c++ ) {
+        this.graph.addEdge(common.arrToNodeId([r, c]), common.arrToNodeId([r, (c + 1) % 3]));
+      }
+    }
+
+    for (var c = 0; c < 3; c++ ) {
+      this.graph.addEdge(common.arrToNodeId([0, c]), common.arrToNodeId([1, c]));
+    }
+
+    for (var r = 0; r < 2; r++) {
+      for (var c = 0; c < 3; c++ ) {
+        this.graph.addEdge(common.arrToNodeId([r, c]), common.arrToNodeId([r, c]));
         this.graph.addEdgeLength(common.arrToNodeId([r, c]), common.arrToNodeId([r, c]), 0);
       }
     }
-    /*
+   /*
     this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([0, 0]));
     this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([0, 1]));
     this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([0, 2]));
@@ -312,12 +324,12 @@ var controller = {
     this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([1, 2]));
     this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([1, 1]));*/
 
-        this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([1, 0]));
-        this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([1, 1]));
-        this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([1, 2]));
-        this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([0, 0]));
-        this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([0, 2]));
-        this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([0, 1]));
+    this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([1, 0]));
+    this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([1, 1]));
+    this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([1, 2]));
+    this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([0, 0]));
+    this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([0, 2]));
+    this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([0, 1]));
 
     // this.graph.log();
    },

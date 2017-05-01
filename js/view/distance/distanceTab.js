@@ -31,7 +31,7 @@ var distanceTab = {
 	drawDistanceTable : function() {
 		var graph = controller.getGraph();
 		var data = new google.visualization.DataTable();
-    var allNodes = controller.getGraph().getAlNodes();
+    var allNodes = controller.getGraph().getAllNodes();
 		for (var c = 0; c < allNodes.length; c++) {
 			data.addColumn('number', '' + (c + 1));
 		}

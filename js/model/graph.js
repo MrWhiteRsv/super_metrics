@@ -48,36 +48,51 @@ Graph.prototype = {
     return this.mapBeaconIdToNodeId.get(beaconId);
   },
 
-  getAlNodes : function() {
+  getAllNodes : function() {
     return Array.from(this.mapNodeIdToNodeInfo.keys());
+  },
+
+  // TODO(oded): fix this hard coded ASAP
+  getAllNeighbors : function(nodeId) {
+    switch (nodeId) {
+      case '0,0':
+        return ['0,1', '1,0'];
+      case '0,1':
+        return ['0,0', '1,1', '0,2'];
+      case '0,2':
+        return ['0,1', '1,2'];
+      case '1,0':
+        return ['1,1', '0,0'];
+      case '1,1':
+        return ['1,0', '0,1', '1,2'];
+      case '1,2':
+        return ['1,1', '0,2'];
+    }
+    utils.assert(false, "");
   },
 
   toString : function() {
     return JSON.stringify(this);	
   },
-  
-  addEdgeLength  : function(n0, n1, edgeLength) {
-    var edgeId = this.edgeId(n0, n1);
-    if (edgeId in this.allEdges) {
-      var numOfValues = this.allEdges[edgeId].allValues.length;
-      utils.assert(numOfValues > 0);
-      this.allEdges[edgeId].edgeLength = 
-          (this.allEdges[edgeId].edgeLength * numOfValues + edgeLength) / (numOfValues + 1.0);
-      this.allEdges[edgeId].allValues.push(edgeLength);
-    } else {
-      this.allEdges[edgeId] = {edgeLength : edgeLength, allValues : [edgeLength]};
-    }
+
+  addEdge : function(n0, n1) {
+    var edgeId = common.edgeId(n0, n1);
+    utils.assert(!(edgeId in this.allEdges), "");
+    this.allEdges[edgeId] = {edgeLength : undefined, allValues : []};
+  },
+
+  addEdgeLength : function(n0, n1, edgeLength) {
+    var edgeId = common.edgeId(n0, n1);
+    utils.assert(edgeId in this.allEdges, "");
+    var numOfValues = this.allEdges[edgeId].allValues.length;
+    this.allEdges[edgeId].edgeLength = (numOfValues) == 0 ? edgeLength :
+        (this.allEdges[edgeId].edgeLength * numOfValues + edgeLength) / (numOfValues + 1.0);
+    this.allEdges[edgeId].allValues.push(edgeLength);
   },
   
   getEdgeLength : function(n0, n1) {
-    var edgeId = this.edgeId(n0, n1);
-    if (edgeId in this.allEdges) {
-      var result = this.allEdges[edgeId].edgeLength;
-      utils.assert(result >= 0);
-      return result;
-    } else {
-      return undefined;
-    }
+    var edgeId = common.edgeId(n0, n1);
+    return (edgeId in this.allEdges) ? this.allEdges[edgeId].edgeLength : undefined;
   },
   
   toString : function() {
@@ -95,14 +110,7 @@ Graph.prototype = {
     console.log(this.mapNodeIdToNodeInfo);
   },
 
-  // Implimantation.
-  
-  edgeId : function(n0, n1) {
-  	return n0 > n1 ? n0 + ',' + n1 : n1 + ',' + n0;
-  },
-  
-  updateGraph : function() {
-  },
+  // Implementation.
 
   unbindNodeAndBeacon : function(nodeId, beaconId) {
     utils.assert(nodeId, "missing nodeId");

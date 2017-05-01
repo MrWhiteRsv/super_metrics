@@ -21,40 +21,6 @@
   margin: 3% 0 0 0%; 
 }
 
-/*** General ***/
-
-.supermarket-plan-container {
-  position: absolute;
-  top: 15vh;
-  left: 5vw;
-  width : 1012px;
-  height : 412px;
-}
-
-.supermarket-plan,
-.supermarket-canvas {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-}
-
-.supermarket-canvas {
-  z-index: 1;
-}
-
-.common-button {
-  position: absolute;
-  top : 81vh;
-  left: 96.2vw;
-  z-index: 1;
-}
-
-.normal-text {
-  font-size: 13px;
-  padding: 0 40px;
-  white-space: nowrap;
-}
-
 /*** Ad Management ***/
 
 #ad-management_switch_container,
@@ -237,8 +203,8 @@
 #distance-table-container {
   position: absolute;
   padding : 1vw;
-  top : 30vh;
-  left : 65vw;
+  top : 15vh;
+  left : 70vw;
   width : 18vw;
 }
 
@@ -262,6 +228,38 @@
 }
 
 /*** Common ***/
+
+.supermarket-plan-container {
+  position: absolute;
+  top: 15vh;
+  left: 5vw;
+  width : 1012px;
+  height : 412px;
+}
+
+.supermarket-plan,
+.supermarket-canvas {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.supermarket-canvas {
+  z-index: 1;
+}
+
+.common-button {
+  position: absolute;
+  top : 81vh;
+  left: 96.2vw;
+  z-index: 1;
+}
+
+.normal-text {
+  font-size: 13px;
+  padding: 0 40px;
+  white-space: nowrap;
+}
 
 .warning-card-square.mdl-card {
   width: 20vw;
