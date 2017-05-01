@@ -359,8 +359,7 @@ var controller = {
     var prevNodeId = this.locationWizard.findLatestNearbyNodeId();
     var nearestTime = payload['nearest_time'];
   	if (prevNodeId) {
-    	var dist = nodeId === prevNodeId ?
-    	    0 : this.locationWizard.countRevolutionsSinceLatestProximityEvent();
+    	var dist = nodeId === prevNodeId ? 0 : this.locationWizard.getRevolutionsInLastSegment();
     	if (dist >= 0) {
     	  this.graph.addEdgeLength(prevNodeId, nodeId, dist);
     	}

@@ -1,57 +1,53 @@
 var LocationWizard = function(graph) {
-  this.sortedEvents = [];
+  this.allSegments = [];
   this.graph = graph;
 }
 
 LocationWizard.prototype = {
   
   graph : undefined,
-  sortedEvents : undefined,  // [{type : 'proximity', ts : , nodeId : }, {type : 'revolution', forward: true, ts :}, ...]
+  allSegments : undefined,
+
+  // Add cart near beacon event.
+  addProximityEvent : function(nodeId, ts) {
+    if (this.allSegments.length > 0) {
+      this.allSegments[this.allSegments.length - 1].setEndProximityEvent(nodeId, ts);
+    }
+    var segmentData = new SegmentData();
+    segmentData.setBeginProximityEvent(nodeId, ts);
+    this.allSegments.push(segmentData);
+  },
+
+  addRevolutionEvent : function(forward, ts) {
+    if (this.allSegments.length == 0) {
+      return;
+    }
+    this.allSegments[this.allSegments.length - 1].addRevolutionEvent(forward, ts);
+  },
+
+  addHeadingEvent : function(direction, ts) {
+    if (this.allSegments.length == 0) {
+      return;
+    }
+    this.allSegments[this.allSegments.length - 1].addHeadingEvent(direction, ts);
+  },
 
   getAllHeadingAngles : function() {
     var result = [];
-    var counter = 0;
-    for (var i = this.sortedEvents.length - 1; i >= 0 && counter < 500; i--) {
-      if (this.sortedEvents[i].type == 'heading') {
-        counter++;
-        result.push(this.sortedEvents[i].direction);
-      }
+    for (var i = this.allSegments.length - 1; i >= 0; i--) {
+      this.allSegments[i].pushAllHeadings(result);
     }
     return result;
   },
 
   getLatestHeading : function() {
-    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
-      if (this.sortedEvents[i].type == 'heading') {
-        return this.sortedEvents[i].direction;
+    for (var i = this.allSegments.length - 1; i >= 0; i--) {
+      var heading = this.allSegments[i].getLastHeading();
+      if (heading != undefined) {
+       return heading;
       }
     }
     return undefined;
-  },
-
-  // Add cart near beacon event.
-  addProximityEvent : function(nodeId, ts) {
-    this.addEvent({
-      type : 'proximity',
-      nodeId : nodeId,
-      ts : ts,
-    });
-  },
-  
-  addRevolutionEvent : function(forward, ts) {
-    this.addEvent({
-      type : 'revolution',
-      forward : forward,
-      ts : ts,
-    });
-  },
-
-  addHeadingEvent : function(direction, ts) {
-    this.addEvent({
-      type : 'heading',
-      direction : direction,
-      ts : ts,
-    });
   },
 
   // Return the cart's estimated pixel {px :..., py :...}.
@@ -69,8 +65,7 @@ LocationWizard.prototype = {
   		return currentNodeLocation;
   	}
   	var nextNodeLovation = this.graph.getNodeLocation(expectedNextNodeId);
-  	var revSinceLastBeacon = this.countRevolutionsSinceLatestProximityEvent();
-  	var alpha = revSinceLastBeacon/ dist * 1.0;
+  	var alpha = this.getRevolutionsInLastSegment() / dist * 1.0;
     if (alpha < 0.0) {
   		return currentNodeLocation;
   	}
@@ -82,123 +77,32 @@ LocationWizard.prototype = {
   	return res
   },
 
-  findLatestNearbyNodeId : function() {
-    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
-    	if (this.sortedEvents[i].type == 'proximity') {
-    		return this.sortedEvents[i].nodeId;
-    	}
-    }
-    return undefined;
-  },
-
-  findPrevNearbyNodeId : function() {
-    var count = 2;
-    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
-      if (this.sortedEvents[i].type == 'proximity') {
-        count--;
-        if (count == 0) {
-          return this.sortedEvents[i].nodeId;
-        }
-      }
-     }
-     return undefined;
-   },
-
-  countRevolutionsSinceLatestProximityEvent : function() {
-    var result = 0;
-    for (var i = this.sortedEvents.length - 1; i >= 0 ; i--) {
-      if (this.sortedEvents[i].type == 'revolution') {
-        result += this.sortedEvents[i].forward ? 1 : -1;
-      }
-			if (this.sortedEvents[i].type == 'proximity') {
-    		break;
-    	}
-    }
-    return result;
+  getRevolutionsInLastSegment : function() {
+    return this.allSegments[this.allSegments.length - 1].getRevolutionsCount();
   },
 
   // Internals.
 
-  countRevolutionsBetweenIndices : function(indx0, indx1) {
-    var result = 0;
-    for (var i = indx0 + 1; i < indx1; i++) {
-      if (this.sortedEvents[i].type == 'revolution') {
-        result += this.sortedEvents[i].forward ? 1 : -1;
-      }
+  findLatestNearbyNodeId : function() {
+    if (this.allSegments.length == 0) {
+      return undefined;
     }
-    return result;
+    return this.allSegments[this.allSegments.length - 1].getBeginProximityEvent().nodeId;
   },
 
-  countRevolutionsBetweenIndexAndTs : function(indx, ts) {
-    var result = 0;
-    for (var i = indx + 1; this.sortedEvents[i].ts < ts; i++) {
-      if (this.sortedEvents[i].type == 'revolution') {
-        result += this.sortedEvents[i].forward ? 1 : -1;
-      }
+  findPrevNearbyNodeId : function() {
+    if (this.allSegments.length < 2) {
+      return undefined;
     }
-    return result;
-  },
-
-  findFirstProximityEventIndexAfterTs : function(ts) {
-    var result = undefined;
-    for (var i =  this.sortedEvents.length - 1; i >= 0; i--) {
-      if ( this.sortedEvents[i].ts > ts) {
-        if (this.sortedEvents[i].type == 'proximity') {
-          result = i;
-        }
-        continue;
-      }
-      break;
-    }
-    return result;
-  },
-
-  findLastProximityEventIndexBeforeTs : function(ts) {
-    var result = undefined;
-    for (var i = 0; i < this.sortedEvents.length; i++) {
-      if (this.sortedEvents[i].ts < ts) {
-        if (this.sortedEvents[i].type == 'proximity') {
-          result = i;
-        }
-        continue;
-      }
-      break;
-    }
-    return result;
-  },
+    return this.allSegments[this.allSegments.length - 2].getBeginProximityEvent().nodeId;
+   },
 
   toString : function() {
     return JSON.stringify(this.beacons) + '\n\n' +
        JSON.stringify(this.sortedEvents) + '\n';
   },
 
-  addEvent(event) {
-    var sort = false;
-    if (this.sortedEvents.length > 0) {
-      var lastEvent = this.sortedEvents[this.sortedEvents.length - 1];
-      if (event.ts < lastEvent.ts) {
-        sort = true;
-      }
-    }
-    this.sortedEvents.push(event);
-    if (sort) {
-      this.sortedEvents.sort(this.compareEvents);
-    }
-    if (this.sortedEvents.length > 300) {
-      this.sortedEvents.shift();
-    }
-  },
-
-  compareEvents : function(e0, e1) {
-    if (e0.ts < e1.ts)
-      return -1;
-    if (e0.ts > e1.ts)
-      return 1;
-    return 0;
-  },
-
   guessNextNode : function(currentNodeId, prevNodeId) {
-    console.log("currentNodeId: " + currentNodeId + " prevNodeId" + prevNodeId);
     var expectedPath = [
       common.arrToNodeId([1, 0]),
       common.arrToNodeId([1, 1]),
@@ -220,7 +124,6 @@ LocationWizard.prototype = {
       cornerMap.set("0,1->0,0", "1,0");
       var next = cornerMap.get(prevNodeId + "->" + currentNodeId);
       if (next) {
-        console.log("YAY!!!");
         return next;
       }
     }
@@ -234,4 +137,3 @@ LocationWizard.prototype = {
     return res;
   },
 }
-

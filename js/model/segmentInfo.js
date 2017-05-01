@@ -40,7 +40,7 @@ SegmentData.prototype = {
       direction : direction,
       ts : ts,
     });
-    headingsSum += direction;
+    this.headingsSum += direction;
   },
 
   getBeginProximityEvent : function() {
@@ -52,15 +52,26 @@ SegmentData.prototype = {
   },
 
   getRevolutionsCount : function() {
-    return this.counter;
+    return this.revolutionsCounter;
   },
 
-  getAverageHeading : funtion() {
+  getAverageHeading : function() {
     if (this.headingsSum == 0) {
       return 0;
     }
     return this.headingsSum / this.headingEvents.length;
-  }
+  },
+
+  getLastHeading : function() {
+    return this.headingEvents.length > 0 ?
+        this.headingEvents[this.headingEvents.length - 1].direction : undefined;
+  },
+
+  pushAllHeadings : function(res) {
+    for (var i = 0; i < this.headingEvents.length; i++) {
+      res.push(this.headingEvents[i].direction);
+    }
+  },
 
   toString : function() {
     return JSON.stringify(this.beginProximityEvent) + '\n\n' +
@@ -91,5 +102,4 @@ SegmentData.prototype = {
       return 1;
     return 0;
   },
-
 }
