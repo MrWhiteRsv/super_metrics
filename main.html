@@ -4,8 +4,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 		<title>SuperMetrics</title>
 		<link rel="stylesheet" type="text/css" href="css/superMetrics.css">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-		rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script src="paho.javascript-1.0.2/mqttws31.js"></script>
 		<script src="js/ad_management/adManagementTab.js"></script>
 		<script src="js/config.js"></script>
@@ -14,7 +13,6 @@
 		<script src="js/controller/locationWizard.js"></script>
 		<script src="js/supermarketTab.js"></script>
 		<script src="js/mainPage.js"></script>
-		<script src="js/monitorTab.js"></script>
 		<script src="js/mqttListener.js"></script>
 		<script src="js/utils.js"></script>
 		<script src="js/model/beacons.js"></script>
@@ -22,6 +20,7 @@
         <script src="js/model/segmentInfo.js"></script>
         <script src="js/view/distance/distanceTab.js"></script>
         <script src="js/view/heading/headingTab.js"></script>
+		<script src="js/view/monitor/monitorTab.js"></script>
         <script src="js/view/proximity/proximityTab.js"></script>
 		<script src="test/test.js"></script>
 		<script src="test/beaconsTest.js"></script>
@@ -45,10 +44,10 @@
 				<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 					<!--a href="#supermarket-tab" id="supermarket-tab-title" class="mdl-layout__tab is-active">Queue Metrics</a-->
 					<a href="#ad-management-tab" id="ad-management-tab-title" class="mdl-layout__tab">Ad Management</a>
-					<a href="#monitor-tab" id="monitor-tab-title" class="mdl-layout__tab">Dev</a>
-					<a href="#proximity-tab" id="proximity-tab-title" class="mdl-layout__tab">Dev Proximity</a>
-                    <a href="#distance-tab" id="distance-tab-title" class="mdl-layout__tab">Dev Distance</a>
-                    <a href="#heading-tab" id="heading-tab-title" class="mdl-layout__tab">Dev Heading</a>
+					<a href="#monitor-tab" id="monitor-tab-title" class="mdl-layout__tab">MONITOR</a>
+					<a href="#proximity-tab" id="proximity-tab-title" class="mdl-layout__tab">DEV Proximity</a>
+                    <a href="#distance-tab" id="distance-tab-title" class="mdl-layout__tab">DEV Distance</a>
+                    <a href="#heading-tab" id="heading-tab-title" class="mdl-layout__tab">DEV Heading</a>
 				</div>
 			</header>
 			<div class="mdl-layout__drawer">
@@ -120,12 +119,7 @@
 						<button id="monitor-take-photo" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
 							Take Photo
 						</button>
-						<div class="mdl-shadow--2dp" id="monitor-beacons-table-container">
-							<br> <div class="mdl-typography--title">Distance [rev]</div>
-							<br> <div id="monitor-beacons-distance-table"> </div> <br>
-							<br> <div class="mdl-typography--title">Signal level [db]</div>
-							<br> <div id="monitor-beacons-signal-level-table"> </div> <br>
-						</div>
+
 						<div class="mdl-shadow--4dp supermarket-plan-container">
 							<img class="supermarket-plan" id="monitor-plan" src="css/storePlan.png" width="1000" height="400">
 						  <canvas class="supermarket-canvas" id="monitor-canvas" width="1000" height="400">

@@ -1,22 +1,13 @@
 var LocationWizard = function(graph) {
   this.allSegments = [];
   this.graph = graph;
-  this.cornerMap = new Map();
-  this.cornerMap.set("0,1->0,2", "1,2");
-  this.cornerMap.set("0,2->1,2", "1,1");
-  this.cornerMap.set("1,1->1,0", "0,0");
-  this.cornerMap.set("1,0->0,0", "0,1");
-  this.cornerMap.set("1,2->0,2", "0,1");
-  this.cornerMap.set("1,1->1,2", "0,2");
-  this.cornerMap.set("0,0->1,0", "1,1");
-  this.cornerMap.set("0,1->0,0", "1,0");
 }
 
 LocationWizard.prototype = {
   proximityCounter : 0,
   graph : undefined,
   allSegments : undefined,
-  cornerMap : undefined,
+  // cornerMap : undefined,
 
   // Add cart near beacon event.
   addProximityEvent : function(nodeId, ts) {
@@ -127,13 +118,6 @@ LocationWizard.prototype = {
     if (prevNodeId == undefined) {
       return undefined;
     }
-    // If the fan out is only 1, just return it.
-    /*if (currentNodeId && prevNodeId) {
-      var next = this.cornerMap.get(prevNodeId + "->" + currentNodeId);
-      if (next) {
-        return next;
-      }
-    }*/
     var candidates = this.getPossibleNextNode(currentNodeId, prevNodeId);
     if (candidates.length == 1) {
       return candidates[0];
@@ -142,10 +126,10 @@ LocationWizard.prototype = {
     console.log("candidates: " + JSON.stringify(candidates));
     if (candidates.length == 2) {
       var currentLength = this.getRevolutionsInLastSegment();
-      console.log('candidates[0]: ' + candidates[0]);
+      // console.log('candidates[0]: ' + candidates[0]);
       var len0 = this.graph.getEdgeLength(currentNodeId, candidates[0]);
       var len1 = this.graph.getEdgeLength(currentNodeId, candidates[1]);
-      console.log("c,0,1: " + currentLength + ", " + len0 + ", " + len1);
+      // console.log("c,0,1: " + currentLength + ", " + len0 + ", " + len1);
       if ((currentLength > 2 * len0) && (len1 > 1.3 * len0 || (len1 == undefined))) {
         return candidates[1];
       }

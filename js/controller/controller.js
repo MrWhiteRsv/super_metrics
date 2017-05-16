@@ -316,23 +316,18 @@ var controller = {
         this.graph.addEdgeLength(common.arrToNodeId([r, c]), common.arrToNodeId([r, c]), 0);
       }
     }
-   /*
-    this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([0, 0]));
-    this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([0, 1]));
-    this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([0, 2]));
-    this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([1, 0]));
-    this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([1, 2]));
-    this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([1, 1]));*/
-
     this.addBeacon('34:b1:f7:d3:90:ff', common.arrToNodeId([1, 0]));
     this.addBeacon('34:b1:f7:d3:9c:cb', common.arrToNodeId([1, 1]));
     this.addBeacon('34:b1:f7:d3:9d:2f', common.arrToNodeId([1, 2]));
-    this.addBeacon('34:b1:f7:d3:9d:eb', common.arrToNodeId([0, 0]));
+    this.addBeacon('34:b1:f7:d3:9e:41', common.arrToNodeId([0, 0]));
     this.addBeacon('34:b1:f7:d3:9c:a3', common.arrToNodeId([0, 2]));
     this.addBeacon('34:b1:f7:d3:9d:f6', common.arrToNodeId([0, 1]));
-
-    // this.graph.log();
    },
+
+   /*
+   # 34:b1:f7:d3:9e:41
+   # 34:b1:f7:d3:92:3f
+   */
 
   // Returns true if beacon is one of pre configured beacons.
   isValidBeacon : function(mac) {
